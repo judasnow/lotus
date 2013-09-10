@@ -24,7 +24,7 @@ module.exports = function( grunt ) {
                 dest : "./index.html"
             } ,
             prod : {
-                src : "./src/preprocess_tpl/index.html",
+                src : "./src/tpl/index.html",
                 dest : "./index.html",
             }
         },//}}}
