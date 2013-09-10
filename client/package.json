@@ -1,6 +1,6 @@
 {
-  "name": "petal_client",
-  "version": "0.0.1",
+  "name": "lotus_client",
+  "version": "",
   "description": "",
   "main": "Gruntfile.js",
   "devDependencies": {
@@ -20,5 +20,5 @@
   },
   "repository": "",
   "author": "",
-  "license": "mit"
+  "license": ""
 }
