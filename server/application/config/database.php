@@ -45,7 +45,7 @@
 | the active record class
 */
 
-$active_group = 'default';
+$active_group = 'odirus';
 $active_record = TRUE;
 
 $db['default']['hostname'] = 'localhost';
@@ -63,6 +63,23 @@ $db['default']['dbcollat'] = 'utf8_general_ci';
 $db['default']['swap_pre'] = '';
 $db['default']['autoinit'] = TRUE;
 $db['default']['stricton'] = FALSE;
+
+$db['odirus']['hostname'] = '127.0.0.1';
+$db['odirus']['username'] = 'test';
+$db['odirus']['password'] = 'test';
+$db['odirus']['database'] = 'lotus';
+$db['odirus']['dbdriver'] = 'mysql';
+$db['odirus']['dbprefix'] = '';
+$db['odirus']['pconnect'] = TRUE;
+$db['odirus']['db_debug'] = TRUE;
+$db['odirus']['cache_on'] = FALSE;
+$db['odirus']['cachedir'] = '';
+$db['odirus']['char_set'] = 'utf8';
+$db['odirus']['dbcollat'] = 'utf8_general_ci';
+$db['odirus']['swap_pre'] = '';
+$db['odirus']['autoinit'] = TRUE;
+$db['odirus']['stricton'] = FALSE;
+
 
 
 /* End of file database.php */
