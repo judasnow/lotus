@@ -10,21 +10,21 @@ module.exports = function( grunt ) {
         env : {
         //{{{
             dev : {
-                NODE_ENV : "DEV"
+                ENV : "dev"
             } ,
             prod : {
-                NODE_ENV : "PROD"
+                ENV : "prod"
             }
         },//}}}
 
         preprocess : {
         //{{{
             dev : {
-                src : "./src/tpl/index.html",
+                src : "./src/preprocess_tpl/index.html",
                 dest : "./index.html"
             } ,
             prod : {
-                src : "./src/tpl/index.html",
+                src : "./src/preprocess_tpl/index.html",
                 dest : "./index.html",
             }
         },//}}}
@@ -134,42 +134,6 @@ module.exports = function( grunt ) {
             }
         },//}}}
 
-        watch: {
-        //{{{
-            js: {
-                files: "./src/script/*.js" ,
-                tasks: ["default"]
-            }
-        },//}}}
-
-        manifest: {
-        //{{{
-            prod: {
-                generate: {
-                    options: {
-                        basePath: '.',
-                        //cache: ["script/app.js"] ,
-                        network: ['http://*', 'https://*', "*"],
-                        fallback: [],
-                        exclude: [],
-                        preferOnline: true,
-                        verbose: true,
-                        timestamp: true
-                    },
-                    src: [
-                        "./build/script/all.js" ,
-                        "./build/script/rquirejs_main_build.js",
-                        "./build/style/css/main.css"
-                    ],
-                    dest: 'petal.mf'
-                }
-            },
-            dev: {
-                src: [],
-                dest: 'petal!.mf'
-            }
-        },//}}}
-
         htmlmin: {
         //{{{
             dist: {
@@ -188,22 +152,20 @@ module.exports = function( grunt ) {
     grunt.loadNpmTasks( "grunt-preprocess" );
     grunt.loadNpmTasks( "grunt-contrib-less" );
     grunt.loadNpmTasks( "grunt-contrib-uglify" );
-    grunt.loadNpmTasks( "grunt-contrib-watch" );
     grunt.loadNpmTasks( "grunt-contrib-concat" );
     grunt.loadNpmTasks( "grunt-contrib-clean" );
     grunt.loadNpmTasks( "grunt-contrib-requirejs" );
-    grunt.loadNpmTasks( "grunt-manifest" );
     grunt.loadNpmTasks( "grunt-contrib-cssmin" );
     grunt.loadNpmTasks( "grunt-contrib-htmlmin" );
 
     grunt.registerTask( 
         "dev" ,
-        ["env:dev" , "preprocess:dev" , "clean" , "manifest:dev" ]
+        ["env:dev" , "clean" , "preprocess:dev" ]
     );
 
     grunt.registerTask( 
         "prod" ,
-        [ "env:prod" , "preprocess:prod" , "uglify" , "less" , "cssmin" , "concat" , "requirejs" , "manifest" ]
+        [ "env:prod" , "clean" , "preprocess:prod" ]
     );
 };
 
