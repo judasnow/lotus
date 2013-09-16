@@ -19,7 +19,9 @@ class Welcome extends CI_Controller {
 	 */
 	public function index()
 	{
-		$this->load->view('welcome_message');
+        $this->load->library('apply_lib');
+        $this->apply_lib->apply_verifying_pass(1);
+        //$this->load->view('welcome_message');
 	}
 }
 
