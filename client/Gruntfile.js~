@@ -165,7 +165,7 @@ module.exports = function( grunt ) {
 
     grunt.registerTask( 
         "prod" ,
-        [ "env:prod" ,  "clean" , "preprocess:prod" ]
+        [ "env:prod" , "clean" , "preprocess:prod" ]
     );
 };
 

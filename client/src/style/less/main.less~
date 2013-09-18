@@ -12,6 +12,8 @@ body {
 }
 
 .box {
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
     width: 950px;
     margin: 0 auto;
 }
