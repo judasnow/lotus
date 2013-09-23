@@ -83,5 +83,17 @@ class Apply_model extends Base_model {
         );
         return $res_object->result_array();
     }
+
+    public function register_code($apply_id) {
+        //todo Exception
+        $res_object = $this->base_query(array('id' => $apply_id), 'register_code');
+        $res_array  = $res_object->result_array();
+        //@todo Check here
+        if($this->result_rows($res_array) == 1 && $res_array[0]['code_available'] == 'y') {
+            return $res_array[0];
+        } else {
+            return FALSE;
+        }
+    }
 }
 ?>

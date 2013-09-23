@@ -21,6 +21,8 @@ class Apply_api extends REST_Controller {
      * @param string shopkeeper_tel
      * @param string shop_name
      * @param string shop_address
+     *
+     * @doc
      */
     public function do_apply_post() {
         $apply_info = array(
@@ -33,7 +35,7 @@ class Apply_api extends REST_Controller {
         if($this->apply_lib->do_apply($apply_info)) {
             $this->response(
                 array(
-                    'result' => TRUE,
+                    'result' => 'ok',
                     'msg'    => 'Apply success',
                     'data'   => NULL
                 )
@@ -41,7 +43,7 @@ class Apply_api extends REST_Controller {
         } else {
             $this->response(
                 array(
-                    'result' => FALSE,
+                    'result' => 'fail',
                     'msg'    => 'Apply failed',
                     'data'   => NULL
                 )
@@ -55,13 +57,15 @@ class Apply_api extends REST_Controller {
      * @privilege Admin
      * 
      * @sort      time
+     *
+     * @doc
      */
     public function apply_verifying_get() {
         //@Todo check privilege
         $this->load->library('apply_lib');
         $this->response(
             array(
-                'result' => TRUE,
+                'result' => 'ok',
                 'msg'    => 'Get verifying data success',
                 'data'   => $this->apply_lib->apply_verifying()
             )
@@ -74,6 +78,8 @@ class Apply_api extends REST_Controller {
      * @privilege Admin
      *
      * @param     apply_id
+     *
+     * @doc
      */
     public function apply_verifying_detail_get() {
         //@todo check privilege
@@ -82,7 +88,7 @@ class Apply_api extends REST_Controller {
         if($res = $this->apply_lib->apply_verifying_detail($apply_id)) {
             $this->response(
                 array(
-                    'resutl' => TRUE,
+                    'resutl' => 'ok',
                     'msg'    => 'Get verifying detail data success',
                     'data'   => $res
                 )
@@ -90,7 +96,7 @@ class Apply_api extends REST_Controller {
         } else {
             $this->response(
                 array(
-                    'resutl' => FALSE,
+                    'resutl' => 'fail',
                     'msg'    => 'Get verifying detail data failed',
                     'data'   => NULL
                 )
@@ -105,6 +111,8 @@ class Apply_api extends REST_Controller {
      * @privilege Admin
      *
      * @param     apply_id
+     *
+     * @doc
      */
     public function apply_verifying_pass_post() {
         //@todo Check privilege
@@ -113,15 +121,17 @@ class Apply_api extends REST_Controller {
         if($this->apply_lib->apply_verifying_pass($apply_id)) {
             $this->response(
                 array(
-                    'result' => TRUE,
+                    'result' => 'ok',
                     'msg'    => 'Verifying pass success',
-                    'data'   => NULL
+                    'data'   => array(
+                        'register_code' => $this->apply_lib->register_code($apply_id)
+                    )
                 )
             );
         } else {
             $this->response(
                 array(
-                    'result' => FALSE,
+                    'result' => 'fail',
                     'msg'    => 'Verifying passed failed',
                     'data'   => NULL
                 )
@@ -136,6 +146,8 @@ class Apply_api extends REST_Controller {
      *
      * @param     apply_id
      * @param     message
+     *
+     * @doc
      */
     public function apply_verifying_failed_post() {
         //@todo Check privilege
@@ -145,7 +157,7 @@ class Apply_api extends REST_Controller {
         if($this->apply_lib->apply_verifying_failed($apply_id, $message)) {
             $this->response(
                 array(
-                    'result' => TRUE,
+                    'result' => 'ok',
                     'msg'    => 'Verifying success',
                     'data'   => NULL
                 )
@@ -153,7 +165,7 @@ class Apply_api extends REST_Controller {
         } else {
             $this->response(
                 array(
-                    'result' => FALSE,
+                    'result' => 'fail',
                     'msg'    => 'Verifying failed',
                     'data'   => NULL
                 )
@@ -167,13 +179,15 @@ class Apply_api extends REST_Controller {
      * @privilege Admin
      * 
      * @sort      time
+     *
+     * @doc
      */
     public function apply_verified_get() {
         //@Check privilege
         $this->load->library('apply_lib');
         $this->response(
             array(
-                'result' => TRUE,
+                'result' => 'ok',
                 'msg'    => 'Get verified data success',
                 'data'   => $this->apply_lib->apply_verified()
             )

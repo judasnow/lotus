@@ -63,7 +63,8 @@ class Apply_lib {
             );
             $this->_CI->apply_m->apply_verifying_pass($apply_id, $content);
             $this->_CI->db->trans_commit();
-            return TRUE;
+            //@todo return register code
+            return $this->register_code($apply_id);
         } catch (Exception $e) {
             log_message('info', $e->getMessage() . "\n");
             $this->_CI->db->trans_rollback();
@@ -128,6 +129,16 @@ class Apply_lib {
             }
         }
         return $res_array;
+    }
+
+    private function register_code($apply_id) {
+        $this->_CI->load->model('apply_model', 'apply_m');
+        $res_array = $this->_CI->apply_m->register_code($apply_id);
+        if($res_array) {
+            return $res_array['register_code'];
+        } else {
+            return FALSE;
+        }
     }
 }
 ?>
