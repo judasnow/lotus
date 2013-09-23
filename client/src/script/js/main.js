@@ -27,5 +27,5 @@ require(
     "zepto"
 ] ,
 function( $ ) {
-    console.log( "%c init ok" , "color:green" );
+    console.log( "%c init ok" , "color: #0f0" );
 });

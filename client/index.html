@@ -1,17 +1,18 @@
 <!DOCTYPE html>
-<!--
+<!--{{{
 db       .d88b.  d888888b db    db .d8888. 
 88      .8P  Y8. `~~88~~' 88    88 88'  YP 
 88      88    88    88    88    88 `8bo.   
 88      88    88    88    88    88   `Y8b. 
 88booo. `8b  d8'    88    88b  d88 db   8D 
 Y88888P  `Y88P'     YP    ~Y8888P' `8888Y' 
--->
+}}}-->
 <html lang="zh-CN">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 
 <!-- @if ENV='dev' -->
+<link rel="stylesheet" href="/src/style/third_party/fontawesome/css/font-awesome.css">
 <!--script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script-->
 <link rel="stylesheet/less" type="text/css" href="/src/style/less/main.less">
 <script src="/src/script/third_party/less.js"></script>
@@ -21,26 +22,59 @@ Y88888P  `Y88P'     YP    ~Y8888P' `8888Y'
 </head>
 
 <body>
-    <header>
+
+    <div id="header">
         <div class="logo_box">
             <span class="logo">
                 lotus
             </span>
         </div>
-    </header>
+        <div id="nav" class="box">
+            <div class="item">
+                分类浏览
+            </div>
+        </div>
+    </div>
+
     <div id="wrapper">
         <div class="box">
-            <div class="categories_browse">
-                categories browse
+            <div id="categories_browse">
+                <div class="categories_list">
+                    <div class="row">
+                        <span class="text">服装,饰品</span> <i class="icon-caret-right icon icon-muted"></i>
+                    </div>
+                    <div class="row">
+                        <span class="text">服装,饰品</span> <i class="icon-caret-right icon icon-muted"></i>
+                    </div>
+                    <div class="row">
+                        <span class="text">服装,饰品</span> <i class="icon-caret-right icon icon-muted"></i>
+                    </div>
+                    <div class="row">
+                        <span class="text">服装,饰品</span> <i class="icon-caret-right icon icon-muted"></i>
+                    </div>
+                    <div class="row">
+                        <span class="text">服装,饰品</span> <i class="icon-caret-right icon icon-muted"></i>
+                    </div>
+                </div>
+                <div class="categories_detail">
+                    <div class="row">
+                        服装,饰品
+                    </div>
+                </div>
             </div>
 
-            <div class="search_box"> 
-                search 
+            <div id="search_box"> 
+                search
             </div>
 
-            <div class="item_rank">
+            <div class="browse_count_rank">
                 item rank
             </div>
+
+            <div class="hot_item_rank">
+                hot_item_rank
+            </div>
+
         </div>
     </div>
 </body>
