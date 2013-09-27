@@ -5,6 +5,7 @@
  * @Author: odirus@163.com
  */
 require_once(APPPATH . '/libraries/REST_Controller.php');
+require_once(APPPATH . '/controllers/api/auth.php');
 
 class Apply_api extends REST_Controller {
     

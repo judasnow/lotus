@@ -131,7 +131,7 @@ class Apply_lib {
         return $res_array;
     }
 
-    private function register_code($apply_id) {
+    public function register_code($apply_id) {
         $this->_CI->load->model('apply_model', 'apply_m');
         $res_array = $this->_CI->apply_m->register_code($apply_id);
         if($res_array) {

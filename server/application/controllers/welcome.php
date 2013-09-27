@@ -19,8 +19,6 @@ class Welcome extends CI_Controller {
 	 */
 	public function index()
 	{
-        $this->load->library('apply_lib');
-        $this->apply_lib->register_code(1);
         //$this->load->view('welcome_message');
 	}
 }
