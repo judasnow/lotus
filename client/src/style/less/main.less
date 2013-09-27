@@ -1,4 +1,10 @@
 @font_size: 14px;
+@box_width: 960px;
+@link_color: #d3564a;
+
+@import "header";
+@import "categories_browse";
+@import "search";
 
 body {
     padding: 0;
@@ -12,8 +18,7 @@ body {
 }
 
 .box {
-    width: 950px;
+    width: @box_width;
     margin: 0 auto;
 }
 
-@import "header";
