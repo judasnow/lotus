@@ -46,7 +46,7 @@ class Auth_api extends REST_Controller {
     }
     
     /**
-     * Verify register code whether is available
+     * 注册码是否可用，是否存在，是否被使用，格式是否正确
      *
      * @param string   register_code
      * 
@@ -75,9 +75,8 @@ class Auth_api extends REST_Controller {
         }
     }
 
-
     /**
-     * Verify username whether is available
+     * 验证用户名是否可用，是否已经被注册，格式是否正确
      *
      * @param string   username
      * 
@@ -107,7 +106,7 @@ class Auth_api extends REST_Controller {
     }
 
     /**
-     * Register new user
+     * 注册新用户接口
      *
      * @param string   username
      * @param string   password

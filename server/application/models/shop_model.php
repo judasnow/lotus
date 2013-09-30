@@ -24,6 +24,5 @@ class Shop_model extends Base_model {
             return FALSE;
         }
     }
-
 }
 ?>

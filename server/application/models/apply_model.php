@@ -99,5 +99,49 @@ class Apply_model extends Base_model {
             return FALSE;
         }
     }
+
+    /**
+     * 验证注册码是否可用，验证 register_code 和 code_available 字段即可
+     */
+    public function register_code_is_available($register_code) {
+        $res_object = $this->base_query(array('register_code' => $register_code, 'code_available' => 'y'), 'id');
+        $res_array  = $res_object->result_array();
+        if($this->result_rows($res_array) == 1) {
+            return TRUE;
+        } else {
+            return FALSE;
+        }
+    }
+
+    /**
+     * 根据注册码来获取店铺的基本信息
+     */
+    public function shop_base_info($register_code) {
+        $shop_info = array();
+        $res_object = $this->base_query(array('register_code' => $register_code), 'shopkeeper_name, shopkeeper_tel, shop_name, shop_address');
+        $res_array  = $res_object->result_array();
+        if($this->result_rows($res_array) == 1) {
+            $shop_info['register_code']   = $register_code;
+            $shop_info['shopkeeper_name'] = $res_array[0]['shopkeeper_name'];
+            $shop_info['shopkeeper_tel']  = $res_array[0]['shopkeeper_tel'];
+            $shop_info['shop_name']       = $res_array[0]['shop_name'];
+            $shop_info['shop_address']    = $res_array[0]['shop_address'];
+            return $shop_info;
+        } else {
+            return FALSE;
+        }
+    }
+    
+    /**
+     * 完成店铺注册功能，需要更改code_available字段的相关值
+     */
+    public function shop_has_registered($register_code) {
+        $this->base_update(array('register_code' => $register_code), array('code_available' => 'n'));
+        if($this->affected_rows() == 1) {
+            return TRUE;
+        } else {
+            return FALSE;
+        }
+    }
 }
 ?>

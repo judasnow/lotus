@@ -39,7 +39,10 @@ Class User_model extends Base_model {
             return FALSE;
         }
     }
-
+    
+    /**
+     * 验证用户名是否可用
+     */
     public function username_is_available($username) {
         $res_object = $this->base_query(
             array('username' => $username), 'id'
