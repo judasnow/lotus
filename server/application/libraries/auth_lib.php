@@ -10,12 +10,16 @@ class Auth_lib {
     public function __construct() {
         $this->_CI =& get_instance();
     }
-
+    
+    /**
+     * 执行用户登录功能
+     */
     public function do_login($username, $password) {
         //@todo format
         $this->_CI->load->model('user_model', 'user_m');
         if($hash_password_db = $this->_CI->user_m->get_hash_password($username)) {
             if($hash_password_db['password'] == md5($password)) {
+                $_SESSION['object_user_id'] = $this->_CI->user_m->get_user_id($username);
                 return TRUE;
             } else {
                 return FALSE;
@@ -23,7 +27,18 @@ class Auth_lib {
         } else {
             return FALSE;
         }
-        
+    }
+
+    /**
+     * 执行用户登出功能
+     */
+    public function do_logout() {
+        unset($_SESSION['object_user_id']);
+        if(empty($_SESSION['object_user_id'])) {
+            return TRUE;
+        } else {
+            return FALSE;
+        }
     }
 
     /**

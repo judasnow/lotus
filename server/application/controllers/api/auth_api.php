@@ -5,15 +5,17 @@
  * @Author: odirus@163.com
  */
 require_once(APPPATH . '/libraries/REST_Controller.php');
+require_once(APPPATH . '/libraries/auth.php');
 
 class Auth_api extends REST_Controller {
     
     public function __construct() {
         parent::__construct();
+        session_start();
     }
-    
+
     /**
-     * Login system
+     * 登录系统
      *
      * @param string   username
      * @param string   password
@@ -28,7 +30,7 @@ class Auth_api extends REST_Controller {
         if($this->auth_lib->do_login($username, $password)) {
             $this->response(
                 array(
-                    'result' => TRUE,
+                    'result' => 'ok',
                     'msg' => 'Login success',
                     'data' => NULL
                 )
@@ -36,7 +38,7 @@ class Auth_api extends REST_Controller {
         } else {
             $this->response(
                 array(
-                    'result' => FALSE,
+                    'result' => 'fail',
                     'msg' => 'Username or password wrong',
                     'data' => NULL
                 ) 
@@ -45,6 +47,32 @@ class Auth_api extends REST_Controller {
         
     }
     
+    /**
+     * 登出系统
+     *
+     * @param void
+     */
+    public function do_logout_post() {
+        $this->load->library('auth_lib');
+        if($this->auth_lib->do_logout()) {
+            $this->response(
+                array(
+                    'result' => 'ok',
+                    'msg' => 'Logout success',
+                    'data' => NULL
+                )
+            );
+        } else {
+            $this->response(
+                array(
+                    'result' => 'fail',
+                    'msg' => 'Logout failed',
+                    'data' => NULL
+                ) 
+            );
+        }
+    }
+
     /**
      * 注册码是否可用，是否存在，是否被使用，格式是否正确
      *
@@ -59,7 +87,7 @@ class Auth_api extends REST_Controller {
         if($this->auth_lib->verify_register_code($register_code)) {
             $this->response(
                 array(
-                    'result' => TRUE,
+                    'result' => 'ok',
                     'msg' => 'Register code is available',
                     'data' => NULL
                 )
@@ -67,7 +95,7 @@ class Auth_api extends REST_Controller {
         } else {
             $this->response(
                 array(
-                    'result' => FALSE,
+                    'result' => 'fail',
                     'msg' => 'Register code is not available',
                     'data' => NULL
                 )
@@ -89,7 +117,7 @@ class Auth_api extends REST_Controller {
         if($this->auth_lib->verify_username($username)) {
             $this->response(
                 array(
-                    'result' => TRUE,
+                    'result' => 'ok',
                     'msg' => 'Username is available',
                     'data' => NULL
                 )
@@ -97,7 +125,7 @@ class Auth_api extends REST_Controller {
         } else {
             $this->response(
                 array(
-                    'result' => FALSE,
+                    'result' => 'fail',
                     'msg' => 'Username is not available',
                     'data' => NULL
                 )
@@ -130,7 +158,7 @@ class Auth_api extends REST_Controller {
         ))) {
             $this->response(
                 array(
-                    'result' => TRUE,
+                    'result' => 'ok',
                     'msg' => 'Register new user success',
                     'data' => NULL
                 )
@@ -138,15 +166,11 @@ class Auth_api extends REST_Controller {
         } else {
             $this->response(
                 array(
-                    'result' => FALSE,
+                    'result' => 'fail',
                     'msg' => 'Register new user failed',
                     'data' => NULL
                 )
             );
         }
-    }
-    
-    public function do_apply_shop_post() {
-        
     }
 }
