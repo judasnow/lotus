@@ -15,14 +15,31 @@ class Auth_api extends REST_Controller {
     }
 
     /**
+     * 验证用户是否已经登录
+     */
+    public function is_login() {
+        if(!auth::is_login()) {
+            $this->response(
+                array(
+                    'result' => 'fail',
+                    'msg'    => 'User did not login',
+                    'data'   => NULL
+                )
+            );
+        }
+    }
+
+    /**
      * 登录系统
      *
      * @param string   username
      * @param string   password
+     * @param string   remember
      * 
      * @return restful
      */
     public function do_login_post() {
+        //@toto remember ? on : off
         $username = $this->input->post('username', TRUE);
         $password = $this->input->post('password', TRUE);
         
@@ -45,6 +62,33 @@ class Auth_api extends REST_Controller {
             );
         }
         
+    }
+
+    /**
+     * 当前登录用户信息
+     *
+     * @param void
+     */
+    public function user_info_get() {
+        $this->is_login();
+        $this->load->library('auth_lib');
+        if ($user_info = $this->auth_lib->user_info()) {
+            $this->response(
+                array(
+                    'result' => 'ok',
+                    'msg'    => 'Get user info success',
+                    'data'   => $user_info
+                )
+            );
+        } else {
+            $this->response(
+                array(
+                    'result' => 'fail',
+                    'msg'    => 'Get user info failed',
+                    'data'   => NULL
+                )
+            );
+        }
     }
     
     /**
@@ -169,6 +213,39 @@ class Auth_api extends REST_Controller {
                     'result' => 'fail',
                     'msg' => 'Register new user failed',
                     'data' => NULL
+                )
+            );
+        }
+    }
+
+    /**
+     * 修改用户密码
+     *
+     * @param string   old_password
+     * @param string   new_password
+     *
+     * @return restful
+     */
+    public function change_password_post() {
+        //验证用户是否登录
+        $this->is_login();
+        $old_password = $this->input->post('old_password', TRUE);
+        $new_password = $this->input->post('new_password', TRUE);
+        $this->load->library('auth_lib');
+        if ($this->auth_lib->change_password($old_password, $new_password)) {
+            $this->response(
+                array(
+                    'result' => 'ok',
+                    'msg'    => 'Change password success',
+                    'data'   => NULL
+                )
+            );
+        } else {
+            $this->response(
+                array(
+                    'result' => 'fail',
+                    'msg'    => 'Change password failed',
+                    'data'   => NULL
                 )
             );
         }

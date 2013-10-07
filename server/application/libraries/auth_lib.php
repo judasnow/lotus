@@ -30,6 +30,20 @@ class Auth_lib {
     }
 
     /**
+     * 获取用户基本信息
+     */
+    public function user_info() {
+        $this->_CI->load->model('user_model', 'user_m');
+        if (!empty($_SESSION['object_user_id'])) {
+            $user_id = $_SESSION['object_user_id'];
+            if ($user_info = $this->_CI->user_m->get_user_info($user_id)) {
+                return $user_info;
+            }
+        }
+        return FALSE;
+    }
+
+    /**
      * 执行用户登出功能
      */
     public function do_logout() {
@@ -99,6 +113,21 @@ class Auth_lib {
         //@todo format
         $this->_CI->load->model('user_model', 'user_m');
         if($this->_CI->user_m->username_is_available($username)) {
+            return TRUE;
+        } else {
+            return FALSE;
+        }
+    }
+
+    /**
+     * 修改当前登录用户密码
+     */
+    public function change_password($old_password, $new_password) {
+        $this->_CI->load->model('user_model', 'user_m');
+        $user_id = $_SESSION['object_user_id'];
+        $password = $this->_CI->user_m->get_password($user_id)['password'];
+        if (md5($old_password) == $password) {
+            $this->_CI->user_m->base_update(array('id' => $user_id), array('password' => md5($new_password)));
             return TRUE;
         } else {
             return FALSE;
