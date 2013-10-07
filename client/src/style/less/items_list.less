@@ -1,0 +1,24 @@
+.items_list {
+    .row {
+        margin-bottom: 12px;
+        display: inline-block;
+
+        .item_box {
+            @margin_right: 12px;
+
+            width: (@box_width - (@margin_right * 3)) / 4;
+            height: 256px;
+
+            margin: 0 @margin_right 0 0;
+            &:last-child {
+                margin-right: 0;
+            }
+
+            background: #999;
+            box-shadow: 0 0 2px rgba(0,0,0,.3);
+
+            display: inline-block;
+            float: left;
+        }
+    }
+}

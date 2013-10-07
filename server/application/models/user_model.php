@@ -28,9 +28,37 @@ Class User_model extends Base_model {
         }
     }
 
+    public function get_user_info($user_id) {
+        $res_object = $this->base_query(array('id' => $user_id), 'id, username, role');
+        $res_array  = $res_object->result_array();
+        if ($this->result_rows($res_array) == 1) {
+            return $res_array[0];
+        } else {
+            return FALSE;
+        }
+    }
+
+    /**
+     * 根据用户名查询密码
+     */
     public function get_hash_password($username) {
         $res_object = $this->base_query(
             array('username' => $username),'password'
+        );
+        $res_array = $res_object->result_array();
+        if($this->result_rows($res_array) == 1) {
+            return $res_array[0];
+        } else {
+            return FALSE;
+        }
+    }
+
+    /**
+     * 根据用户ID查询密码
+     */
+    public function get_password($user_id) {
+        $res_object = $this->base_query(
+            array('id' => $user_id),'password'
         );
         $res_array = $res_object->result_array();
         if($this->result_rows($res_array) == 1) {

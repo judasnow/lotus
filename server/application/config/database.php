@@ -65,10 +65,6 @@ $db['default']['autoinit'] = TRUE;
 $db['default']['stricton'] = FALSE;
 
 $db['odirus']['hostname'] = '127.0.0.1';
-
-if( PHP_OS == 'Darwin' ) 
-    $db['odirus']['hostname'] = '172.17.0.202';
-
 $db['odirus']['username'] = 'test';
 $db['odirus']['password'] = 'test';
 $db['odirus']['database'] = 'lotus';
@@ -84,7 +80,8 @@ $db['odirus']['swap_pre'] = '';
 $db['odirus']['autoinit'] = TRUE;
 $db['odirus']['stricton'] = FALSE;
 
-
+if( PHP_OS == 'Darwin' || gethostname() == 'china-012513992' )
+    $db['odirus']['hostname'] = '172.17.0.202';
 
 /* End of file database.php */
 /* Location: ./application/config/database.php */

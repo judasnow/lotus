@@ -1,4 +1,7 @@
 <?php
+/**
+ * 弃用该规则，全部转向/libraries/regular.php
+ */
 class Verify {
     
     /**
