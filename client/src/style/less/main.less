@@ -5,6 +5,12 @@
 @import "header";
 @import "categories_browse";
 @import "search";
+@import "items_list";
+@import "hot_items_rank";
+
+input, textarea {
+    outline: none;
+}
 
 body {
     padding: 0;
@@ -20,5 +26,14 @@ body {
 .box {
     width: @box_width;
     margin: 0 auto;
+
+    .box_row {
+        margin-top: 12px;
+
+        &:first-child {
+            margin-top:0;
+        }
+    }
 }
+
 
