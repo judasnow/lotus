@@ -1,0 +1,55 @@
+.items_list {
+    .row {
+        margin-bottom: 12px;
+        display: inline-block;
+
+        .item_box {
+            @margin_right: 12px;
+            @item_height: 256px;
+            @item_width: (@box_width - (@margin_right * 3)) / 4;
+
+            width: (@box_width - (@margin_right * 3)) / 4;
+            height: 256px;
+
+            margin: 0 @margin_right 0 0;
+            &:last-child {
+                margin-right: 0;
+            }
+
+            background: #f1f1f1;
+            box-shadow: 0 0 2px rgba(0,0,0,.3);
+
+            display: inline-block;
+            float: left;
+
+            .pic_box {
+                width: @item_width;
+                height: 192px;
+
+                margin-bottom: 8px;
+
+                overflow: hidden;
+
+                cursor: pointer;
+            }
+
+            .text_box {
+                @padding: 8px;
+
+                width: @item_width - (@padding * 2);
+
+                padding: 0 @padding;
+
+                display: inline-block;
+            }
+
+            .title {
+
+            }
+
+            .describe {
+                
+            }
+        }
+    }
+}

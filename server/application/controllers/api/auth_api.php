@@ -217,6 +217,9 @@ class Auth_api extends REST_Controller {
             );
         }
     }
+<<<<<<< HEAD
+}
+=======
 
     /**
      * 修改用户密码
@@ -251,3 +254,4 @@ class Auth_api extends REST_Controller {
         }
     }
 }
+>>>>>>> 59ba746da1b96db8fa4533ddc50797b408067641

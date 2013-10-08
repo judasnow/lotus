@@ -23,21 +23,38 @@ Y88888P  `Y88P'     YP    ~Y8888P' `8888Y'
 
 <body>
 
+    <!--{{{ header-->
     <div id="header">
+
         <div class="logo_box">
             <span class="logo">
                 lotus
             </span>
         </div>
+
         <div id="nav" class="box">
             <div class="item">
                 分类浏览
             </div>
+
+            <div class="nav_user">
+                <div class="item login_btn">登录</div>
+                <div class="item signup_btn">注册</div>
+                <div class="item userinfo">
+                    <span class="username">纹身特湿(卖)</span>
+                </div>
+            </div>
         </div>
+
+        <i class="icon-refresh icon-spin loading"></i>
+
     </div>
+    <!--}}}-->
 
     <div id="wrapper">
         <div class="box">
+
+            <!--{{{ categories_browse-->
             <div id="categories_browse">
                 <div class="categories_list">
                     <div class="row">
@@ -62,17 +79,64 @@ Y88888P  `Y88P'     YP    ~Y8888P' `8888Y'
                     </div>
                 </div>
             </div>
+            <!--}}}-->
 
-            <div id="search_box"> 
-                search
+            <div id="search_box" class="box_row"> 
+<input id="q" name="q" class="search_input" aria-label="请输入搜索文字" accesskey="s" autofocus="true" autocomplete="off" aria-haspopup="true" aria-combobox="list" role="combobox" class="search-combobox-input" x-webkit-speech="" x-webkit-grammar="builtin:translate" tabindex="0" aria-expanded="true" hidefocus="true">
+                <div class="search_ico_box">
+                    <span class="search_ico">搜索</span>
+                </div>
             </div>
 
-            <div class="browse_count_rank">
-                item rank
+            <div id="hot_items_recommend" class="box_row">
+                <div class="items_list">
+                    <span>热门商品推荐</span>
+                    <div class="row">
+                        <div class="item_box">
+                            <div class="pic_box">
+                                <img class="pic" src="/picture/item/p841234.jpg">
+                            </div>
+
+                            <div class="text_box">
+                                <div class="title">
+                                    <a href="#">ratechi SCH-121 Cup Hol...</a>
+                                </div>
+                                <div class="describe">
+                                    可开车用
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item_box"></div>
+                        <div class="item_box"></div>
+                        <div class="item_box"></div>
+                    </div>
+                </div>
             </div>
 
-            <div class="hot_item_rank">
-                hot_item_rank
+            <div id="hot_shop_recommend" class="box_row">
+                <div class="items_list">
+                    <span>热门店铺推荐</span>
+                    <div class="row">
+                        <div class="item_box"></div>
+                        <div class="item_box"></div>
+                        <div class="item_box"></div>
+                        <div class="item_box"></div>
+                    </div>
+                </div>
+            </div>
+
+            <hr>
+
+            <div id="hot_shop_recommend" class="box_row">
+                <div class="items_list">
+                    <span>商品排行</span>
+                    <div class="row">
+                        <div class="item_box"></div>
+                        <div class="item_box"></div>
+                        <div class="item_box"></div>
+                        <div class="item_box"></div>
+                    </div>
+                </div>
             </div>
 
         </div>

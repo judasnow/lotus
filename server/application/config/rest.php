@@ -82,7 +82,7 @@ $config['rest_auth'] = false;
 |	array('admin' => '1234')
 |
 */
-$config['rest_valid_logins'] = array( 'nagisa' => 'nagisa' );
+$config['rest_valid_logins'] = array( 'lotus' => 'lotus' );
 
 /*
 |--------------------------------------------------------------------------

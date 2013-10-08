@@ -5,12 +5,23 @@
 @import "header";
 @import "categories_browse";
 @import "search";
+@import "items_list";
+@import "hot_items_rank";
+
+input, textarea {
+    outline: none;
+}
 
 body {
     padding: 0;
     margin: 0;
     font-size: @font_size;
     font-family: Helvetica, Arial, sans-serif;
+}
+
+a {
+    color: @link_color;
+    text-decoration: none;
 }
 
 #wrapper {
@@ -20,5 +31,10 @@ body {
 .box {
     width: @box_width;
     margin: 0 auto;
+
+    .box_row {
+        margin-top: 12px;
+    }
 }
+
 
