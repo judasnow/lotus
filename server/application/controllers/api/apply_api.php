@@ -5,7 +5,7 @@
  * @Author: odirus@163.com
  */
 require_once(APPPATH . '/libraries/REST_Controller.php');
-require_once(APPPATH . '/controllers/api/auth.php');
+require_once(APPPATH . '/libraries/auth.php');
 
 class Apply_api extends REST_Controller {
     
@@ -14,16 +14,13 @@ class Apply_api extends REST_Controller {
     }
 
     /**
-     * Apply for shop
+     * 申请店铺
      *
-     * @privilege All 
+     * @param string shopkeeper_name   店主姓名
+     * @param string shopkeeper_tel    店主联系方式
+     * @param string shop_name         店铺名称
+     * @param string shop_address      店铺地址
      *
-     * @param string shopkeeper_name
-     * @param string shopkeeper_tel
-     * @param string shop_name
-     * @param string shop_address
-     *
-     * @doc
      */
     public function do_apply_post() {
         $apply_info = array(
@@ -53,13 +50,9 @@ class Apply_api extends REST_Controller {
     }
 
     /**
-     * Get verifying applying
+     * 审核中的店铺
      *
-     * @privilege Admin
-     * 
-     * @sort      time
-     *
-     * @doc
+     * @param void
      */
     public function apply_verifying_get() {
         //@Todo check privilege
@@ -74,11 +67,9 @@ class Apply_api extends REST_Controller {
     }
 
     /**
-     * Get verifying applying detail
+     * 店铺申请详细信息
      *
-     * @privilege Admin
-     *
-     * @param     apply_id
+     * @param     apply_id      申请编号
      *
      * @doc
      */
@@ -107,13 +98,9 @@ class Apply_api extends REST_Controller {
     }
 
     /**
-     * Verifying pass
+     * 店铺审核通过
      *
-     * @privilege Admin
-     *
-     * @param     apply_id
-     *
-     * @doc
+     * @param    apply_id      店铺编号
      */
     public function apply_verifying_pass_post() {
         //@todo Check privilege
@@ -141,14 +128,10 @@ class Apply_api extends REST_Controller {
     }
 
     /**
-     * Verifying failed
+     * 店铺审核未通过
      *
-     * @privilege Admin
-     *
-     * @param     apply_id
-     * @param     message
-     *
-     * @doc
+     * @param     apply_id     店铺编号
+     * @param     message      店铺审核未通过原因
      */
     public function apply_verifying_failed_post() {
         //@todo Check privilege
@@ -175,13 +158,9 @@ class Apply_api extends REST_Controller {
     }
     
     /**
-     * Get verified applying
+     * 已经被审核店铺信息（通过和未通过）
      * 
-     * @privilege Admin
-     * 
-     * @sort      time
-     *
-     * @doc
+     * @param     void
      */
     public function apply_verified_get() {
         //@Check privilege
