@@ -58,11 +58,13 @@ class Shop_api extends REST_Controller {
      * 修改店铺的基本信息
      *
      * @param array shop_base_info 店铺基本信息，包括店铺图片，店铺联系方式，店铺地址
-     *              数组包括 shop_image_name,shop_name,shop_tel字段
+     *              数组包括 shop_image_name,shop_tel,shop_address字段
      */
     public function update_base_info_post() {
         $this->is_login();
-        $base_info = $this->input->post('shop_base_info', TRUE);
+        $base_info['shop_tel'] = $this->input->post('shop_tel', TRUE);
+        $base_info['shop_address'] = $this->input->post('shop_address', TRUE);
+        $base_info['shop_image_name'] = $this->input->post('shop_image_name', TRUE);
         $this->load->library('shop_lib');
         if($this->shop_lib->update_shop_base_info($base_info)) {
             $this->response(

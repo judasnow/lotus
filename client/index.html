@@ -37,8 +37,8 @@ Y88888P  `Y88P'     YP    ~Y8888P' `8888Y'
                 分类浏览
             </div>
 
+            <!--目前阶段仅仅只是显示登录之后的用户信息-->
             <div class="nav_user">
-                <div class="item signup_btn">成为卖家</div>
                 <div class="item userinfo">
                     <span class="username">纹身特湿(卖)</span>
                 </div>
@@ -92,8 +92,17 @@ Y88888P  `Y88P'     YP    ~Y8888P' `8888Y'
             <!--{{{ hot_items_recommend-->
             <div id="hot_items_recommend" class="box_row">
                 <div class="items_list">
-                    <span>热门商品推荐</span>
+                    <span class="title">热门商品推荐</span>
                     <div class="row">
+                        <div class="page_box">
+                            <ul class="page">
+                                <li class="page_no current_page">1</li>
+                                <li class="page_no">2</li>
+                                <li class="page_no">3</li>
+                                <li class="text">...</li>
+                                <li class="page_no">5</li>
+                            </ul>
+                        </div>
                         <div class="item_box">
                             <div class="pic_box">
                                 <img class="pic" src="/picture/item/p841234.jpg">
@@ -119,7 +128,7 @@ Y88888P  `Y88P'     YP    ~Y8888P' `8888Y'
             <!--{{{ hot_shop_recommend-->
             <div id="hot_shop_recommend" class="box_row">
                 <div class="items_list">
-                    <span>热门店铺推荐</span>
+                    <span class="title">热门店铺推荐</span>
                     <div class="row">
                         <div class="item_box"></div>
                         <div class="item_box"></div>
@@ -133,7 +142,7 @@ Y88888P  `Y88P'     YP    ~Y8888P' `8888Y'
             <!--{{{ hot_shop_recommend-->
             <div id="hot_shop_recommend" class="box_row">
                 <div class="items_list">
-                    <span>商品排行</span>
+                    <span class="title">商品排行</span>
                     <div class="row">
                         <div class="item_box"></div>
                         <div class="item_box"></div>
@@ -144,6 +153,11 @@ Y88888P  `Y88P'     YP    ~Y8888P' `8888Y'
             </div>
             <!--}}}-->
 
+            <div id="footer">
+                <span>Lotus © 2013</span>
+                <a href="#seller_signin">卖家注册</a>
+                <a href="#seller_signup">卖家登录</a>
+            </div>
         </div>
     </div>
 </body>

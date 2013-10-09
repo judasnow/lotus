@@ -1,9 +1,62 @@
 .items_list {
+    .title {
+        color: #999;
+    }
     .row {
         margin-bottom: 12px;
         display: inline-block;
 
+        .page_box {
+            @width: 512px;
+
+            width: @width;
+            height: 48px;
+
+            position: absolute;
+            left: 50%;
+            top: 60%;
+
+            margin-left: -(@width / 2);
+
+            border-radius: 5px;
+            border: 1px dashed #999;
+            background: rgba(0,0,0,0.1);
+            text-align: center;
+
+            .page {
+                display: inline-block;
+                padding: 0;
+
+                .text {
+                    display: inline-block;
+                    padding: 0 4px;
+                    margin: 2px;
+                    line-height: normal;
+                    list-style-type: none;
+                    color: #666;
+                }
+
+                .page_no {
+                    .text;
+                    cursor: pointer;
+                    &:hover {
+                        background: #bbb;
+                        text-decoration: underline;
+                    }
+                }
+
+                .current_page {
+                    background: @link_color;
+                    color: #fff;
+                    &:hover {
+                        text-decoration: none;
+                    }
+                }
+            }
+        }
+
         .item_box {
+        //{{{
             @margin_right: 12px;
             @item_height: 256px;
             @item_width: (@box_width - (@margin_right * 3)) / 4;
@@ -50,6 +103,6 @@
             .describe {
                 
             }
-        }
+        }//}}}
     }
 }

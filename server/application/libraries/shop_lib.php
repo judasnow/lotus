@@ -17,6 +17,8 @@ class Shop_lib {
         if(!empty($_SESSION['object_user_id'])) {
             if($shop_base_info = $this->_CI->shop_m->shop_base_info($_SESSION['object_user_id'])) {
                 $shop_base_info['shop_image_name'] = $shop_base_info['shop_image'];
+                $shop_base_info['shop_id']         = $shop_base_info['id'];
+                unset($shop_base_info['id']);
                 unset($shop_base_info['shop_image']);
                 return $shop_base_info;
             }

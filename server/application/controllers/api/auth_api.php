@@ -190,7 +190,7 @@ class Auth_api extends REST_Controller {
     public function do_register_post() {
         $username      = $this->input->post('username', TRUE);
         $password      = $this->input->post('password', TRUE);
-        $role          = $this->input->post('role', TRUE);
+        $role          = $this->input->post('user_role', TRUE);
         $register_code = $this->input->post('register_code', TRUE);
  
         $this->load->library('auth_lib');

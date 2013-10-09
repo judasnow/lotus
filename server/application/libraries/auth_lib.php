@@ -37,6 +37,10 @@ class Auth_lib {
         if (!empty($_SESSION['object_user_id'])) {
             $user_id = $_SESSION['object_user_id'];
             if ($user_info = $this->_CI->user_m->get_user_info($user_id)) {
+                $user_info['user_id'] = $user_info['id'];
+                $user_info['user_role'] = $user_info['role'];
+                unset($user_info['role']);
+                unset($user_info['id']);
                 return $user_info;
             }
         }
