@@ -18,7 +18,7 @@ Y88888P  `Y88P'     YP    ~Y8888P' `8888Y'
 <script src="/src/script/third_party/less.js"></script>
 <!-- @endif -->
 
-<title> lotus </title>
+<title> Lotus dev </title>
 </head>
 
 <body>
@@ -37,9 +37,8 @@ Y88888P  `Y88P'     YP    ~Y8888P' `8888Y'
                 分类浏览
             </div>
 
+            <!--目前阶段仅仅只是显示登录之后的用户信息-->
             <div class="nav_user">
-                <div class="item login_btn">登录</div>
-                <div class="item signup_btn">注册</div>
                 <div class="item userinfo">
                     <span class="username">纹身特湿(卖)</span>
                 </div>
@@ -81,17 +80,29 @@ Y88888P  `Y88P'     YP    ~Y8888P' `8888Y'
             </div>
             <!--}}}-->
 
+            <!--{{{ search-->
             <div id="search_box" class="box_row"> 
 <input id="q" name="q" class="search_input" aria-label="请输入搜索文字" accesskey="s" autofocus="true" autocomplete="off" aria-haspopup="true" aria-combobox="list" role="combobox" class="search-combobox-input" x-webkit-speech="" x-webkit-grammar="builtin:translate" tabindex="0" aria-expanded="true" hidefocus="true">
                 <div class="search_ico_box">
                     <span class="search_ico">搜索</span>
                 </div>
             </div>
+            <!--}}}-->
 
+            <!--{{{ hot_items_recommend-->
             <div id="hot_items_recommend" class="box_row">
                 <div class="items_list">
-                    <span>热门商品推荐</span>
+                    <span class="title">热门商品推荐</span>
                     <div class="row">
+                        <div class="page_box">
+                            <ul class="page">
+                                <li class="page_no current_page">1</li>
+                                <li class="page_no">2</li>
+                                <li class="page_no">3</li>
+                                <li class="text">...</li>
+                                <li class="page_no">5</li>
+                            </ul>
+                        </div>
                         <div class="item_box">
                             <div class="pic_box">
                                 <img class="pic" src="/picture/item/p841234.jpg">
@@ -112,10 +123,37 @@ Y88888P  `Y88P'     YP    ~Y8888P' `8888Y'
                     </div>
                 </div>
             </div>
+            <!--}}}-->
 
+            <!--{{{ hot_shop_recommend-->
             <div id="hot_shop_recommend" class="box_row">
                 <div class="items_list">
-                    <span>热门店铺推荐</span>
+                    <span class="title">热门店铺推荐</span>
+                    <div class="row">
+
+                        <div class="page_box">
+                            <ul class="page">
+                                <li class="page_no current_page">1</li>
+                                <li class="page_no">2</li>
+                                <li class="page_no">3</li>
+                                <li class="text">...</li>
+                                <li class="page_no">5</li>
+                            </ul>
+                        </div>
+
+                        <div class="item_box"></div>
+                        <div class="item_box"></div>
+                        <div class="item_box"></div>
+                        <div class="item_box"></div>
+                    </div>
+                </div>
+            </div>
+            <!--}}}-->
+
+            <!--{{{ hot_shop_recommend-->
+            <div id="hot_shop_recommend" class="box_row">
+                <div class="items_list">
+                    <span class="title">商品排行</span>
                     <div class="row">
                         <div class="item_box"></div>
                         <div class="item_box"></div>
@@ -124,23 +162,23 @@ Y88888P  `Y88P'     YP    ~Y8888P' `8888Y'
                     </div>
                 </div>
             </div>
+            <!--}}}-->
 
-            <hr>
-
-            <div id="hot_shop_recommend" class="box_row">
-                <div class="items_list">
-                    <span>商品排行</span>
-                    <div class="row">
-                        <div class="item_box"></div>
-                        <div class="item_box"></div>
-                        <div class="item_box"></div>
-                        <div class="item_box"></div>
-                    </div>
-                </div>
+            <!--{{{ footer-->
+            <div id="footer">
+                <span>Lotus © 2013</span>
+                <a href="#seller_signin">卖家注册</a>
+                <a href="#seller_signup">卖家登录</a>
             </div>
+            <!--}}}-->
 
         </div>
     </div>
+
+    <div class="tooltip_box">
+        tooltip
+    </div>
+
 </body>
 
 <!-- @if ENV='dev' -->
