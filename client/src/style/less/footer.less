@@ -1,0 +1,19 @@
+#footer {
+    @height: 48px;
+    @color: #afafaf;
+
+    height: @height;
+    line-height: @height;
+
+    color: @color;
+    text-align: center;
+
+    a {
+        color: @color;
+
+        &:hover {
+            color: @link_color;
+            text-decoration: underline;
+        }
+    }
+}

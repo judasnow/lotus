@@ -1,20 +1,25 @@
 .items_list {
+    @item_height: 256px;
+
     .title {
         color: #999;
     }
+
     .row {
         margin-bottom: 12px;
         display: inline-block;
 
         .page_box {
             @width: 512px;
+            @height: 48px;
 
             width: @width;
-            height: 48px;
+            height: @height;
 
             position: absolute;
             left: 50%;
-            top: 60%;
+            //top: 60%;
+            margin-top: @item_height - @height - 12px;
 
             margin-left: -(@width / 2);
 
@@ -58,7 +63,6 @@
         .item_box {
         //{{{
             @margin_right: 12px;
-            @item_height: 256px;
             @item_width: (@box_width - (@margin_right * 3)) / 4;
 
             width: (@box_width - (@margin_right * 3)) / 4;
