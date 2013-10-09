@@ -36,12 +36,14 @@ class Upload_api extends REST_Controller {
         $type = $this->input->post('image_type', TRUE);//可选值shop,product
         
         $this->load->library('upload_lib');
-        if ($this->upload_lib->do_upload_image($type)) {
+        if ($image_name = $this->upload_lib->do_upload_image($type)) {
             $this->response(
                 array(
                     'result' => 'ok',
                     'msg'    => 'Upload image success',
-                    'data'   => NULL
+                    'data'   => array(
+                        'image_name' => $image_name
+                    )
                 )
             );
         } else {
