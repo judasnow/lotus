@@ -33,7 +33,25 @@ class Product_api extends REST_Controller {
      * 获取产品信息
      */
     public function product_get() {
-        
+        $product_id = $this->input->get('product_id', TRUE);
+        $this->load->library('product_lib');
+        if($product_info = $this->product_lib->product($product_id)) {
+            $this->response(
+                array(
+                    'result' => 'ok',
+                    'msg'    => 'Get product info success',
+                    'data'   => $product_info
+                )
+            );
+        } else {
+            $this->response(
+                array(
+                    'result' => 'fail',
+                    'msg'    => 'Get product info failed',
+                    'data'   => NULL
+                )
+            );
+        }
     }
 
     /**
@@ -41,15 +59,15 @@ class Product_api extends REST_Controller {
      */
     public function new_product_post() {
         $product_info = array(
-             'product_class_a' => $this->input->post('product_class_a', TRUE);
-             'product_class_b' => $this->input->post('product_class_b', TRUE);
-             'product_name'    => $this->input->post('product_name', TRUE);
-             'product_describe' => $this->input->post('product_describe', TRUE);
-             'product_image'   => $this->input->post('product_image', TRUE);
-             'product_detail_image' => $this->input->post('product_detail_image', TRUE);
-             'product_original_price'   => $this->input->post('product_original_price', TRUE);
-             'product_discount' => $this->input->post('product_discount', TRUE);
-             'product_quantity' => $this->input->post('product_quantity', TRUE);
+            'product_class_a' => $this->input->post('product_class_a', TRUE),
+            'product_class_b' => $this->input->post('product_class_b', TRUE),
+            'product_name'    => $this->input->post('product_name', TRUE),
+            'product_describe' => $this->input->post('product_describe', TRUE),
+            'product_image'   => $this->input->post('product_image', TRUE),
+            'product_detail_image' => $this->input->post('product_detail_image', TRUE),
+            'product_original_price'   => $this->input->post('product_original_price', TRUE),
+            'product_discount' => $this->input->post('product_discount', TRUE),
+            'product_quantity' => $this->input->post('product_quantity', TRUE),
         );
         $this->load->library('product_lib');
         if ($this->product_lib->new_product($product_info)) {
@@ -65,6 +83,42 @@ class Product_api extends REST_Controller {
                 array(
                     'result' => 'fail',
                     'msg'    => 'New product releases failed',
+                    'data'   => NULL
+                )
+            );
+        }
+    }
+
+    /**
+     * 修改产品信息
+     */
+    public function product_update_post() {
+        $product_info = array(
+            'product_id'      => $this->input->post('product_id', TRUE),
+            'product_class_a' => $this->input->post('product_class_a', TRUE),
+            'product_class_b' => $this->input->post('product_class_b', TRUE),
+            'product_name'    => $this->input->post('product_name', TRUE),
+            'product_describe' => $this->input->post('product_describe', TRUE),
+            'product_image'   => $this->input->post('product_image', TRUE),
+            'product_detail_image' => $this->input->post('product_detail_image', TRUE),
+            'product_original_price'   => $this->input->post('product_original_price', TRUE),
+            'product_discount' => $this->input->post('product_discount', TRUE),
+            'product_quantity' => $this->input->post('product_quantity', TRUE),
+        );
+        $this->load->library('product_lib');
+        if ($this->product_lib->product_update($product_info)) {
+            $this->response(
+                array(
+                    'result' => 'ok',
+                    'msg'    => 'Update product info success',
+                    'data'   => NULL
+                )
+            );
+        } else {
+            $this->response(
+                array(
+                    'result' => 'fail',
+                    'msg'    => 'Update product info failed',
                     'data'   => NULL
                 )
             );
