@@ -24,7 +24,7 @@ class Qiniu_RS_GetPolicy
 			$baseUrl .= '?e=';
 		}
 		$baseUrl .= $deadline;
-
+        
 		$token = Qiniu_Sign($mac, $baseUrl);
 		return "$baseUrl&token=$token";
 	}

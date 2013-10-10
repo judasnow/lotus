@@ -66,10 +66,10 @@ class Upload_lib {
                 );
             }
             $file = $upload_path . "/$image_name.jpg";
-            $image_name = $image_name . '.jpg';
+            $image_full_name = $image_name . '.jpg';
             $this->_CI->load->library('qiniuyun_lib');
             
-            if ($this->_CI->qiniuyun_lib->upload($image_name, $file)) {
+            if ($this->_CI->qiniuyun_lib->upload($image_full_name, $file)) {
                 return $image_name;
             } else {
                 return FALSE;

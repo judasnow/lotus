@@ -17,7 +17,7 @@ class Auth_api extends REST_Controller {
     /**
      * 验证用户是否已经登录
      */
-    public function is_login() {
+    /*public function is_login() {
         if(!auth::is_login()) {
             $this->response(
                 array(
@@ -28,6 +28,7 @@ class Auth_api extends REST_Controller {
             );
         }
     }
+    */
 
     /**
      * 登录系统
