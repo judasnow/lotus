@@ -101,5 +101,16 @@ class Shop_model extends Base_model {
             return FALSE;
         }
     }
+
+    //获取店铺卖家的用户编号
+    public function saler_id($shop_id) {
+        $res_object = $this->base_query(array('id' => $shop_id), 'shopkeeper_id');
+        $res_array  = $res_object->result_array();
+        if ($this->result_rows($res_array) == 1) {
+            return $res_array[0]['shopkeeper_id'];
+        } else {
+            return FALSE;
+        }
+    }
 }
 ?>

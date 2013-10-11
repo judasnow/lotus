@@ -18,7 +18,7 @@ class Upload_api extends REST_Controller {
      * 验证用户是否已经登录
      */
     public function is_login() {
-        if(!auth::is_login()) {
+        if (!isset($_SESSION['object_user_id'])) {
             $this->response(
                 array(
                     'result' => 'fail',

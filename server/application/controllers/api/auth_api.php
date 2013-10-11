@@ -5,7 +5,6 @@
  * @Author: odirus@163.com
  */
 require_once(APPPATH . '/libraries/REST_Controller.php');
-require_once(APPPATH . '/libraries/auth.php');
 
 class Auth_api extends REST_Controller {
     
@@ -14,11 +13,8 @@ class Auth_api extends REST_Controller {
         session_start();
     }
 
-    /**
-     * 验证用户是否已经登录
-     */
-    /*public function is_login() {
-        if(!auth::is_login()) {
+    public function is_login() {
+        if (!isset($_SESSION['object_user_id'])) {
             $this->response(
                 array(
                     'result' => 'fail',
@@ -28,7 +24,7 @@ class Auth_api extends REST_Controller {
             );
         }
     }
-    */
+        
 
     /**
      * 登录系统
@@ -43,8 +39,7 @@ class Auth_api extends REST_Controller {
         //@toto remember ? on : off
         $username = $this->input->post('username', TRUE);
         $password = $this->input->post('password', TRUE);
-        
-        $this->load->library('auth_lib'); 
+        $this->load->library('auth_lib');
         if($this->auth_lib->do_login($username, $password)) {
             $this->response(
                 array(
@@ -98,6 +93,7 @@ class Auth_api extends REST_Controller {
      * @param void
      */
     public function do_logout_post() {
+        $this->is_login();
         $this->load->library('auth_lib');
         if($this->auth_lib->do_logout()) {
             $this->response(

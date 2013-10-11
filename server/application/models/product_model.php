@@ -46,4 +46,21 @@ class Product_model extends Base_model {
         }
     }
 
+    //获取该产品所属卖家用户编号
+    public function saler_id($product_id) {
+        $res_object = $this->base_query(array('id' => $product_id), 'shop_id');
+        $res_array  = $res_object->result_array();
+        if($this->result_rows($res_array) == 1) {
+            $shop_id = $res_array[0]['shop_id'];
+        } else {
+            return FALSE;
+        }
+        $this->_CI->load->model('shop_model', 'shop_m');
+        if ($user_id = $this->_CI->shop_m->saler_id($shop_id)) {
+            return $user_id;
+        } else {
+            return FALSE;
+        }
+    }
+
 }

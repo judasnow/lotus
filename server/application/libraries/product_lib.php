@@ -54,8 +54,10 @@ class Product_lib {
     }
 
     public function new_product($product_info) {
+        $this->_CI->load->model('shop_model', 'shop_m');
         //格式化产品信息
         $info = array();
+        $info['shop_id'] = $this->_CI->shop_m->get_shop_id($_SESSION['object_user_id']);
         $info['class_a'] = $product_info['product_class_a'];
         $info['class_b'] = $product_info['product_class_b'];
         $info['name']    = $product_info['product_name'];

@@ -20,6 +20,7 @@ class Welcome extends CI_Controller {
 	public function index()
 	{
         echo "server ok.";
+        echo phpinfo();
         //$this->load->library('auth_lib');
         //$this->auth_lib->get_session();
         //$this->load->view('welcome_message');
