@@ -29,7 +29,11 @@ class Product_lib {
             $product_info_format['product_name']    = $product_info['name'];
             $product_info_format['product_describe']= $product_info['describe'];
             
-            $product_info_format['product_image_url'] = $this->_CI->qiniuyun_lib->thumbnail_private_url($product_info['image'] . '.jpg', 'middle');
+            if ($product_info['image'] == '') {
+                $product_info_format['product_image_url'] = '';
+            } else {
+                $product_info_format['product_image_url'] = $this->_CI->qiniuyun_lib->thumbnail_private_url($product_info['image'] . '.jpg', 'middle');
+            }
             if ($product_info['detail_image'] == '') {
                 $product_info_format['product_detail_image_url'] = array();
             } else {

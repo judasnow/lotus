@@ -29,6 +29,7 @@ class Shop_api extends REST_Controller {
      * 根据登录用户获取店铺基本信息
      */
     public function base_info_get() {
+        $this->is_login();
         $this->load->library('shop_lib');
         if ($shop_base_info = $this->shop_lib->shop_base_info()) {
             $this->response(

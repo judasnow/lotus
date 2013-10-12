@@ -10,6 +10,7 @@ class Apply_api extends REST_Controller {
     
     public function __construct() {
         parent::__construct();
+        session_start();
     }
 
     /**
@@ -66,11 +67,9 @@ class Apply_api extends REST_Controller {
     }
 
     /**
-     * 店铺申请详细信息
+     * 待审核店铺店铺申请详细信息
      *
      * @param     apply_id      申请编号
-     *
-     * @doc
      */
     public function apply_verifying_detail_get() {
         //@todo check privilege
