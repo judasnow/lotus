@@ -5,7 +5,6 @@
  * @Author: odirus@163.com
  */
 require_once(APPPATH . '/libraries/REST_Controller.php');
-require_once(APPPATH . '/libraries/auth.php');
 
 class Upload_api extends REST_Controller {
     

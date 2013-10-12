@@ -41,7 +41,7 @@ class Auth_api extends REST_Controller {
         $password = $this->input->post('password', TRUE);
         $this->load->library('auth_lib');
         if($this->auth_lib->do_login($username, $password)) {
-                        $this->response(
+            $this->response(
                 array(
                     'result' => 'ok',
                     'msg' => 'Login success',

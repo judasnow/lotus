@@ -19,6 +19,8 @@ class Welcome extends CI_Controller {
 	 */
 	public function index()
 	{
+        echo '<pre>';
+        var_dump($_SERVER);die;
         echo "server ok.";
         echo phpinfo();
         //$this->load->library('auth_lib');
