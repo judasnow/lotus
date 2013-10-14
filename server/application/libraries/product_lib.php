@@ -10,6 +10,7 @@ class Product_lib {
         $this->_CI =& get_instance();
     }
 
+    //特别注意此处的product_id与数据库中的product_id的关系
     public function product($product_id) {
         $product_id_string = (string) $product_id;
         $product = array(
@@ -20,10 +21,15 @@ class Product_lib {
         
         $this->_CI->load->library('qiniuyun_lib');
         $this->_CI->load->model('product_model', 'product_m');
+        
+        //统计页面访问两
+        $this->_CI->load->library('view_lib');
+        $this->_CI->view_lib->add_view('product', $product['id']);
+        
         if($product_info = $this->_CI->product_m->product($product)) {
             //format product_info
             $product_info_format = array();
-            $product_info_format['product_id'] = $product_info['id'];
+            $product_info_format['product_id'] = $product_id_string;
             $product_info_format['product_class_a'] = $product_info['class_a'];
             $product_info_format['product_class_b'] = $product_info['class_b'];
             $product_info_format['product_name']    = $product_info['name'];

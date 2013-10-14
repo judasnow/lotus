@@ -51,7 +51,7 @@ class Shop_api extends REST_Controller {
     }
    
     /**
-     * 修改店铺的基本信息
+     * 卖家修改店铺的基本信息
      */
     public function update_base_info_post() {
         $this->is_login();
@@ -76,6 +76,64 @@ class Shop_api extends REST_Controller {
                 )
             );
         }
+    }
+
+    /**
+     * 游客获取店铺信息
+     */
+    public function info_get() {
+        $shop_id = $this->input->get('shop_id', TRUE);
+        $this->load->library('shop_lib');
+        if ($info = $this->shop_lib->shop_info($shop_id)) {
+            $this->response(
+                array(
+                    'result' => 'ok',
+                    'msg'    => 'Get shop info success',
+                    'data'   => $info
+                )
+            );
+        } else {
+            $this->response(
+                array(
+                    'result' => 'fail',
+                    'msg'    => 'Get shop info failed',
+                    'data'   => NULL
+                )
+            );
+        }
+    }
+
+    /**
+     * 游客获取店铺中的商品数量
+     */
+    public function product_count_get() {
+        $shop_id = $this->input->get('shop_id', TRUE);
+        $this->load->library('shop_lib');
+        $this->response(
+            array(
+                'result' => 'ok',
+                'msg'    => 'Get products count success',
+                'data'   => array(
+                    'shop_product_count' => $this->shop_lib->product_count($shop_id)
+                )
+            )
+        );
+    }
+
+    //游客指定店铺的基本信息
+    public function products_get() {
+        $shop_id = $this->input->get('shop_id', TRUE);
+        $page    = $this->input->get('page', TRUE);
+        $flag    = $this->input->get('flag', TRUE);//可选值 time, price, disount
+        $this->load->library('shop_lib');
+        $this->response(
+            array(
+                'result' => 'ok',
+                'msg'    => 'Get products info success',
+                'data'   => $this->shop_lib->products($shop_id, $page, $flag)
+            )
+        );
+
     }
 
     /**

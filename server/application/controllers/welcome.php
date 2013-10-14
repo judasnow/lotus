@@ -19,10 +19,9 @@ class Welcome extends CI_Controller {
 	 */
 	public function index()
 	{
-        echo '<pre>';
-        var_dump($_SERVER);die;
+        $this->load->library('home_lib');
+        $this->home_lib->product('10000', '10001', 1);
         echo "server ok.";
-        echo phpinfo();
         //$this->load->library('auth_lib');
         //$this->auth_lib->get_session();
         //$this->load->view('welcome_message');

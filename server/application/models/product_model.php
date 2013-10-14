@@ -17,7 +17,29 @@ class Product_model extends Base_model {
     }
 
     public function product($product) {
-        $res_object = $this->base_query(array('id' => $product['id']), '');
+        $res_object = $this->base_query(array('id' => $product['id'], 'class_a' => $product['class_a'], 'class_b' => $product['class_b']), '');
+        $res_array  = $res_object->result_array();
+        if ($this->result_rows($res_array) == 1) {
+            return $res_array[0];
+        } else {
+            return FALSE;
+        }
+    }
+
+    //对信任的内部程序使用该函数
+    public function product_info($id) {
+        $res_object = $this->base_query(array('id' => $id), '');
+        $res_array  = $res_object->result_array();
+        if ($this->result_rows($res_array) == 1) {
+            return $res_array[0];
+        } else {
+            return FALSE;
+        }
+    }
+
+    //获取商品分类 id 表示在数据库中的商品编号，而不是商品的对外编号
+    public function product_class($id) {
+        $res_object = $this->base_query(array('id' => $id), 'id, class_a, class_b');
         $res_array  = $res_object->result_array();
         if ($this->result_rows($res_array) == 1) {
             return $res_array[0];
@@ -38,7 +60,7 @@ class Product_model extends Base_model {
     public function product_update($product) {
         $product_id = $product['id'];
         unset($product['id']);
-        $res_object = $this->base_update(array('id' => $product_id), $product);
+        $res_object = $this->base_update(array('id' => $product_id, 'class_a' => $product['class_a'], 'class_b' => $product['class_b']), $product);
         if ($this->affected_rows() == 1) {
             return TRUE;
         } else {

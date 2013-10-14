@@ -29,7 +29,7 @@ class Shop_model extends Base_model {
     }
 
     /**
-     * 获取店铺基本信息
+     * 卖家获取店铺基本信息
      */
     public function shop_base_info($user_id) {
         $res_object = $this->base_query(array('shopkeeper_id' => $user_id), 'id, shop_name, shop_tel, shop_image, shop_address');
@@ -41,6 +41,19 @@ class Shop_model extends Base_model {
         }
     }
 
+    /**
+     * 游客获取店铺基本信息
+     */
+    public function shop_info($shop_id) {
+        $res_object = $this->base_query(array('id' => $shop_id), 'register_time, shop_name, shop_tel, shop_image, shop_address, show_shop_tel');
+        $res_array  = $res_object-> result_array();
+        if ($this->result_rows($res_array) == 1) {
+            return $res_array[0];
+        } else {
+            return FALSE;
+        }
+    }
+    
     /**
      * 更新店铺信息
      */
@@ -112,5 +125,25 @@ class Shop_model extends Base_model {
             return FALSE;
         }
     }
+
+    //返回指定店铺拥有的商品数量
+    public function product_count($shop_id) {
+        $res_object = $this->_CI->db->query("SELECT id, count(*) as count FROM product WHERE shop_id = $shop_id");
+        $res_array  = $res_object->result_array();
+        return (int) $res_array[0]['count'];
+    }
+
+    //返回指定页面的商品编号
+    public function product_id($shop_id, $start, $end, $flag) {
+        $sql = "SELECT id, class_a, class_b FROM product WHERE shop_id = $shop_id ORDER BY $flag DESC LIMIT $start, $end";
+        $res_object = $this->_CI->db->query($sql);
+        $res_array  = $res_object->result_array();
+        $product    = array();
+        foreach ($res_array as $key => $value) {
+            $product[$key] = $value['class_a'] . $value['class_b'] . $value['id'];
+        }
+        return $product;
+    }
+    
 }
 ?>
