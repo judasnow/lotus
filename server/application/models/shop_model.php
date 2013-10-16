@@ -22,7 +22,8 @@ class Shop_model extends Base_model {
     public function creat_shop($info) {
         $this->base_write($info);
         if ($this->affected_rows() == 1) {
-            return TRUE;
+            return $this->_CI->db->insert_id();
+            //return TRUE;
         } else {
             return FALSE;
         }

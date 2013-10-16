@@ -16,6 +16,27 @@ class View_model extends Base_model {
         $this->_CI =& get_instance();
     }
 
+    //添加商品的时候在view表中添加相应的字段
+    public function add_product($product_id) {
+        $this->base_write(array('sn' => $product_id, 'class' => 1));
+        if ($this->affected_rows() == 1) {
+            return TRUE;
+        } else {
+            return FALSE;
+        }
+    }
+
+    //添加店铺的时候在view表中添加相应的字段
+    public function add_shop($shop_id) {
+        $this->base_write(array('sn' => $shop_id, 'class' => 0));
+        if ($this->affected_rows() == 1) {
+            return TRUE;
+        } else {
+            return FALSE;
+        }
+    }
+
+
     public function add_view($class, $id) {
         switch ($class) {
         case 'shop':

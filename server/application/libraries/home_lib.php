@@ -14,12 +14,12 @@ class Home_lib {
 
     public function popular_shop() {
         $this->_CI->load->model('view_model', 'view_m');
-        $this->_CI->load->model('shop_model', 'shop_m');
+        $this->_CI->load->library('shop_lib');
         $shops_info = array();
         $i = 0;
         if ($shops = $this->_CI->view_m->count_view_rank('shop', $this->_page_num)) {
             foreach ($shops as $key => $value) {
-                if ($res = $this->_CI->shop_m->shop_info($value['id'])) {
+                if ($res = $this->_CI->shop_lib->shop_info($value['id'])) {
                     $shops_info[$i] = $res;
                     $i++;
                 }
@@ -51,11 +51,16 @@ class Home_lib {
     }
 
     public function product($class_a, $class_b, $page) {
-        $this->_CI->load->model('product_model', 'product_m');
+        $this->_CI->load->library('product_lib');
         $start = ($page - 1) * $this->_page_count;
         $end   = $start + $this->_page_count - 1;
-
-        $res_object = $this->_CI->db->query("SELECT id, class_a, class_b FROM product WHERE class_a = $class_a AND class_b = $class_b LIMIT $start, $end");
+        if (!$class_b) {
+            $sql = "SELECT id, class_a, class_b FROM product WHERE class_a = $class_a LIMIT $start, $end";
+        } else {
+            $sql = "SELECT id, class_a, class_b FROM product WHERE class_a = $class_a AND class_b = $class_b LIMIT $start, $end";
+        }       
+        
+        $res_object = $this->_CI->db->query($sql);
         $res_array  = $res_object->result_array();
         foreach ($res_array as $key => $value) {
             $res[$key]['id'] = $value['id'];
@@ -65,7 +70,7 @@ class Home_lib {
         $products_info = array();
         $i = 0;
         foreach ($res as $key => $value) {
-            if ($product = $this->_CI->product_m->product($value)) {
+            if ($product = $this->_CI->product_lib->product($value['class_a'] . $value['class_b'] . $value['id'])) {
                 $products_info[$i] = $product;
                 $i++;
             }

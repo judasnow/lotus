@@ -66,6 +66,7 @@ class Auth_lib {
         //@todo 检查各个字段的有效性
         $this->_CI->load->model('user_model', 'user_m');
         $this->_CI->load->model('shop_model', 'shop_m');
+        $this->_CI->load->model('view_model', 'view_m');
         if(!$this->verify_register_code($register_info['register_code']) ||
            !$this->verify_username($register_info['username'])) {
             return FALSE;
@@ -85,8 +86,9 @@ class Auth_lib {
         $new_shop_info['shop_name']     = $shop_info['shop_name'];
         $new_shop_info['shop_tel']      = $shop_info['shopkeeper_tel'];
         $new_shop_info['shop_address']  = $shop_info['shop_address'];
-        $this->_CI->shop_m->creat_shop($new_shop_info);
+        $shop_id = $this->_CI->shop_m->creat_shop($new_shop_info);
         $this->_CI->apply_m->shop_has_registered($register_code);
+        $this->_CI->view_m->add_shop($shop_id);
         if($this->_CI->db->trans_status() ==  FALSE) {
             $this->_CI->db->trans_rollback();
             return FALSE;

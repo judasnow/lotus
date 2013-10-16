@@ -51,7 +51,8 @@ class Product_model extends Base_model {
     public function new_product($product_info) {
         $this->base_write($product_info);
         if ($this->affected_rows() == 1) {
-            return TRUE;
+            return $this->_CI->db->insert_id();
+            //return TRUE;
         } else {
             return FALSE;
         }

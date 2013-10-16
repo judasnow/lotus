@@ -15,10 +15,11 @@ class Shop_lib {
 
     //卖家访问自己的店铺基本信息
     public function shop_base_info() {
+        $this->_CI->load->library('qiniuyun_lib');
         $this->_CI->load->model('shop_model', 'shop_m');
         if(!empty($_SESSION['object_user_id'])) {
             if($shop_base_info = $this->_CI->shop_m->shop_base_info($_SESSION['object_user_id'])) {
-                $shop_base_info['shop_image_name'] = $shop_base_info['shop_image'];
+                $shop_base_info['shop_image_url'] = $this->_CI->qiniuyun_lib->thumbnail_private_url($shop_base_info['shop_image'] . ',jpg', 'small');
                 $shop_base_info['shop_id']         = $shop_base_info['id'];
                 unset($shop_base_info['id']);
                 unset($shop_base_info['shop_image']);

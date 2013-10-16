@@ -79,11 +79,15 @@ class Product_lib {
         $info['detail_image'] = $product_info['product_detail_image'];
 
         $this->_CI->load->model('product_model', 'product_m');
-        if ($this->_CI->product_m->new_product($info)) {
-            return TRUE;
-        } else {
-            return FALSE;
+        $this->_CI->load->model('view_model', 'view_m');
+
+        //@todo 此处应该使用事物
+        if ($product_sn = $this->_CI->product_m->new_product($info)) {
+            if ($this->_CI->view_m->add_product($product_sn)) {
+                return TRUE;
+            }
         }
+        return FALSE;
     }
 
     public function product_update($product_info) {
