@@ -12,14 +12,14 @@ class Home_lib {
         $this->_CI =& get_instance();
     }
 
-    public function product_class() {
+    public function products_class() {
         $this->_CI->load->model('class_model', 'class_m');
         $class_a = array();
         $class_a_array = $this->_CI->class_m->class_a();
         //echo '<pre>';
         //var_dump($class_a_array);die;
         foreach ($class_a_array as $key => $value) {
-            $class_a_array[$key]['class_b'] = $this->_CI->class_m->class_b($value['class_a']);
+            $class_a_array[$key]['class_b_content'] = $this->_CI->class_m->class_b($value['class_a']);
         }
         return $class_a_array;
     }

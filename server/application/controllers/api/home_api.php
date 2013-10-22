@@ -16,9 +16,9 @@ class Home_api extends REST_Controller {
     /**
      * 获取商品目录
      */
-    public function product_class_get() {
+    public function products_class_get() {
         $this->load->library('home_lib');
-        if ($res = $this->home_lib->product_class()) {
+        if ($res = $this->home_lib->products_class()) {
             $this->response(
                 array(
                     'result' => 'ok',
@@ -34,13 +34,13 @@ class Home_api extends REST_Controller {
     /**
      * 热门商品推荐
      */
-    public function popular_product_get() {
+    public function popular_products_get() {
         $this->load->library('home_lib');
         if ($res = $this->home_lib->popular_product()) {
             $this->response(
                 array(
                     'result' => 'ok',
-                    'msg'    => 'Get popular product success',
+                    'msg'    => 'Get popular products success',
                     'data'   => $res
                 )
             );
