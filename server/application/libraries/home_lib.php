@@ -12,6 +12,18 @@ class Home_lib {
         $this->_CI =& get_instance();
     }
 
+    public function product_class() {
+        $this->_CI->load->model('class_model', 'class_m');
+        $class_a = array();
+        $class_a_array = $this->_CI->class_m->class_a();
+        //echo '<pre>';
+        //var_dump($class_a_array);die;
+        foreach ($class_a_array as $key => $value) {
+            $class_a_array[$key]['class_b'] = $this->_CI->class_m->class_b($value['class_a']);
+        }
+        return $class_a_array;
+    }
+
     public function popular_shop() {
         $this->_CI->load->model('view_model', 'view_m');
         $this->_CI->load->library('shop_lib');
@@ -62,6 +74,7 @@ class Home_lib {
         
         $res_object = $this->_CI->db->query($sql);
         $res_array  = $res_object->result_array();
+        $res = array();
         foreach ($res_array as $key => $value) {
             $res[$key]['id'] = $value['id'];
             $res[$key]['class_a'] = $value['class_a'];
@@ -76,6 +89,19 @@ class Home_lib {
             }
         }
         return $products_info;
+    }
+
+    public function products_page($class_a, $class_b) {
+        $this->_CI->load->library('product_lib');
+        if (!$class_b) {
+            $sql = "SELECT id, class_a, class_b FROM product WHERE class_a = $class_a";
+        } else {
+            $sql = "SELECT id, class_a, class_b FROM product WHERE class_a = $class_a AND class_b = $class_b";
+        }
+
+        $res_object = $this->_CI->db->query($sql);
+        $res_array = $res_object->result_array();
+        return (int) (count($res_array) / $this->_page_num) + 1;
     }
 
 }

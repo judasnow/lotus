@@ -14,6 +14,24 @@ class Home_api extends REST_Controller {
     }
 
     /**
+     * 获取商品目录
+     */
+    public function product_class_get() {
+        $this->load->library('home_lib');
+        if ($res = $this->home_lib->product_class()) {
+            $this->response(
+                array(
+                    'result' => 'ok',
+                    'msg'    => 'Get product class success',
+                    'data'   => $res
+                )
+            );
+        }
+        
+    }
+
+
+    /**
      * 热门商品推荐
      */
     public function popular_product_get() {
@@ -46,6 +64,27 @@ class Home_api extends REST_Controller {
     }
 
     /**
+     * 根据分类获取商品的分页数
+     */
+    public function products_page_get() {
+        $class_a = $this->input->get('class_a', TRUE);
+        $class_b = $this->input->get('class_b', TRUE);
+        $this->load->library('home_lib');
+        if ($res = $this->home_lib->products_page($class_a, $class_b)) {
+            $this->response(
+                array(
+                    'result' => 'ok',
+                    'msg'    => 'Get products page success',
+                    'data'   => array(
+                        'pages' => $res
+                    )
+                )
+            );
+        }
+    }
+
+
+    /**
      * 根据分类获取商品信息
      */
     public function products_get() {
@@ -60,6 +99,14 @@ class Home_api extends REST_Controller {
                     'result' => 'ok',
                     'msg'    => 'Get popular product success',
                     'data'   => $res
+                )
+            );
+        } else {
+            $this->response(
+                array(
+                    'result' => 'fail',
+                    'msg'    => 'Get popular product failed',
+                    'data'   => NULL
                 )
             );
         }
