@@ -1,13 +1,19 @@
 require.config({
     baseUrl: "./src/script/" ,
     paths: {
-        //third party
-        //{{{
+        text: "third_party/text",
+
         zepto: "third_party/zepto" ,
         underscore: "third_party/underscore" ,
-        backbone: "third_party/backbone" 
-        //}}}
-    } ,
+        backbone: "third_party/backbone",
+        mustache: "third_party/mustache",
+
+        m: "js/app/model",
+        v: "js/app/view",
+        c: "js/app/collection",
+        tpl: "js/app/tpl"
+    },
+
     shim: {
         zepto: {
             exports: "$"
@@ -24,8 +30,15 @@ require.config({
 
 require(
 [
-    "zepto"
+    "zepto",
+
+    "v/categories_browse"
 ] ,
-function( $ ) {
-    console.log( "%c init ok" , "color: #0b0" );
+function(
+    $,
+
+    CategoriesBrowseView
+) {
+    //categories_browse
+    var categoriesBrowseView = new CategoriesBrowseView();
 });
