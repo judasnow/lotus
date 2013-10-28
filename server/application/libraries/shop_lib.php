@@ -8,6 +8,7 @@ class Shop_lib {
 
     private $_CI;
     private $_page_count = 12;//店铺每页显示的商品数量
+    public $err_msg = array();
 
     public function __construct() {
         $this->_CI =& get_instance();
@@ -19,7 +20,7 @@ class Shop_lib {
         $this->_CI->load->model('shop_model', 'shop_m');
         if(!empty($_SESSION['object_user_id'])) {
             if($shop_base_info = $this->_CI->shop_m->shop_base_info($_SESSION['object_user_id'])) {
-                $shop_base_info['shop_image_url'] = $this->_CI->qiniuyun_lib->thumbnail_private_url($shop_base_info['shop_image'] . ',jpg', 'small');
+                $shop_base_info['shop_image_url'] = $this->_CI->qiniuyun_lib->thumbnail_private_url($shop_base_info['shop_image'] . '.jpg', 'small', 'shop');
                 $shop_base_info['shop_id']         = $shop_base_info['id'];
                 unset($shop_base_info['id']);
                 unset($shop_base_info['shop_image']);
@@ -31,9 +32,23 @@ class Shop_lib {
 
     //卖家更新店铺基本信息
     public function update_shop_base_info($base_info) {
-        if(!is_array($base_info)) {
-            return FALSE;
+        $base_info_validate = $base_info;
+        $this->_CI->load->library('regulation');
+        if (empty($base_info_validate['shop_image_name'])) {
+            unset($base_info_validate['shop_image_name']);
         }
+        foreach ($base_info_validate as $key => $value) {
+            $this->_CI->regulation->validate($key, $value);
+        }
+        if (count($this->_CI->regulation->err_msg) > 0) {
+            $this->err_msg = $this->_CI->regulation->err_msg;
+            $this->_CI->regulation->err_msg = array();
+            return array(
+                'res' => FALSE,
+                'msg' => $this->err_msg
+            );
+        }
+        
         $info['shop_image'] = $base_info['shop_image_name'];
         $info['shop_tel']  = $base_info['shop_tel'];
         $info['shop_address']   = $base_info['shop_address'];
@@ -41,15 +56,33 @@ class Shop_lib {
         if(!empty($_SESSION['object_user_id'])) {
             if($shop_id = $this->_CI->shop_m->get_shop_id($_SESSION['object_user_id'])) {
                 if($this->_CI->shop_m->update_shop_info($shop_id, $info)) {
-                    return TRUE;
+                    return array(
+                        'res' => TRUE,
+                        'data' => NULL
+                    );
                 }
             }
         }
-        return FALSE;
+        $this->err_msg[] = 'Update shop base info fail';
+        return array(
+            'res' => FALSE,
+            'msg' => $this->err_msg
+        );
     }
 
     //游客获取店铺基本信息
     public function shop_info($shop_id) {
+        $this->_CI->load->library('regulation');
+        $this->_CI->regulation->validate('shop_id', $shop_id);
+        if (count($this->_CI->regulation->err_msg) > 0) {
+            $this->err_msg = $this->_CI->regulation->err_msg;
+            $this->_CI->regulation->err_msg = array();
+            return array(
+                'res' => FALSE,
+                'msg' => $this->err_msg
+            );
+        }
+
         $this->_CI->load->model('shop_model', 'shop_m');
         $this->_CI->load->library('qiniuyun_lib');
 
@@ -63,15 +96,18 @@ class Shop_lib {
                 $shop['shop_tel'] = $res['shop_tel'];
             }
             $shop['shop_address'] = $res['shop_address'];
-            if (!empty($res['shop_image'])) {
-                $shop['shop_image_url'] = $this->_CI->qiniuyun_lib->thumbnail_private_url($res['shop_image'] . ',jpg', 'small');
-            } else {
-                $shop['shop_image_url'] = '';
-            }
+            $shop['shop_image_url'] = $this->_CI->qiniuyun_lib->thumbnail_private_url($res['shop_image'] . '.jpg', 'small', 'shop');
             $shop['shop_register_time'] = date('Y-m-d', strtotime($res['register_time']));
-            return $shop;
+            return array(
+                'res' => TRUE,
+                'data' => $shop
+            );
         } else {
-            return FALSE;
+            $this->err_msg[] = 'Get shop info failed...';
+            return array(
+                'res' => FALSE,
+                'msg' => $this->err_msg
+            );
         }
     }
 
@@ -101,16 +137,67 @@ class Shop_lib {
 
     //获取店铺内商品的数量
     public function product_count($shop_id) {
+        $this->_CI->load->library('regulation');
+        $this->_CI->regulation->validate('shop_id', $shop_id);
+        if (count($this->_CI->regulation->err_msg) > 0) {
+            $this->err_msg = $this->_CI->regulation->err_msg;
+            $this->_CI->regulation->err_msg = array();
+            return array(
+                'res' => FALSE,
+                'msg' => $this->err_msg
+            );
+        }
         $this->_CI->load->model('shop_model', 'shop_m');
-        return $this->_CI->shop_m->product_count($shop_id);
+        return array(
+            'res' => TRUE,
+            'data' => $this->_CI->shop_m->product_count($shop_id)
+        );
     }
-    
+
+    //获取店铺中的商品分页数量
+    public function product_page_count($shop_id) {
+        $this->_CI->load->library('regulation');
+        $this->_CI->regulation->validate('shop_id', $shop_id);
+        if (count($this->_CI->regulation->err_msg) > 0) {
+            $this->err_msg = $this->_CI->regulation->err_msg;
+            $this->_CI->regulation->err_msg = array();
+            return array(
+                'res' => FALSE,
+                'msg' => $this->err_msg
+            );
+        }
+        $this->_CI->load->model('shop_model', 'shop_m');
+        $count = $this->_CI->shop_m->product_count($shop_id);
+        return array(
+            'res' => TRUE,
+            'data' => (int) (($count + $this->_page_count -1) / $this->_page_count)
+        );
+    }
+        
     //获取店铺内商品信息,page >= 1, flag 可选值 time, price, disount
     public function products($shop_id, $page, $flag) {
-        
+        $this->_CI->load->library('regulation');
+        $arr = array(
+            'shop_id' => $shop_id,
+            'page_num' => $page
+        );
+        foreach ($arr as $key => $value) {
+            $this->_CI->regulation->validate($key, $value);
+        }
+        if (count($this->_CI->regulation->err_msg) > 0) {
+            $this->err_msg = $this->_CI->regulation->err_msg;
+            $this->_CI->regulation->err_msg = array();
+            return array(
+                'res' => FALSE,
+                'msg' => $this->err_msg
+            );
+        }
+
         //输入条件格式化查询
         if ($flag == 'price') {
             $flag = 'original_price';
+        } else {
+            $flag = 'time';//默认采用时间排序
         }
 
         $this->_CI->load->model('shop_model', 'shop_m');
@@ -123,7 +210,10 @@ class Shop_lib {
         foreach ($product_id as $key => $value) {
             $products[$key] = $this->_CI->product_lib->product($value);
         }
-        return $products;
+        return array(
+            'res' => TRUE,
+            'data' => $products
+        );
     }
 
 }

@@ -7,7 +7,8 @@ class Home_lib {
     private $_CI;
     private $_page_num = 5;//首页显示的热门店铺数量
     private $_page_count = 12;//首页按分类显示的每页商品数量
-
+    public  $err_msg = array();
+    
     public function __construct() {
         $this->_CI =& get_instance();
     }
@@ -63,6 +64,26 @@ class Home_lib {
     }
 
     public function product($class_a, $class_b, $page) {
+        $params = array(
+            'product_class_a' => $class_a,
+            'product_class_b' => $class_b,
+            'page_num'    => $page
+        );
+        if (empty($params['product_class_b'])) {
+            unset($params['product_class_b']);
+        }
+        $this->_CI->load->library('regulation');
+        foreach ($params as $key => $value) {
+            $this->_CI->regulation->validate($key, $value);
+        }
+        if (count($this->_CI->regulation->err_msg) > 0) {
+            $this->err_msg = $this->_CI->regulation->err_msg;
+            $this->_CI->regulation->err_msg = array();
+            return array(
+                'res' => FALSE,
+                'msg' => $this->err_msg
+            );
+        }
         $this->_CI->load->library('product_lib');
         $start = ($page - 1) * $this->_page_count;
         $end   = $start + $this->_page_count - 1;
@@ -88,10 +109,34 @@ class Home_lib {
                 $i++;
             }
         }
-        return $products_info;
+        return array(
+            'res' => TRUE,
+            'data' => $products_info
+        );
     }
 
     public function products_page($class_a, $class_b) {
+        //检查传入参数
+        $params = array(
+            'product_class_a' => $class_a,
+            'product_class_b' => $class_b
+        );
+        if (empty($class_b)) {
+            unset($params['product_class_b']);
+        }
+        $this->_CI->load->library('regulation');
+        foreach ($params as $key => $value) {
+            $this->_CI->regulation->validate($key, $value);
+        }
+        if (count($this->_CI->regulation->err_msg) > 0) {
+            $this->err_msg = $this->_CI->regulation->err_msg;
+            $this->_CI->regulation->err_msg = array();
+            return array(
+                'res' => FALSE,
+                'msg' => $this->err_msg
+            );
+        }
+
         $this->_CI->load->library('product_lib');
         if (!$class_b) {
             $sql = "SELECT id, class_a, class_b FROM product WHERE class_a = $class_a";
@@ -101,7 +146,10 @@ class Home_lib {
 
         $res_object = $this->_CI->db->query($sql);
         $res_array = $res_object->result_array();
-        return (int) (count($res_array) / $this->_page_num) + 1;
+        return array(
+            'res' => TRUE,
+            'data' => (int) ((count($res_array) + $this->_page_count -1) / $this->_page_count)
+        );
     }
 
 }
