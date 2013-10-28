@@ -1,4 +1,6 @@
 <?php
+//for cross domain ajax
+header('Access-Control-Allow-Origin: *');
 
 /*
  *---------------------------------------------------------------

@@ -72,6 +72,7 @@ module.exports = function( grunt ) {
 
         concat: {
         //{{{
+        //
             js: {
                 src: [
                     "./build/script/lib/appframework.js" ,

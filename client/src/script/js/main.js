@@ -1,5 +1,7 @@
 require.config({
+
     baseUrl: "./src/script/" ,
+
     paths: {
         text: "third_party/text",
 
@@ -11,7 +13,9 @@ require.config({
         m: "js/app/model",
         v: "js/app/view",
         c: "js/app/collection",
-        tpl: "js/app/tpl"
+        tpl: "js/app/tpl",
+
+        config: "js/app_config"
     },
 
     shim: {
@@ -32,13 +36,12 @@ require(
 [
     "zepto",
 
-    "v/categories_browse"
-] ,
+    "v/nav"
+],
 function(
     $,
 
-    CategoriesBrowseView
+    NavView
 ) {
-    //categories_browse
-    var categoriesBrowseView = new CategoriesBrowseView();
+    var navView = new NavView();
 });

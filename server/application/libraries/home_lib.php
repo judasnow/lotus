@@ -12,6 +12,16 @@ class Home_lib {
         $this->_CI =& get_instance();
     }
 
+    public function class_a() {
+        $this->_CI->load->model('class_model', 'class_m');
+        return $this->_CI->class_m->class_a();
+    }
+
+    public function class_b( $class_a_id ) {
+        $this->_CI->load->model('class_model', 'class_m');
+        return $this->_CI->class_m->class_b( $class_a_id );
+    }
+
     public function products_class() {
         $this->_CI->load->model('class_model', 'class_m');
         $class_a = array();

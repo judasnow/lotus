@@ -14,6 +14,34 @@ class Home_api extends REST_Controller {
     }
 
     /**
+     * 获取 class_a 目录
+     */
+    public function class_a_get() {
+        $this->load->library('home_lib');
+
+        if($res = $this->home_lib->class_a()) {
+            $this->response( $res , 200 );
+        } else {
+            $this->response( "fail" , 500 );
+        }
+    }
+
+    /**
+     * 根据给定的 class_a id 获取相应的 class_b 目录
+     */
+    public function class_b_get() {
+        $this->load->library('home_lib');
+
+        $class_a_id = $this->input->get('class_a_id', TRUE);
+
+        if($res = $this->home_lib->class_b( $class_a_id )) {
+            $this->response( $res , 200 );
+        } else {
+            $this->response( "fail" , 500 );
+        }
+    }
+
+    /**
      * 获取商品目录
      */
     public function products_class_get() {
@@ -27,7 +55,6 @@ class Home_api extends REST_Controller {
                 )
             );
         }
-        
     }
 
 
