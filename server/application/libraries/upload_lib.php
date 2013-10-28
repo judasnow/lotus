@@ -1,10 +1,12 @@
 <?php
 /**
  * 处理上传文件
+ * @todo 上传店铺图片时的问题待考虑
  */
 class Upload_lib {
     
     private $_CI;
+    public $err_msg = array();
 
     public function __construct() {
         $this->_CI =& get_instance();
@@ -46,8 +48,16 @@ class Upload_lib {
      * 更新图片名称至数据库，同步图片至云存储
      */
     public function do_upload_image($type) {
+        //检查当前图片类型，如果不在类型范围内则上传失败
+        if ($type != 'shop' && $type != 'product') {
+            $this->err_msg[] = 'Illegal image type';
+            return array(
+                'res' => FALSE,
+                'msg' => $this->err_msg
+            );
+        }
+
         $user_id = $_SESSION['object_user_id'];
-        //上传配置文件
         //todo 限制图片的张数
         $upload_path = getcwd() . '/file/image/' . "$type";
         
@@ -59,6 +69,7 @@ class Upload_lib {
         $this->_CI->load->model('shop_model', 'shop_m');
         if ($this->_CI->upload->do_upload()) {
             $image_name = $this->format_image($this->_CI->upload->data(), $type);
+            //@todo 上传店铺图片的时候，放在此处是否合适
             if($type == 'shop') {
                 $this->_CI->shop_m->base_update(
                     array('shopkeeper_id' => $user_id),
@@ -70,12 +81,23 @@ class Upload_lib {
             $this->_CI->load->library('qiniuyun_lib');
             
             if ($this->_CI->qiniuyun_lib->upload($image_full_name, $file)) {
-                return $image_name;
+                return array(
+                    'res' => TRUE,
+                    'data' => $image_name
+                );
             } else {
-                return FALSE;
+                $this->err_msg[] = 'Do upload image failed by qiniuyun';
+                return array(
+                    'res' => FALSE,
+                    'msg' => $this->err_msg
+                );
             }
         } else {
-            return FALSE;
+            $this->err_msg[] = 'Do upload image failed';
+            return array(
+                'res' => FALSE,
+                'msg' => $this->err_msg
+            );
         }
  
     }

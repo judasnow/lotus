@@ -31,25 +31,29 @@ class Upload_api extends REST_Controller {
 
     public function do_upload_image_post() {
         $this->is_login();
-
         $image_type = $this->input->post('image_type', TRUE);//可选值shop,product
-        
+        $hello = $this->input->post('hello', TRUE);
         $this->load->library('upload_lib');
-        if ($res = $this->upload_lib->do_upload_image($image_type)) {
+        $res = $this->upload_lib->do_upload_image($image_type);
+        if ($res['res']) {
             $this->response(
                 array(
                     'result' => 'ok',
                     'msg'    => 'Upload image success',
                     'data'   => array(
-                        'image_name' => $res
+                        'image_name' => $res['data']
                     )
                 )
             );
         } else {
+            $msg = 'Upload image failed';
+            if (count($res['msg']) > 0) {
+                $msg = implode('; ', $res['msg']);
+            }
             $this->response(
                 array(
                     'result' => 'fail',
-                    'msg'    => 'Upload image failed',
+                    'msg'    => $msg,
                     'data'   => NULl
                 )
             );

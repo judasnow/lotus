@@ -31,19 +31,24 @@ class Product_api extends REST_Controller {
     public function product_get() {
         $product_id = $this->input->get('product_id', TRUE);
         $this->load->library('product_lib');
-        if($product_info = $this->product_lib->product($product_id)) {
+        $res = $this->product_lib->product($product_id);
+        if($res['res']) {
             $this->response(
                 array(
                     'result' => 'ok',
                     'msg'    => 'Get product info success',
-                    'data'   => $product_info
+                    'data'   => $res['data']
                 )
             );
         } else {
+            $msg = 'Get product info failed';
+            if (count($res['msg'])) {
+                $msg = implode('; ', $res['msg']);
+            }
             $this->response(
                 array(
                     'result' => 'fail',
-                    'msg'    => 'Get product info failed',
+                    'msg'    => $msg,
                     'data'   => NULL
                 )
             );
@@ -68,7 +73,8 @@ class Product_api extends REST_Controller {
         );
 
         $this->load->library('product_lib');
-        if ($this->product_lib->new_product($product_info)) {
+        $res = $this->product_lib->new_product($product_info);
+        if ($res['res']) {
             $this->response(
                 array(
                     'result' => 'ok',
@@ -77,10 +83,14 @@ class Product_api extends REST_Controller {
                 )
             );
         } else {
+            $msg = 'New product releases failed';
+            if (count($res['msg']) > 0) {
+                $msg = implode('; ', $res['msg']);
+            }
             $this->response(
                 array(
                     'result' => 'fail',
-                    'msg'    => 'New product releases failed',
+                    'msg'    => $msg,
                     'data'   => NULL
                 )
             );
@@ -110,6 +120,7 @@ class Product_api extends REST_Controller {
         $this->load->library('access_lib');
         $this->access_lib->validate_privilege('product', $product_info['product_id']);
         $this->load->library('product_lib');
+        $res = $this->product_lib->product_update($product_info);
         if (!empty($this->access_lib->error)) {
             $this->response(
                 array(
@@ -118,7 +129,7 @@ class Product_api extends REST_Controller {
                     'data'   => NULL
                 )
             );
-        } elseif ($this->product_lib->product_update($product_info)) {
+        } elseif ($res['res']) {
             $this->response(
                 array(
                     'result' => 'ok',
@@ -127,10 +138,14 @@ class Product_api extends REST_Controller {
                 )
             );
         } else {
+            $msg = 'Update product info failed';
+            if (count($res['msg']) > 0) {
+                $msg = implode('; ', $res['msg']);
+            }
             $this->response(
                 array(
                     'result' => 'fail',
-                    'msg'    => 'Update product info failed',
+                    'msg'    => $msg,
                     'data'   => NULL
                 )
             );

@@ -1,18 +1,30 @@
 <?php 
 /**
  * @Author: odirus@163.com
+ *
+ * @todo 处理商品写入和取出时的折扣信息
  */
 class Product_lib {
     
     private $_CI;
+    public $err_msg = array();
 
     public function __construct() {
         $this->_CI =& get_instance();
     }
 
-    //特别注意此处的product_id与数据库中的product_id的关系
     public function product($product_id) {
         $product_id_string = (string) $product_id;
+        $this->_CI->load->library('regulation');
+        $this->_CI->regulation->validate('product_id', $product_id_string);
+        if (count($this->_CI->regulation->err_msg) > 0) {
+            $this->err_msg = $this->_CI->regulation->err_msg;
+            $this->_CI->regulation->err_msg = array();
+            return array(
+                'res' => FALSE,
+                'msg' => $this->err_msg
+            );
+        }
         $product = array(
             'class_a' => substr($product_id_string, 0, 5),
             'class_b' => substr($product_id_string, 5, 5),
@@ -34,19 +46,15 @@ class Product_lib {
             $product_info_format['product_class_b'] = $product_info['class_b'];
             $product_info_format['product_name']    = $product_info['name'];
             $product_info_format['product_describe']= $product_info['describe'];
-            
-            if ($product_info['image'] == '') {
-                $product_info_format['product_image_url'] = '';
-            } else {
-                $product_info_format['product_image_url'] = $this->_CI->qiniuyun_lib->thumbnail_private_url($product_info['image'] . '.jpg', 'middle');
-            }
+         
+            $product_info_format['product_image_url'] = $this->_CI->qiniuyun_lib->thumbnail_private_url($product_info['image'] . '.jpg', 'middle', 'product');
             if ($product_info['detail_image'] == '') {
                 $product_info_format['product_detail_image_url'] = array();
             } else {
                 $product_info_format['product_detail_image'] = array();
                 $product_info_format['product_detail_image'] = explode(',', $product_info['detail_image']);
                 foreach ($product_info_format['product_detail_image']  as $key => $value) {
-                    $product_info_format['product_detail_image_url'][$key] = $this->_CI->qiniuyun_lib->thumbnail_private_url($value . '.jpg', 'small');
+                    $product_info_format['product_detail_image_url'][$key] = $this->_CI->qiniuyun_lib->thumbnail_private_url($value . '.jpg', 'small', 'product');
                 }
                 unset($product_info_format['product_detail_image']);
             }
@@ -56,14 +64,50 @@ class Product_lib {
             $product_info_format['product_now_price'] = number_format($product_info['original_price'] * $product_info['discount'], 1);
             
             $product_info_format['product_quantity'] = $product_info['quantity'];
-                
-            return $product_info_format;
+            return array(
+                'res' => TRUE,
+                'data' => $product_info_format
+            );
         } else {
-            return FALSE;
+            $this->err_msg[] = 'Get product info failed';
+            return array(
+                'res' => FALSE,
+                'msg' => $this->err_msg
+            );
         }
     }
 
+    //@todo 处理折扣信息
     public function new_product($product_info) {
+        $this->_CI->load->library('regulation');
+        $product_info_validate = $product_info;
+        $product_info_validate['product_price'] = $product_info_validate['product_original_price'];
+        unset($product_info_validate['product_original_price']);
+        //可选参数处理
+        $opt_array = array(
+            'product_describe' => $product_info_validate['product_describe'],
+            'product_image'    => $product_info_validate['product_image'],
+            'product_detail_image' => $product_info_validate['product_detail_image'],
+            'product_discout' => $product_info_validate['product_discount']
+        );
+        foreach ($opt_array as $key => $value) {
+            if (empty($value)) {
+                unset($product_info_validate[$key]);
+            }
+        }
+        //验证各字段是否符合条件
+        foreach ($product_info_validate as $key => $value) {
+            $this->_CI->regulation->validate($key, $value);
+        }
+        if (count($this->_CI->regulation->err_msg) > 0) {
+            $this->err_msg = $this->_CI->regulation->err_msg;
+            $this->_CI->regulation->err_msg = array();
+            return array(
+                'res' => FALSE,
+                'msg' => $this->err_msg
+            );
+        }
+
         $this->_CI->load->model('shop_model', 'shop_m');
         //格式化产品信息
         $info = array();
@@ -81,16 +125,53 @@ class Product_lib {
         $this->_CI->load->model('product_model', 'product_m');
         $this->_CI->load->model('view_model', 'view_m');
 
-        //@todo 此处应该使用事物
+        //@todo 此处应该使用事务
         if ($product_sn = $this->_CI->product_m->new_product($info)) {
             if ($this->_CI->view_m->add_product($product_sn)) {
-                return TRUE;
+                return array(
+                    'res' => TRUE,
+                    'data' => NULL
+                );
             }
         }
-        return FALSE;
+        $this->err_msg[] = 'Release new product failed';
+        return array(
+            'res' => FALSE,
+            'msg' => $this->err_msg
+        );
     }
 
     public function product_update($product_info) {
+        //格式化产品信息
+        $this->_CI->load->library('regulation');
+        $product_info_validate = $product_info;
+        $product_info_validate['product_price'] = $product_info_validate['product_original_price'];
+        unset($product_info_validate['product_original_price']);
+        //处理可选参数
+        $opt_array = array(
+            'product_describe' => $product_info_validate['product_describe'],
+            'product_image'    => $product_info_validate['product_image'],
+            'product_detail_image' => $product_info_validate['product_detail_image'],
+            'product_discount'  => $product_info_validate['product_discount']
+        );
+        foreach ($opt_array as $key => $value) {
+            if (empty($value)) {
+                unset($product_info_validate[$key]);
+            }
+        }
+        //验证参数格式
+        foreach ($product_info_validate as $key => $value) {
+            $this->_CI->regulation->validate($key, $value);
+        }
+        if (count($this->_CI->regulation->err_msg) > 0) {
+            $this->err_msg = $this->_CI->regulation->err_msg;
+            $this->_CI->regulation->err_msg = array();
+            return array(
+                'res' => FALSE,
+                'msg' => $this->err_msg
+            );
+        }
+
         //格式化产品信息
         $info = array();
         $info['id'] = substr($product_info['product_id'], 10);
@@ -105,9 +186,16 @@ class Product_lib {
         $info['detail_image'] = $product_info['product_detail_image'];
         $this->_CI->load->model('product_model', 'product_m');
         if ($this->_CI->product_m->product_update($info)) {
-            return TRUE;
+            return array(
+                'res' => TRUE,
+                'data' => NULL
+            );
         } else {
-            return FALSE;
+            $this->err_msg[] = 'Update product info failed';
+            return array(
+                'res' => FALSE,
+                'msg' => $this->err_msg
+            );
         }
     }
 }

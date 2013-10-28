@@ -50,11 +50,16 @@ class Qiniuyun_lib {
      *
      * @param $image_full_name 图片全称，包括后缀名
      * @param $size            缩略图大小，可选值small,middle,large
+     * @param $type            图片类型，shop，product
      */
-    public function thumbnail_private_url($image_full_name, $size) {
+    public function thumbnail_private_url($image_full_name, $size, $type) {
         Qiniu_SetKeys($this->_accessKey, $this->_secretKey);
         $domain = 'maoejie.u.qiniudn.com';
-        $baseUrl = Qiniu_RS_MakeBaseUrl($domain, $image_full_name);
+        if (strlen($image_full_name) < 5) {
+            $baseUrl = Qiniu_RS_MakeBaseUrl($domain, 'maoejiedefaultimage-' . $type . '.jpg');
+        } else {
+            $baseUrl = Qiniu_RS_MakeBaseUrl($domain, $image_full_name);
+        }
         $imgView = new Qiniu_ImageView;
         switch ($size) {
         case 'small':
