@@ -144,9 +144,10 @@ class Apply_api extends REST_Controller {
     public function apply_verifying_failed_post() {
         //@todo Check privilege
         $this->load->library('apply_lib');
-        $apply_id = $this->input->post('apply_id', TRUE);
+        $apply_id = (int) ($this->input->post('apply_id', TRUE));
         $message  = $this->input->post('message', TRUE);
-        if($this->apply_lib->apply_verifying_failed($apply_id, $message)) {
+        $res = $this->apply_lib->apply_verifying_failed($apply_id, $message);
+        if($res['res']) {
             $this->response(
                 array(
                     'result' => 'ok',
@@ -155,10 +156,14 @@ class Apply_api extends REST_Controller {
                 )
             );
         } else {
+            $msg = 'Verifying failed';
+            if (count($res['msg'] > 0)) {
+                $msg = implode('; ', $res['msg']);
+            }
             $this->response(
                 array(
                     'result' => 'fail',
-                    'msg'    => 'Verifying failed',
+                    'msg'    => $msg,
                     'data'   => NULL
                 )
             );

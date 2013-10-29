@@ -107,6 +107,16 @@ class Apply_lib {
 
     public function apply_verifying_failed($apply_id, $message) {
         //@todo format
+        $this->_CI->load->library('regulation');
+        $this->_CI->regulation->validate('apply_id', $apply_id);
+        if (count($this->_CI->regulation->err_msg) > 0) {
+            $this->err_msg = $this->_CI->regulation->err_msg;
+            $this->_CI->regulation->err_msg = array();
+            return array(
+                'res' => FALSE,
+                'msg' => $this->err_msg
+            );
+        }
         //@todo avoid repeat invoke it
         $this->_CI->load->library('format_lib');
         $this->_CI->load->model('apply_model', 'apply_m');
@@ -120,11 +130,18 @@ class Apply_lib {
             );
             $this->_CI->apply_m->apply_verifying_failed($apply_id, $content);
             $this->_CI->db->trans_commit();
-            return TRUE;
+            return array(
+                'res' => TRUE,
+                'data' => NULL
+            );
         } catch (Exception $e) {
             log_message('info', $e->getMessage() . "\n");
             $this->_CI->db->trans_rollback();
-            return FALSE;
+            $this->err_msg[] = 'Verifying not passed';
+            return array(
+                'res' => FALSE,
+                'msg' => $this->err_msg
+            );
         }
     }
 
