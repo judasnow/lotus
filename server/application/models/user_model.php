@@ -87,9 +87,6 @@ Class User_model extends Base_model {
         $info['password'] = md5($info['password']);
         $this->base_write($info);
         if($this->affected_rows() == 1) {
-            if(!$this->get_user_id($info['username'])) {
-                throw new Exception('Register new user just now, but cannot find it');
-            }
             return $this->get_user_id($info['username']);
         } else {
             return FALSE;

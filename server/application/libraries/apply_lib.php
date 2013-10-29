@@ -5,6 +5,7 @@
 class Apply_lib {
     
     private $_CI;
+    public $err_msg = array();
 
     public function __construct() {
         $this->_CI =& get_instance();
@@ -34,22 +35,46 @@ class Apply_lib {
     }
     
     public function apply_verifying_detail($apply_id) {
-        //@todo format
+        $this->_CI->load->library('regulation');
+        $this->_CI->regulation->validate('apply_id', $apply_id);
+        if (count($this->_CI->regulation->err_msg) > 0) {
+            $this->err_msg = $this->_CI->regulation->err_msg;
+            $this->_CI->regulation->err_msg = array();
+            return array(
+                'res' => FALSE,
+                'msg' => $this->err_msg
+            );
+        }
         $this->_CI->load->model('apply_model', 'apply_m');
         $res_array = $this->_CI->apply_m->applying_detail($apply_id);
         if($res_array) {
             //format return info
             $res_array['apply_id'] = $res_array['id'];
             unset($res_array['id']);
-            return $res_array;
+            return array(
+                'res' => TRUE,
+                'data' => $res_array
+            );
         } else {
-            return FALSE;
+            $this->err_msg[] = 'No more detail';
+            return array(
+                'res' => FALSE,
+                'msg' => $this->err_msg
+            );
         }
     }
 
     public function apply_verifying_pass($apply_id) {
-        //@todo format
-        //@todo avoid repeat invoke it
+        $this->_CI->load->library('regulation');
+        $this->_CI->regulation->validate('apply_id', $apply_id);
+        if (count($this->_CI->regulation->err_msg) > 0) {
+            $this->err_msg = $this->_CI->regulation->err_msg;
+            $this->_CI->regulation->err_msg = array();
+            return array(
+                'res' => FALSE,
+                'msg' => $this->err_msg
+            );
+        }
         $this->_CI->load->library('format_lib');
         $this->_CI->load->model('apply_model', 'apply_m');
         $this->_CI->db->trans_begin();
@@ -64,11 +89,18 @@ class Apply_lib {
             $this->_CI->apply_m->apply_verifying_pass($apply_id, $content);
             $this->_CI->db->trans_commit();
             //@todo return register code
-            return $this->register_code($apply_id);
+            return array(
+                'res' => TRUE,
+                'data' => $this->register_code($apply_id)
+            );
         } catch (Exception $e) {
             log_message('info', $e->getMessage() . "\n");
             $this->_CI->db->trans_rollback();
-            return FALSE;
+            $this->err_msg[] = 'Apply verifying failed';
+            return array(
+                'res' => FALSE,
+                'msg' => $this->err_msg
+            );
         }
         
     }

@@ -40,7 +40,8 @@ class Auth_api extends REST_Controller {
         $username = $this->input->post('username', TRUE);
         $password = $this->input->post('password', TRUE);
         $this->load->library('auth_lib');
-        if($this->auth_lib->do_login($username, $password)) {
+        $res = $this->auth_lib->do_login($username, $password);
+        if($res['res']) {
             $this->response(
                 array(
                     'result' => 'ok',
@@ -49,10 +50,14 @@ class Auth_api extends REST_Controller {
                 )
             );
         } else {
+            $msg = 'Username or password wrong';
+            if (count($res['msg']) > 0) {
+                $msg = implode('; ', $res['msg']);
+            }
             $this->response(
                 array(
                     'result' => 'fail',
-                    'msg' => 'Username or password wrong',
+                    'msg' => $msg,
                     'data' => NULL
                 ) 
             );
@@ -125,7 +130,8 @@ class Auth_api extends REST_Controller {
         $register_code = $this->input->post('register_code', TRUE);
 
         $this->load->library('auth_lib');
-        if($this->auth_lib->verify_register_code($register_code)) {
+        $res = $this->auth_lib->verify_register_code($register_code);
+        if($res['res']) {
             $this->response(
                 array(
                     'result' => 'ok',
@@ -134,10 +140,14 @@ class Auth_api extends REST_Controller {
                 )
             );
         } else {
+            $msg = 'Register code is not available';
+            if (count($res['msg']) > 0) {
+                $msg = implode('; ', $res['msg']);
+            }
             $this->response(
                 array(
                     'result' => 'fail',
-                    'msg' => 'Register code is not available',
+                    'msg' => $msg,
                     'data' => NULL
                 )
             );
@@ -153,9 +163,9 @@ class Auth_api extends REST_Controller {
      */
     public function username_is_available_post() {
         $username = $this->input->post('username', TRUE);
-
         $this->load->library('auth_lib');
-        if($this->auth_lib->verify_username($username)) {
+        $res = $this->auth_lib->verify_username($username);
+        if($res['res']) {
             $this->response(
                 array(
                     'result' => 'ok',
@@ -164,10 +174,14 @@ class Auth_api extends REST_Controller {
                 )
             );
         } else {
+            $msg = 'Username is not available';
+            if (count($res['msg']) > 0) {
+                $msg = implode('; ', $res['msg']);
+            }
             $this->response(
                 array(
                     'result' => 'fail',
-                    'msg' => 'Username is not available',
+                    'msg' => $msg,
                     'data' => NULL
                 )
             );
@@ -191,12 +205,13 @@ class Auth_api extends REST_Controller {
         $register_code = $this->input->post('register_code', TRUE);
  
         $this->load->library('auth_lib');
-        if($this->auth_lib->do_register(array(
+        $res = $this->auth_lib->do_register(array(
             'username'      => $username,
             'password'      => $password,
             'role'          => $role,
             'register_code' => $register_code
-        ))) {
+        ));
+        if($res['res']) {
             $this->response(
                 array(
                     'result' => 'ok',
@@ -205,10 +220,14 @@ class Auth_api extends REST_Controller {
                 )
             );
         } else {
+            $msg = 'Register new user failed';
+            if (count($res['msg']) > 0) {
+                $msg = implode('; ', $res['msg']);
+            }
             $this->response(
                 array(
                     'result' => 'fail',
-                    'msg' => 'Register new user failed',
+                    'msg' => $msg,
                     'data' => NULL
                 )
             );
@@ -229,7 +248,8 @@ class Auth_api extends REST_Controller {
         $old_password = $this->input->post('old_password', TRUE);
         $new_password = $this->input->post('new_password', TRUE);
         $this->load->library('auth_lib');
-        if ($this->auth_lib->change_password($old_password, $new_password)) {
+        $res = $this->auth_lib->change_password($old_password, $new_password);
+        if ($res['res']) {
             $this->response(
                 array(
                     'result' => 'ok',
@@ -238,10 +258,14 @@ class Auth_api extends REST_Controller {
                 )
             );
         } else {
+            $msg = 'Change password failed';
+            if (count($res['msg']) > 0) {
+                $msg = implode('; ', $res['msg']);
+            }
             $this->response(
                 array(
                     'result' => 'fail',
-                    'msg'    => 'Change password failed',
+                    'msg'    => $msg,
                     'data'   => NULL
                 )
             );

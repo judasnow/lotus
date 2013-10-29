@@ -73,21 +73,26 @@ class Apply_api extends REST_Controller {
      */
     public function apply_verifying_detail_get() {
         //@todo check privilege
-        $apply_id = $this->input->get('apply_id', TRUE);
+        $apply_id = (int) ($this->input->get('apply_id', TRUE));
         $this->load->library('apply_lib');
-        if($res = $this->apply_lib->apply_verifying_detail($apply_id)) {
+        $res = $this->apply_lib->apply_verifying_detail($apply_id);
+        if($res['res']) {
             $this->response(
                 array(
                     'resutl' => 'ok',
                     'msg'    => 'Get verifying detail data success',
-                    'data'   => $res
+                    'data'   => $res['data']
                 )
             );
         } else {
+            $msg = 'Get verifying detail data failed';
+            if (count($res['msg']) > 0) {
+                $msg = implode('; ', $res['msg']);
+            }
             $this->response(
                 array(
                     'resutl' => 'fail',
-                    'msg'    => 'Get verifying detail data failed',
+                    'msg'    => $msg,
                     'data'   => NULL
                 )
             );
@@ -103,22 +108,27 @@ class Apply_api extends REST_Controller {
     public function apply_verifying_pass_post() {
         //@todo Check privilege
         $this->load->library('apply_lib');
-        $apply_id = $this->input->post('apply_id', TRUE);
-        if($this->apply_lib->apply_verifying_pass($apply_id)) {
+        $apply_id = (int) ($this->input->post('apply_id', TRUE));
+        $res = $this->apply_lib->apply_verifying_pass($apply_id);
+        if($res['res']) {
             $this->response(
                 array(
                     'result' => 'ok',
                     'msg'    => 'Verifying pass success',
                     'data'   => array(
-                        'register_code' => $this->apply_lib->register_code($apply_id)
+                        'register_code' => $res['data']
                     )
                 )
             );
         } else {
+            $msg = 'Verifying passed failed';
+            if (count($res['msg']) > 0) {
+                $msg = implode('; ', $res['msg']);
+            }
             $this->response(
                 array(
                     'result' => 'fail',
-                    'msg'    => 'Verifying passed failed',
+                    'msg'    => $msg,
                     'data'   => NULL
                 )
             );

@@ -19,6 +19,56 @@ class Regulation {
         }
     }
 
+    //验证登录用户名
+    private function validate_username($content) {
+        if (is_string($content) && !empty($content)) {
+            return TRUE;
+        } else {
+            $this->err_msg[] = 'Username is illegal';
+            return FALSE;
+        }
+    }
+
+    //验证密码
+    private function validate_password($content) {
+        if (!empty($content)) {
+            return TRUE;
+        } else {
+            $this->err_msg[] = 'Password is illegal';
+            return FALSE;
+        }
+    }
+
+    //验证邀请码
+    private function validate_register_code($content) {
+        if (is_string($content) && strlen($content) == 13) {
+            return TRUE;
+        } else {
+            $this->err_msg[] = 'Register code is illegal';
+            return FALSE;
+        }
+    }
+    
+    //验证用户角色
+    private function validate_user_role($content) {
+        if ($content == 'saler') {
+            return TRUE;
+        } else {
+            $this->err_msg[] = 'User role should be saler';
+            return FALSE;
+        }
+    }
+
+    //验证申请编号
+    private function validate_apply_id($content) {
+        if (is_integer($content) && $content > 0) {
+            return TRUE;
+        } else {
+            $this->err_msg[] = 'Apply_id is illegal';
+            return FALSE;
+        }
+    }
+
     //验证商品一级标识
     private function validate_product_class_a($content) {
         if (is_string($content) && strlen($content) == 5) {

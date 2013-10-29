@@ -6,6 +6,7 @@
 class Auth_lib {
     
     private $_CI;
+    public $err_msg = array();
 
     public function __construct() {
         $this->_CI =& get_instance();
@@ -15,18 +16,35 @@ class Auth_lib {
      * 执行用户登录功能
      */
     public function do_login($username, $password) {
-        //@todo format
+        $this->_CI->load->library('regulation');
+        $arr = array('username' => $username, 'password' => $password);
+        foreach ($arr as $key => $value) {
+            $this->_CI->regulation->validate($key, $value);
+        }
+        if (count($this->_CI->regulation->err_msg) > 0) {
+            $this->err_msg = $this->_CI->regulation->err_msg;
+            $this->_CI->regulation->err_msg = array();
+            return array(
+                'res' => FALSE,
+                'msg' => $this->err_msg
+            );
+        }
+
         $this->_CI->load->model('user_model', 'user_m');
         if($hash_password_db = $this->_CI->user_m->get_hash_password($username)) {
             if($hash_password_db['password'] == md5($password)) {
                 $_SESSION['object_user_id'] = $this->_CI->user_m->get_user_id($username);
-                return TRUE;
-            } else {
-                return FALSE;
+                return array(
+                    'res' => TRUE,
+                    'data' => NULL
+                );
             }
-        } else {
-            return FALSE;
         }
+        $this->err_msg[] = 'Username or password wrong...';
+        return array(
+            'res' => FALSE,
+            'msg' => $this->err_msg
+        );
     }
 
     /**
@@ -63,13 +81,33 @@ class Auth_lib {
      * 执行注册用户功能，同时注册卖家的店铺
      */
     public function do_register(array $register_info) {
-        //@todo 检查各个字段的有效性
+        $register_info_validate = $register_info;
+        $register_info_validate['user_role'] = $register_info['role'];
+        unset($register_info_validate['role']);
+        $this->_CI->load->library('regulation');
+        foreach ($register_info_validate as $key => $value) {
+            $this->_CI->regulation->validate($key, $value);
+        }
+        if (count($this->_CI->regulation->err_msg) > 0) {
+            $this->err_msg = $this->_CI->regulation->err_msg;
+            $this->_CI->regulation->err_msg = array();
+            return array(
+                'res' => FALSE,
+                'msg' => $this->err_msg
+            );
+        }
+
+
         $this->_CI->load->model('user_model', 'user_m');
         $this->_CI->load->model('shop_model', 'shop_m');
         $this->_CI->load->model('view_model', 'view_m');
-        if(!$this->verify_register_code($register_info['register_code']) ||
-           !$this->verify_username($register_info['username'])) {
-            return FALSE;
+        $register_code_res = $this->verify_register_code($register_info['register_code']);
+        $username_res = $this->verify_username($register_info['username']);
+        if(!$register_code_res['res'] || !$username_res['res']) {
+            return array(
+                'res' => FALSE,
+                'msg' => $this->err_msg
+            );
         }
         
         //注册码
@@ -91,10 +129,17 @@ class Auth_lib {
         $this->_CI->view_m->add_shop($shop_id);
         if($this->_CI->db->trans_status() ==  FALSE) {
             $this->_CI->db->trans_rollback();
-            return FALSE;
+            $this->err_msg[] = 'Register new user failed';
+            return array(
+                'res' => FALSE,
+                'msg' => $this->err_msg
+            );
         } else {
             $this->_CI->db->trans_commit();
-            return TRUE;
+            return array(
+                'res' => TRUE,
+                'data' => NULL
+            );
         }
     
     }
@@ -103,12 +148,29 @@ class Auth_lib {
      * 验证注册码是否可用
      */
     public function verify_register_code($register_code) {
-        //@todo format
+        $this->_CI->load->library('regulation');
+        $this->_CI->regulation->validate('register_code', $register_code);
+        if (count($this->_CI->regulation->err_msg) > 0) {
+            $this->err_msg = $this->_CI->regulation->err_msg;
+            $this->_CI->regulation->err_msg = array();
+            return array(
+                'res' => FALSE,
+                'msg' => $this->err_msg
+            );
+        }
+
         $this->_CI->load->model('apply_model', 'apply_m');
         if($this->_CI->apply_m->register_code_is_available($register_code)) {
-            return TRUE;
+            return array(
+                'res' => TRUE,
+                'data' => NULL
+            );
         } else {
-            return FALSE;
+            $this->err_msg[] = 'Register code is not available';
+            return array(
+                'res' => FALSE,
+                'msg' => $this->err_msg
+            );
         }
     }
    
@@ -116,12 +178,29 @@ class Auth_lib {
      * 验证用户名是否可用
      */
     public function verify_username($username) {
-        //@todo format
+        $this->_CI->load->library('regulation');
+        $this->_CI->regulation->validate('username', $username);
+        if (count($this->_CI->regulation->err_msg) > 0) {
+            $this->err_msg = $this->_CI->regulation->err_msg;
+            $this->_CI->regulation->err_msg = array();
+            return array(
+                'res' => FALSE,
+                'msg' => $this->err_msg
+            );
+        }
+
         $this->_CI->load->model('user_model', 'user_m');
         if($this->_CI->user_m->username_is_available($username)) {
-            return TRUE;
+            return array(
+                'res' => TRUE,
+                'data' => NULL
+            );
         } else {
-            return FALSE;
+            $this->err_msg[] = 'Username is not available';
+            return array(
+                'res' => FALSE,
+                'msg' => $this->err_msg
+            );
         }
     }
 
@@ -129,14 +208,32 @@ class Auth_lib {
      * 修改当前登录用户密码
      */
     public function change_password($old_password, $new_password) {
+        $this->_CI->load->library('regulation');
+        $this->_CI->regulation->validate('password', $new_password);
+        if (count($this->_CI->regulation->err_msg) > 0) {
+            $this->err_msg = $this->_CI->regulation->err_msg;
+            $this->_CI->regulation->err_msg = array();
+            return array(
+                'res' => FALSE,
+                'msg' => $this->err_msg
+            );
+        }
+
         $this->_CI->load->model('user_model', 'user_m');
         $user_id = $_SESSION['object_user_id'];
         $password = $this->_CI->user_m->get_password($user_id)['password'];
         if (md5($old_password) == $password) {
             $this->_CI->user_m->base_update(array('id' => $user_id), array('password' => md5($new_password)));
-            return TRUE;
+            return array(
+                'res' => TRUE,
+                'data' => NULL
+            );
         } else {
-            return FALSE;
+            $this->err_msg[] = 'Change password failed';
+            return array(
+                'res' => FALSE,
+                'msg' => $this->err_msg
+            );
         }
     }
 }
