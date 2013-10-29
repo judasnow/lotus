@@ -1,12 +1,10 @@
 #categories_browse {
-    //display: none;
     @categories_browse_width: 680px;
     @categories_browse_padding: 8px;
     @categories_browse_min_height: 445px;
     @categories_list_width: 168px;
-    @margin_between_list_and_detail: 24px;
 
-    width: @categories_browse_width;
+    //width: @categories_browse_width;
     min-height: @categories_browse_min_height;
 
     padding: @categories_browse_padding;
@@ -14,13 +12,13 @@
     position: absolute;
     top: @header_height;
 
-    background: rgb(255,255,255,0.91);
-    box-shadow: 0px 0px 6px rgb(172,172,172,0.41);
+    background: rgb(255,255,255,0.71);
+    box-shadow: 1px 1px 8px rgb(64,64,64,0.41);
 
     border-bottom-left-radius: 6px;
     border-bottom-right-radius: 6px;
+    border-top: 2px solid #444;
 
-    transition: all 0.2s ease-in-out;
     z-index: 999;
 
     .categories_list {
@@ -31,9 +29,6 @@
         float: left;
 
         padding-right: @categories_browse_padding;
-        margin-right: @margin_between_list_and_detail;
-
-        border-right: 1px dashed #dfdfdf;
 
         color: #333;
 
@@ -66,8 +61,11 @@
     }
 
     .categories_detail {
+        display: none;
+        background: #eee;
+
         float: left;
-        width: @categories_browse_width - @categories_list_width - @margin_between_list_and_detail - @categories_browse_padding - 1;
+        width: @categories_browse_width - @categories_list_width - @categories_browse_padding - 1;
         min-height: @categories_browse_min_height;
 
         .row {

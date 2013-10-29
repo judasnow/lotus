@@ -43,5 +43,7 @@ function(
 
     NavView
 ) {
+    console.log( "init ok." );
+
     var navView = new NavView();
 });

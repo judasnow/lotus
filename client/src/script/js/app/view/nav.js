@@ -18,7 +18,7 @@ define([
         initialize: function() {
             _.bindAll( this , "toggleCategoriesBrowse" );
 
-            this._categoriesBrowseView = new CategoriesBrowseView;
+            this._categoriesBrowseView = new CategoriesBrowseView();
         },
 
         toggleCategoriesBrowse: function() {
