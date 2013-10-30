@@ -9,6 +9,7 @@ require.config({
         underscore: "third_party/underscore" ,
         backbone: "third_party/backbone",
         mustache: "third_party/mustache",
+        async: "third_party/async",
 
         m: "js/app/model",
         v: "js/app/view",

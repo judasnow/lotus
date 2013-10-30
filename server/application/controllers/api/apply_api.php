@@ -112,7 +112,7 @@ class Apply_api extends REST_Controller {
         $res = $this->apply_lib->apply_verifying_pass($apply_id);
         if($res['res']) {
             $this->response(
-                array(
+                set rulerarray(
                     'result' => 'ok',
                     'msg'    => 'Verifying pass success',
                     'data'   => array(
@@ -191,3 +191,4 @@ class Apply_api extends REST_Controller {
 
 
 ?>
+                array(

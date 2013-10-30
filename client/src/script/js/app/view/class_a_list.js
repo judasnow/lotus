@@ -5,9 +5,19 @@ define([
 
     "c/class_a",
 
+    "v/class_b_list",
+
     "text!tpl/class_a_list_item.mustache"
 
-] , function( Backbone , Mustache , ClassAColl , classAListItemTpl ) {
+] , function(
+    Backbone ,
+    Mustache ,
+
+    ClassAColl ,
+    ClassBListView,
+
+    classAListItemTpl
+) {
     "use strict";
 
     var ClassAListView = Backbone.View.extend({
@@ -17,14 +27,14 @@ define([
 
         events: {
             "mouseover .row": "_show_class_b",
-            "mouseup .row": "_hide_class_b"
+            "mouseleave .row": "_mouseleave_row" 
         },
 
         initialize: function( $categoriesBrowse ) {
 
             this._$categoriesBrowse = $categoriesBrowse;
 
-            _.bindAll( this , "_addAll" , "_addOne" , "_show_class_b" , "_hide_class_b" , "render" );
+            _.bindAll( this , "_addAll" , "_addOne" , "_show_class_b" , "_mouseleave_row" , "render" );
 
             this._coll = new ClassAColl();
             this._coll.on( "fetch_ok" , this._addAll );
@@ -38,14 +48,18 @@ define([
             this.render();
         },
 
+        //在 bubbling 阶段捕获该事件 获取当前元素
         _show_class_b: function( event ) {
             var $target = $( event.currentTarget );
+            $target.find( ".icon" ).show();
             var class_a_id = $target.attr( "data-id" );
-            console.log( class_a_id );
+
+            this._classBListView = new ClassBListView( this._$categoriesBrowse , class_a_id );
         },
 
-        _hide_class_b: function( event ) {
-
+        _mouseleave_row: function( event ) {
+            var $target = $( event.currentTarget );
+            $target.find( ".icon" ).hide();
         },
 
         _addAll: function() {
