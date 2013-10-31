@@ -16,6 +16,7 @@ require.config({
         c: "js/app/collection",
         tpl: "js/app/tpl",
 
+        utility: "js/utility",
         routes: "js/routes",
         config: "js/app_config"
     },
@@ -54,6 +55,5 @@ function(
     var navView = new NavView();
 
     var routes = new Routes();
-    //window.routes = routes;
-    Backbone.history.start({pushState: true});
+    Backbone.history.start();
 });
