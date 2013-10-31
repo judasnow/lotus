@@ -21,7 +21,7 @@ define([
         },
 
         _showSellerSignup: function() {
-
+            
         }
     });
 
