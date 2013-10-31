@@ -16,6 +16,7 @@ require.config({
         c: "js/app/collection",
         tpl: "js/app/tpl",
 
+        routes: "js/routes",
         config: "js/app_config"
     },
 
@@ -37,14 +38,22 @@ require(
 [
     "zepto",
 
-    "v/nav"
+    "v/nav",
+
+    "routes"
 ],
 function(
     $,
 
-    NavView
+    NavView,
+
+    Routes
 ) {
     console.log( "init ok." );
 
     var navView = new NavView();
+
+    var routes = new Routes();
+    //window.routes = routes;
+    Backbone.history.start({pushState: true});
 });
