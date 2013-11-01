@@ -7,14 +7,10 @@ define([
 
     var utility = {};
 
-    //当前实现的思路就是 完全替换 body 中的元素
-    //为给定的 html 文本信息
-    utility.loadPage = function( html ) {
-        _$body.html( html );
-    };
+    var _$wrapper = $( "#wrapper .box" );
 
-    utility.showLoading = function() {
-        
+    utility.loadPage = function( html ) {
+        _$wrapper.html( html );
     };
 
     return utility;

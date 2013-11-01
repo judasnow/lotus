@@ -34,13 +34,13 @@ Y88888P  `Y88P'     YP    ~Y8888P' `8888Y'
 
         <div id="nav" class="box">
             <div class="item categories_browse_btn">
-                分类浏览
+               <i class="fa fa-reorder"></i>
             </div>
 
             <!--目前阶段仅仅只是显示登录之后的用户信息-->
             <div class="nav_user">
                 <div class="item userinfo">
-                    <span class="username">纹身特湿(卖)</span>
+                    <span class="username">纹身特湿(卖) <i class="fa fa-sign-out"></i></span>
                 </div>
             </div>
         </div>
@@ -137,19 +137,34 @@ Y88888P  `Y88P'     YP    ~Y8888P' `8888Y'
             </div>
             <!--}}}-->
 
-            <!--{{{ footer-->
-            <div id="footer">
-                <span>Lotus © 2013</span>
-                <a href="#seller_signup">卖家注册</a>
-                <a href="#seller_login">卖家登录</a>
-            </div>
-            <!--}}}-->
-
         </div>
     </div>
 
-    <div class="tooltip_box">
-        tooltip
+    <!--{{{ footer-->
+    <div id="footer">
+    <div class="box">
+        <span>Lotus © 2013</span>
+        <a href="#seller_signup">卖家注册</a>
+        <a class="seller_login" href="javascript:void(0);">卖家登录 <i class="fa fa-sign-in"></i></a>
+    </div>
+    </div>
+    <!--}}}-->
+
+    <div class="dialog_box">
+    <div class="dialog">
+        <div class="header">
+            <span class="title">卖家登录</span> 
+            <i class="fa fa-times close"></i>
+        </div>
+        <div class="body">
+            body
+        </div>
+        <div class="footer">
+            <div class="btn_ok">确定</div>
+            <div class="btn_cancle">取消</div>
+            <div class="text">去注册</div>
+        </div>
+    </div>
     </div>
 
 </body>

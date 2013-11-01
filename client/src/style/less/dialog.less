@@ -1,0 +1,68 @@
+.dialog_box {
+    .var {
+        @width: 384px;
+        @height: 256px;
+    }
+
+    .var;
+    min-width: @width;
+    min-height: @height;
+
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    margin-left: -(@width / 2);
+
+    background: #fff;
+    background-clip: padding-box;
+    border: 16px solid rgba(0,0,0,0.256);
+    border-radius: 8px;
+
+    display: none;
+
+    .dialog {
+        @header_height: 32px;
+        @footer_height: 32px;
+        @padding: 8px;
+
+        border: 1px solid #999;
+
+        .header {
+            height: @header_height;
+
+            line-height: @header_height;
+
+            border-bottom: 1px dashed #ddd;
+
+            text-align: center;
+
+            padding: 0 @padding;
+
+            .close {
+                cursor: pointer;
+                float: right;
+                display: inline-block;
+                line-height: @header_height;
+                color: #333;
+            }
+        }
+
+        .body {
+            .var;
+            min-height: @height - @header_height - @header_height - (@padding * 2) - 2;
+            padding: @padding;
+        }
+
+        .footer {
+            height: @footer_height;
+            line-height: @footer_height;
+            border-top: 1px dashed #ddd;
+            text-align: right;
+            padding: 0 @padding;
+
+            .text {
+
+            }
+        }
+    }
+}

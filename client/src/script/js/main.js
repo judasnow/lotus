@@ -40,6 +40,7 @@ require(
     "zepto",
 
     "v/nav",
+    "v/footer",
 
     "routes"
 ],
@@ -47,12 +48,14 @@ function(
     $,
 
     NavView,
+    FooterView,
 
     Routes
 ) {
     console.log( "init ok." );
 
     var navView = new NavView();
+    var footerView = new FooterView();
 
     var routes = new Routes();
     Backbone.history.start();
