@@ -7,10 +7,10 @@ define([
 
     var utility = {};
 
-    var _$wrapper = $( "#wrapper .box" );
+    var $wrapper = $( "#wrapper .box" );
 
     utility.loadPage = function( html ) {
-        _$wrapper.html( html );
+        var _$wrapper = $wrapper.html( html );
     };
 
     return utility;

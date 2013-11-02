@@ -1,9 +1,17 @@
 define([
     "underscore",
     "backbone",
-    "utility"
+    "utility",
 
-] , function( _ , Backbone , utility ) {
+    "v/seller_signup"
+
+] , function(
+    _,
+    Backbone,
+    utility,
+
+    SellerSignupView
+) {
     "use strict";
 
     var Routes = Backbone.Router.extend({
@@ -17,7 +25,7 @@ define([
         },
 
         _showSellerSignup: function() {
-            
+            new SellerSignupView();
         }
     });
 
