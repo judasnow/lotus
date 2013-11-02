@@ -10,6 +10,7 @@ class Admin_auth_api extends REST_Controller {
 
     public function __construct() {
         parent::__construct();
+        session_start();
     }
 
     public function do_login_post() {
@@ -29,6 +30,48 @@ class Admin_auth_api extends REST_Controller {
                 array(
                     'result' => 'fail',
                     'msg'    => 'login failed',
+                    'data'   => NULL
+                )
+            );
+        }
+    }
+
+    public function do_logout_post() {
+        $this->load->library('admin_auth_lib');
+        if ($this->admin_auth_lib->do_logout()) {
+            $this->response(
+                array(
+                    'result' => 'ok',
+                    'msg'    => 'Logout success',
+                    'data'   => NULL
+                )
+            );
+        } else {
+            $this->response(
+                array(
+                    'result' => 'fail',
+                    'msg'    => 'Logout failed',
+                    'data'   => NULL
+                )
+            );
+        }
+    }
+
+    public function admin_is_login_get() {
+        $this->load->library('admin_auth_lib');
+        if ($this->admin_auth_lib->admin_is_login()) {
+            $this->response(
+                array(
+                    'result' => 'ok',
+                    'msg'    => 'Admin has login',
+                    'data'   => NULL
+                )
+            );
+        } else {
+            $this->response(
+                array(
+                    'result' => 'fail',
+                    'msg'    => 'Admin has not login',
                     'data'   => NULL
                 )
             );

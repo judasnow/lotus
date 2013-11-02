@@ -48,6 +48,18 @@ class Auth_lib {
     }
 
     /**
+     * 检查用户是否已经登录
+     */
+    public function user_is_login() {
+        if (!empty($_SESSION['object_user_id'])) {
+            return TRUE;
+        } else {
+            return FALSE;
+        }
+    }
+
+
+    /**
      * 获取用户基本信息
      */
     public function user_info() {
