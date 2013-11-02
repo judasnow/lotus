@@ -1,16 +1,20 @@
 define([
 
     "backbone",
-    "m/class_b"
+    "m/class_b",
 
-] , function( Backbone , ClassB ) {
+    "config"
+
+] , function( Backbone , ClassB , config ) {
     "use strict";
 
-    var ClassBColl = Backbone.Collection.extend( {
+    var ClassBColl = Backbone.Collection.extend({
 
         model: ClassB,
 
-        url: window.serverAddress + "/home_api/class_b"
+        initialize: function( class_a_id ) {
+            this.url = config.serverAddress + "/home_api/class_b/?class_a_id=" + class_a_id;
+        }
 
     });
 

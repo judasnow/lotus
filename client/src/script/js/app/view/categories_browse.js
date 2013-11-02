@@ -2,35 +2,33 @@ define([
     "underscore",
     "backbone",
 
-    "c/class_a",
-    "c/class_b",
+    "v/class_a_list"
 
-    "text!tpl/categories_browse.mustache"
+], function( _ , Backbone , ClassAListView ) {
+    "use strict";
 
-], function( _ , Backbone , ClassAColl , ClassBColl , CategoriesBrowseTpl ) {
+    var $box = $( "#wrapper .box" );
 
     var CategoriesBrowse = Backbone.View.extend({
 
-        el: "#wrapper .box",
-
-        tpl: CategoriesBrowseTpl,
+        id: "categories_browse",
+        tagName: "div",
 
         initialize: function() {
             _.bindAll( this , "render" );
 
-            //@TODO need to cache it?
-            this._classAColl = new ClassAColl;
-            this.listenTo( this._classAColl , "change" , this.render );
+            //初始化主分类列表
+            this._classAListView = new ClassAListView( this.$el );
 
-            this._classAColl.fetch();
+            this.render();
         },
 
         toggle: function() {
-            
+            this.$el.toggle();
         },
 
         render: function() {
-            this.$el.append( this.tpl );
+            $box.append( this.$el );
         }
     });
 

@@ -80,7 +80,7 @@ $db['odirus']['swap_pre'] = '';
 $db['odirus']['autoinit'] = TRUE;
 $db['odirus']['stricton'] = FALSE;
 
-if( PHP_OS == 'Darwin' || gethostname() == 'china-012513992' )
+if( PHP_OS == 'Darwin' || gethostname() == 'x200' )
     $db['odirus']['hostname'] = '172.17.0.202';
 
 /* End of file database.php */

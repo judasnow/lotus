@@ -9,12 +9,15 @@ require.config({
         underscore: "third_party/underscore" ,
         backbone: "third_party/backbone",
         mustache: "third_party/mustache",
+        async: "third_party/async",
 
         m: "js/app/model",
         v: "js/app/view",
         c: "js/app/collection",
         tpl: "js/app/tpl",
 
+        utility: "js/utility",
+        routes: "js/routes",
         config: "js/app_config"
     },
 
@@ -36,12 +39,21 @@ require(
 [
     "zepto",
 
-    "v/nav"
+    "v/nav",
+
+    "routes"
 ],
 function(
     $,
 
-    NavView
+    NavView,
+
+    Routes
 ) {
+    console.log( "init ok." );
+
     var navView = new NavView();
+
+    var routes = new Routes();
+    Backbone.history.start();
 });
