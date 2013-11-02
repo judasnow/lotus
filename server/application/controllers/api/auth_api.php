@@ -66,6 +66,32 @@ class Auth_api extends REST_Controller {
     }
 
     /**
+     * 卖家是否已经登录
+     *
+     * @param void
+     */
+    public function user_is_login_get() {
+        $this->load->library('auth_lib');
+        if ($this->auth_lib->user_is_login()) {
+            $this->response(
+                array(
+                    'result' => 'ok',
+                    'msg'    => 'User has login',
+                    'data'   => NULL
+                )
+            );
+        } else {
+            $this->response(
+                array(
+                    'result' => 'fail',
+                    'msg'    => 'User has not login',
+                    'data'   => NULL
+                )
+            );
+        }
+    }
+
+    /**
      * 当前登录用户信息
      *
      * @param void

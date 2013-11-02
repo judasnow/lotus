@@ -26,6 +26,16 @@ class Admin_model extends Base_model {
         }
     }
 
+    public function get_admin_id($username) {
+        $res_object = $this->base_query(array('username' => $username), 'id');
+        $res_array  = $res_object->result_array();
+        if ($this->result_rows($res_array) == 1) {
+            return $res_array[0];
+        } else {
+            return FALSE;
+        }
+    }
+
 }
 
 ?>
