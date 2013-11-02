@@ -1,11 +1,11 @@
 .dialog_box {
-    .var {
+    .dialog_box_var {
         @width: 384px;
         @height: 256px;
     }
 
-    .var;
-    min-width: @width;
+    .dialog_box_var;
+    width: @width;
     min-height: @height;
 
     position: fixed;
@@ -15,28 +15,30 @@
 
     background: #fff;
     background-clip: padding-box;
-    border: 16px solid rgba(0,0,0,0.256);
-    border-radius: 8px;
+    border: 8px solid rgba(0,0,0,0.256);
+    border-radius: 4px;
 
     display: none;
 
     .dialog {
-        @header_height: 32px;
-        @footer_height: 32px;
-        @padding: 8px;
-
-        border: 1px solid #999;
+        .dialog_var {
+            @header_height: 32px;
+            @footer_height: 32px;
+            @dialog_padding: 8px;
+        }
+        .dialog_var;
+        border: 1px solid rgba(64,64,64,0.8);
 
         .header {
             height: @header_height;
 
             line-height: @header_height;
 
-            border-bottom: 1px dashed #ddd;
+            border-bottom: 1px solid #eee;
 
             text-align: center;
 
-            padding: 0 @padding;
+            padding: 0 @dialog_padding;
 
             .close {
                 cursor: pointer;
@@ -45,24 +47,59 @@
                 line-height: @header_height;
                 color: #333;
             }
+
+            .title {
+                font-weight: bolder;
+            }
         }
 
         .body {
-            .var;
-            min-height: @height - @header_height - @header_height - (@padding * 2) - 2;
-            padding: @padding;
+            .dialog_box_var;
+
+            min-height: @height - @header_height - @header_height - (@dialog_padding * 2) - 2;
+            padding: @dialog_padding;
+
+            .item {
+                margin: 14px 0;
+
+                .input {
+                    .dialog_box_var;
+                    .dialog_var;
+                    @padding_left_right: 8px;
+
+                    width: @width - (@padding_left_right * 2) - (@dialog_padding * 2);
+                    padding: @padding_left_right 4px;
+
+                    border: 1px solid #ddd;
+                    border-radius: 4px;
+                    font-size: 14px;
+
+                    &:focus {
+                        border: 1px solid #999;
+                    }
+                }
+
+                .error {
+                    color: #bd082d;
+                    text-decoration: underline;
+                }
+            }
         }
 
         .footer {
             height: @footer_height;
             line-height: @footer_height;
-            border-top: 1px dashed #ddd;
+            border-top: 1px solid #eee;
             text-align: right;
-            padding: 0 @padding;
+            padding: 0 @dialog_padding;
 
             .text {
 
             }
         }
     }
+}
+
+#seller_login_dialog {
+    
 }

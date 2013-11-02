@@ -26,7 +26,11 @@ define([
         },
 
         showSellerLoginDialog: function() {
-            var sellerLoginDialogView = new SellerLoginDialogView();
+            if( typeof this._sellerLoginDialogView === "undefined" ) {
+                this._sellerLoginDialogView = new SellerLoginDialogView();
+            } else {
+                this._sellerLoginDialogView.showDialog();
+            }
         },
 
     });
