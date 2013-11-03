@@ -33,7 +33,7 @@ define([
 
         render: function() {
             this.$el = Mustache.to_html( this.tpl );
-            $( "#wrapper" ).html( this.$el );
+            utility.loadPage( this.$el );
         }
     });
 

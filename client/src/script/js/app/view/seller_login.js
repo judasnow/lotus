@@ -1,9 +1,15 @@
 //page 
 define ([
+
     "zepto",
-    "Backbone"    
+    "Backbone"
+
 ] , function () {
     "use strict";
 
-    var 
+    var SellerLoginPage = Backbone.View.extend({
+        initialize: function() {
+            
+        }
+    });
 });
