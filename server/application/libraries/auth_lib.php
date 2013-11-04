@@ -15,7 +15,15 @@ class Auth_lib {
     /**
      * 执行用户登录功能
      */
-    public function do_login($username, $password) {
+    public function do_login($username, $password, $remember) {
+        if ($this->user_is_login()) {
+            $this->err_msg[] = 'User has login';
+            return array(
+                'res' => FALSE,
+                'msg' => $this->err_msg
+            );
+        }
+
         $this->_CI->load->library('regulation');
         $arr = array('username' => $username, 'password' => $password);
         foreach ($arr as $key => $value) {
@@ -31,9 +39,16 @@ class Auth_lib {
         }
 
         $this->_CI->load->model('user_model', 'user_m');
+        $this->_CI->load->model('cookie_model', 'cookie_m');
         if($hash_password_db = $this->_CI->user_m->get_hash_password($username)) {
             if($hash_password_db['password'] == md5($password)) {
+                //设置session
                 $_SESSION['object_user_id'] = $this->_CI->user_m->get_user_id($username);
+                if ($remember == 'on') {
+                //设置cookie
+                setcookie('maoejie_session_id', session_id(), time() + 3600 * 24 * 7);
+                $this->_CI->cookie_m->write_user_cookie($_SESSION['object_user_id'], session_id(), $_SERVER['HTTP_USER_AGENT']);
+                }
                 return array(
                     'res' => TRUE,
                     'data' => NULL
@@ -51,6 +66,14 @@ class Auth_lib {
      * 检查用户是否已经登录
      */
     public function user_is_login() {
+        if (isset($_COOKIE['maoejie_session_id'])) {
+            $this->_CI->load->model('cookie_model', 'cookie_m');
+            if ($res = $this->_CI->cookie_m->get_user_cookie($_COOKIE['maoejie_session_id'])) {
+                if ($res['user_agent'] == $_SERVER['HTTP_USER_AGENT']) {
+                    $_SESSION['object_user_id'] = (int) $res['user_id'];
+                }
+            }
+        }
         if (!empty($_SESSION['object_user_id'])) {
             return TRUE;
         } else {
@@ -81,7 +104,10 @@ class Auth_lib {
      * 执行用户登出功能
      */
     public function do_logout() {
+        $this->_CI->load->model('cookie_model', 'cookie_m');
         unset($_SESSION['object_user_id']);
+        setcookie('maoejie_session_id', '', time() - 1);
+        $this->_CI->cookie_m->delete_user_cookie(session_id());
         if(empty($_SESSION['object_user_id'])) {
             return TRUE;
         } else {

@@ -14,6 +14,8 @@ class Auth_api extends REST_Controller {
     }
 
     public function is_login() {
+        $this->load->library('auth_lib');
+        $this->auth_lib->user_is_login();
         if (!isset($_SESSION['object_user_id'])) {
             $this->response(
                 array(
@@ -39,8 +41,9 @@ class Auth_api extends REST_Controller {
         //@toto remember ? on : off
         $username = $this->input->post('username', TRUE);
         $password = $this->input->post('password', TRUE);
+        $remember = $this->input->post('remember', TRUE);//默认一周时间过期
         $this->load->library('auth_lib');
-        $res = $this->auth_lib->do_login($username, $password);
+        $res = $this->auth_lib->do_login($username, $password, $remember);
         if($res['res']) {
             $this->response(
                 array(

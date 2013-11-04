@@ -14,6 +14,8 @@ class Product_api extends REST_Controller {
     }
 
     public function is_login() {
+        $this->load->library('auth_lib');
+        $this->auth_lib->user_is_login();
         if (!isset($_SESSION['object_user_id'])) {
             $this->response(
                 array(

@@ -17,6 +17,8 @@ class Upload_api extends REST_Controller {
      * 验证用户是否已经登录
      */
     public function is_login() {
+        $this->load->library('auth_lib');
+        $this->auth_lib->user_is_login();
         if (!isset($_SESSION['object_user_id'])) {
             $this->response(
                 array(
