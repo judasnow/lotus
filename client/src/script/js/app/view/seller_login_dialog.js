@@ -23,13 +23,18 @@ define([
         tpl: sellerLoginDialogTpl,
 
         events: {
-            "click .close": "_closeDialog"
+            "click .close": "_closeDialog",
+            "click .submit": "_doLogin"
         },
 
         initialize: function() {
             _.bindAll( this , "_closeDialog" , "showDialog" , "render" );
 
             this.render();
+        },
+
+        _doLogin: function() {
+            alert( "login now" )
         },
 
         _closeDialog: function() {
@@ -43,8 +48,6 @@ define([
         render: function() {
             this.$el.html( this.tpl );
             $( "body" ).append( this.$el );
-
-            this.$el.show();
         }
     });
 

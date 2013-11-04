@@ -2,30 +2,26 @@
 /**
  * @Author: odirus@163.com
  */
-
 class Auth_lib {
-    
+
     private $_CI;
     public $err_msg = array();
 
     public function __construct() {
         $this->_CI =& get_instance();
     }
-    
+
     /**
      * 执行用户登录功能
      */
-    public function do_login($username, $password, $remember) {
+    public function do_login($email, $password, $remember) {
         if ($this->user_is_login()) {
             $this->err_msg[] = 'User has login';
-            return array(
-                'res' => FALSE,
-                'msg' => $this->err_msg
-            );
+            return array( "login ok" , 200 );
         }
 
         $this->_CI->load->library('regulation');
-        $arr = array('username' => $username, 'password' => $password);
+        $arr = array('email' => $email, 'password' => $password);
         foreach ($arr as $key => $value) {
             $this->_CI->regulation->validate($key, $value);
         }
@@ -40,14 +36,15 @@ class Auth_lib {
 
         $this->_CI->load->model('user_model', 'user_m');
         $this->_CI->load->model('cookie_model', 'cookie_m');
-        if($hash_password_db = $this->_CI->user_m->get_hash_password($username)) {
-            if($hash_password_db['password'] == md5($password)) {
+        if($hash_password_db = $this->_CI->user_m->get_hash_password($email)) {
+            if($hash_password_db['password'] === md5($password)) {
                 //设置session
-                $_SESSION['object_user_id'] = $this->_CI->user_m->get_user_id($username);
+                $_SESSION['object_user_id'] = $this->_CI->user_m->get_user_id($email);
+                echo session_id();
                 if ($remember == 'on') {
-                //设置cookie
-                setcookie('maoejie_session_id', session_id(), time() + 3600 * 24 * 7);
-                $this->_CI->cookie_m->write_user_cookie($_SESSION['object_user_id'], session_id(), $_SERVER['HTTP_USER_AGENT']);
+                    //设置cookie
+                    setcookie('maoejie_session_id', session_id(), time() + 3600 * 24 * 7);
+                    $this->_CI->cookie_m->write_user_cookie($_SESSION['object_user_id'], session_id(), $_SERVER['HTTP_USER_AGENT']);
                 }
                 return array(
                     'res' => TRUE,
@@ -55,7 +52,8 @@ class Auth_lib {
                 );
             }
         }
-        $this->err_msg[] = 'Username or password wrong...';
+
+        $this->err_msg[] = 'Email or password wrong...';
         return array(
             'res' => FALSE,
             'msg' => $this->err_msg
@@ -140,8 +138,8 @@ class Auth_lib {
         $this->_CI->load->model('shop_model', 'shop_m');
         $this->_CI->load->model('view_model', 'view_m');
         $register_code_res = $this->verify_register_code($register_info['register_code']);
-        $username_res = $this->verify_username($register_info['username']);
-        if(!$register_code_res['res'] || !$username_res['res']) {
+        $email_res = $this->verify_email($register_info['email']);
+        if(!$register_code_res['res'] || !$email_res['res']) {
             return array(
                 'res' => FALSE,
                 'msg' => $this->err_msg
@@ -215,9 +213,9 @@ class Auth_lib {
     /**
      * 验证用户名是否可用
      */
-    public function verify_username($username) {
+    public function verify_email($email) {
         $this->_CI->load->library('regulation');
-        $this->_CI->regulation->validate('username', $username);
+        $this->_CI->regulation->validate('email', $email);
         if (count($this->_CI->regulation->err_msg) > 0) {
             $this->err_msg = $this->_CI->regulation->err_msg;
             $this->_CI->regulation->err_msg = array();
@@ -228,13 +226,13 @@ class Auth_lib {
         }
 
         $this->_CI->load->model('user_model', 'user_m');
-        if($this->_CI->user_m->username_is_available($username)) {
+        if($this->_CI->user_m->email_is_available($email)) {
             return array(
                 'res' => TRUE,
                 'data' => NULL
             );
         } else {
-            $this->err_msg[] = 'Username is not available';
+            $this->err_msg[] = 'Email is not available';
             return array(
                 'res' => FALSE,
                 'msg' => $this->err_msg

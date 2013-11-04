@@ -1,7 +1,6 @@
 define([
     "underscore",
     "backbone",
-    "utility",
 
     "v/page/seller_signup",
     "v/page/seller_login"
@@ -9,7 +8,6 @@ define([
 ] , function(
     _,
     Backbone,
-    utility,
 
     SellerSignupView,
     SellerLoginView
@@ -37,7 +35,7 @@ define([
         },
 
         _showSellerLogin: function() {
-            new SellLoginPageView();
+            new SellerLoginView();
         }
     });
 

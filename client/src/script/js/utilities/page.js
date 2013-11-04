@@ -6,16 +6,16 @@ define([
 ], function( $ , async ) {
     "use strict";
 
-    var utility = {};
+    var page = {};
 
-    var $wrapper = $( "#wrapper .box" );
+    var $wrapper = $( "#wrapper" );
 
     var fadeOutPage = function( cb ) {
     //{{{
         $wrapper.animate({
             opacity: 0
         }, {
-            duration: 200,
+            duration: 30,
             complete: cb
         });
     };//}}}
@@ -25,25 +25,29 @@ define([
         $wrapper.animate({
             opacity: 100
         }, {
-            duration: 50,
+            duration: 30,
             complete: cb
         });
     };//}}}
 
-    utility.loadPage = function( html ) {
+    // 需要注意的地方就是 page 变换 替换的是 box 部分的内容
+    page.loadPage = function( $el ) {
     //{{{
         async.series([
             function( cb ) {
                 fadeOutPage( cb );
             },
             function( cb ) {
-                $wrapper.html( html )
+                $wrapper.html( $el );
+                cb();
             },
             function( cb ) {
                 fadeInPage( cb );
             }
-        ]);
+        ], function( err , res ) {
+            //@TODO
+        });
     };//}}}
 
-    return utility;
+    return page;
 });

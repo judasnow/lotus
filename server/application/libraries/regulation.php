@@ -20,11 +20,11 @@ class Regulation {
     }
 
     //验证登录用户名
-    private function validate_username($content) {
+    private function validate_email($content) {
         if (is_string($content) && !empty($content)) {
             return TRUE;
         } else {
-            $this->err_msg[] = 'Username is illegal';
+            $this->err_msg[] = 'Email is illegal';
             return FALSE;
         }
     }

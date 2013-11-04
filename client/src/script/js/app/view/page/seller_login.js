@@ -3,37 +3,67 @@ define ([
 
     "zepto",
     "backbone",
+    "mustache",
 
-    "utility",
+    "utilities/page",
+    "utilities/auth",
 
-    "text!tpl/seller_login_page.mustache"
+    "text!tpl/page/seller_login.mustache"
 
-] , function ( $ , Backbone , aellerLoginPageTpl ) {
+] , function (
+
+    $ ,
+    Backbone ,
+    Mustache ,
+
+    page,
+    auth,
+
+    sellerLoginPageTpl 
+) {
     "use strict";
 
     var SellerLoginView = Backbone.View.extend({
 
+        id: "seller_login",
         className: "box",
         tagName: "div",
 
-        tpl: sellerLoginPageTpl,
+        template: sellerLoginPageTpl,
 
-        initialize: function() {
-            _.bindAll( this , "render" );
-
-            this.render(); 
+        events: {
+            "click .submit": "_doLogin"
         },
 
+        initialize: function() {
+            _.bindAll( this  , "_doLogin" , "_getUserInput" , "render" );
+
+            this.render();
+        },
+
+        _getUserInput: function() {
+            var _$el = this.$el;
+
+            this._$email = _$el.find( "input[name='email']" );
+            this._$password = _$el.find( "input[name='password']" );
+
+            this._email = this._$email.val();
+            this._password = this._$password.val();
+        },
+
+        _doLogin: function() {
+            this._getUserInput();
+            auth.doLogin( this._email , this._password );
+         },
+
         render: function() {
-            this.$el = Mustache.to_html( this.tpl );
-            utility.loadPage( this.$el )
+            this.$el.html( Mustache.to_html( this.template ) );
+            page.loadPage( this.$el );
+            return this;
         }
     });
 
     return SellerLoginView;
 });
-
-
-
 
 

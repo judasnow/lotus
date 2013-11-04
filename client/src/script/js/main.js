@@ -16,7 +16,7 @@ require.config({
         c: "js/app/collection",
         tpl: "js/app/tpl",
 
-        utility: "js/utility",
+        utilities: "js/utilities",
         routes: "js/routes",
         config: "js/app_config"
     },

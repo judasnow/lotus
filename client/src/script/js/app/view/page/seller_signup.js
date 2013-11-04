@@ -5,15 +5,16 @@ define([
     "mustache",
     "backbone",
 
-    "utility",
+    "utilities/page",
 
-    "text!tpl/seller_signup.mustache"
+    "text!tpl/page/seller_signup.mustache"
 
-] , function( 
+] , function(
+
     $,
     Mustache,
     Backbone,
-    utility,
+    page,
 
     SellerSignupTpl 
  ) { 
@@ -24,6 +25,10 @@ define([
         className: "box",
         tagName: "div",
 
+        events: {
+            "click .submit": "doReg"
+        },
+
         tpl: SellerSignupTpl,
 
         initialize: function() {
@@ -32,9 +37,13 @@ define([
             this.render();
         },
 
+        doReg: function() {
+            alert( 123 )
+        },
+
         render: function() {
-            this.$el = Mustache.to_html( this.tpl );
-            utility.loadPage( this.$el );
+            this.$el.html( Mustache.to_html( this.tpl ) );
+            page.loadPage( this.$el );
         }
     });
 
