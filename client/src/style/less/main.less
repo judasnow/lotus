@@ -3,12 +3,16 @@
 @link_color: #ac1e4c;
 @link_color2: #2481b9;
 @link_color3: #6d6d6d;
+@link_color4: #1d9062;
 
+@import "btn";
 @import "header";
 @import "categories_browse";
 @import "search";
 @import "items_list";
 @import "hot_items_rank";
+@import "tooltip";
+@import "dialog";
 @import "footer";
 
 input, textarea {
@@ -18,8 +22,16 @@ input, textarea {
 body {
     padding: 0;
     margin: 0;
+
+    //background: #e6e6e6;
+    background: #F7F7F7 url(/picture/common/bg_texture.jpg) repeat scroll 0px 0px;
+
     font-size: @font_size;
     font-family: Helvetica, Arial, sans-serif;
+
+    -webkit-font-feature-settings: "frac";
+    -moz-font-feature-settings: "frac";
+    font-feature-settings: "frac";
 }
 
 a {
@@ -40,5 +52,4 @@ a {
         margin-top: 12px;
     }
 }
-
 

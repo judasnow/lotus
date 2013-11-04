@@ -1,21 +1,49 @@
 define([
 
-    "zepto"
+    "zepto",
+    "async"
 
-], function( $ ) {
+], function( $ , async ) {
     "use strict";
 
     var utility = {};
 
-    //当前实现的思路就是 完全替换 body 中的元素
-    //为给定的 html 文本信息
-    utility.loadPage = function( html ) {
-        _$body.html( html );
-    };
+    var $wrapper = $( "#wrapper .box" );
 
-    utility.showLoading = function() {
-        
-    };
+    var fadeOutPage = function( cb ) {
+    //{{{
+        $wrapper.animate({
+            opacity: 0
+        }, {
+            duration: 200,
+            complete: cb
+        });
+    };//}}}
+
+    var fadeInPage = function( cb ) {
+    //{{{
+        $wrapper.animate({
+            opacity: 100
+        }, {
+            duration: 50,
+            complete: cb
+        });
+    };//}}}
+
+    utility.loadPage = function( html ) {
+    //{{{
+        async.series([
+            function( cb ) {
+                fadeOutPage( cb );
+            },
+            function( cb ) {
+                $wrapper.html( html )
+            },
+            function( cb ) {
+                fadeInPage( cb );
+            }
+        ]);
+    };//}}}
 
     return utility;
 });

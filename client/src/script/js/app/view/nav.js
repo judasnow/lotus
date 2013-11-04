@@ -15,17 +15,30 @@ define([
             "click .categories_browse_btn": "toggleCategoriesBrowse"
         },
 
-        initialize: function() {
-            _.bindAll( this , "toggleCategoriesBrowse" );
+        _getEls: function() {
+            this._$loading = this.$el.find( ".loading" );
+        },
 
+        initialize: function() {
+            _.bindAll( this , "toggleCategoriesBrowse" , "_getEls" , "showLoading" , "hideLoading" );
+
+            this._getEls();
             this._categoriesBrowseView = new CategoriesBrowseView();
         },
 
         toggleCategoriesBrowse: function() {
             this._categoriesBrowseView.toggle();
+        },
+
+        showLoading: function() {
+            this._$loading.show();
+        },
+
+        hideLoading: function() {
+            this._$loading.hide();
         }
 
     });
 
     return Nav;
-})
+});

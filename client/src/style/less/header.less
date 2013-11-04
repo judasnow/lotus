@@ -32,6 +32,8 @@
 
         font-size: 32px;
         color: rgba(64,64,64,0.31);
+
+        display: none;
     }
 
     .logo_box {
@@ -59,16 +61,17 @@
         @item_bg_color: #666;
 
         .item_active(@bg_color) {
-            background: darken( @bg_color , 3% );
+            background: darken( @bg_color , 5% );
         }
 
         .item {
             cursor: pointer;
             float: left;
             border-right: 1px solid #717171;
-            width: 96px;
             background: @item_bg_color;
             text-align: center;
+            display: inline-block;
+            padding: 0 8px;
 
             color: #fff;
             &:hover {
@@ -78,6 +81,10 @@
             &:last-child {
                 border: 0;
             }
+        }
+
+        .categories_browse_btn {
+            padding: 0 16px;
         }
 
         .nav_user {

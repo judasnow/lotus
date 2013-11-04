@@ -1,28 +1,31 @@
 define([
     "underscore",
     "backbone",
-    "utility"
+    "utility",
 
-] , function( _ , Backbone , utility ) {
+    "v/seller_signup"
+
+] , function(
+    _,
+    Backbone,
+    utility,
+
+    SellerSignupView
+) {
     "use strict";
 
     var Routes = Backbone.Router.extend({
 
         routes: {
-            "seller_signup": "_showSellerSignup",
-            "seller_login": "_showSellerLogin"
+            "seller_signup": "_showSellerSignup"
         },
 
         initialize: function() {
-            _.bindAll( this , "_showSellerSignup" , "_showSellerLogin" );
-        },
-
-        _showSellerLogin: function() {
-            //utility.loadPage( "123" );
+            _.bindAll( this , "_showSellerSignup" );
         },
 
         _showSellerSignup: function() {
-            
+            new SellerSignupView();
         }
     });
 
