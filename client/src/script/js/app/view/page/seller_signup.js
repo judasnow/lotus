@@ -1,3 +1,4 @@
+//page
 define([
 
     "zepto",
@@ -39,3 +40,4 @@ define([
 
     return SellerSignupView;
 });
+
