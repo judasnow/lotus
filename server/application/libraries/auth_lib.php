@@ -13,8 +13,11 @@ class Auth_lib {
 
     /**
      * 执行用户登录功能
+     *
+     * @return array $res
      */
     public function do_login($email, $password, $remember) {
+
         if ($this->user_is_login()) {
             $this->err_msg[] = 'User has login';
             return array( "login ok" , 200 );
@@ -22,9 +25,12 @@ class Auth_lib {
 
         $this->_CI->load->library('regulation');
         $arr = array('email' => $email, 'password' => $password);
+
         foreach ($arr as $key => $value) {
             $this->_CI->regulation->validate($key, $value);
         }
+
+        //用户输入非法
         if (count($this->_CI->regulation->err_msg) > 0) {
             $this->err_msg = $this->_CI->regulation->err_msg;
             $this->_CI->regulation->err_msg = array();
@@ -36,11 +42,11 @@ class Auth_lib {
 
         $this->_CI->load->model('user_model', 'user_m');
         $this->_CI->load->model('cookie_model', 'cookie_m');
+
         if($hash_password_db = $this->_CI->user_m->get_hash_password($email)) {
             if($hash_password_db['password'] === md5($password)) {
                 //设置session
                 $_SESSION['object_user_id'] = $this->_CI->user_m->get_user_id($email);
-                echo session_id();
                 if ($remember == 'on') {
                     //设置cookie
                     setcookie('maoejie_session_id', session_id(), time() + 3600 * 24 * 7);

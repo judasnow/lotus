@@ -20,6 +20,11 @@ header('Access-Control-Allow-Origin: *');
  * NOTE: If you change these, also change the error_reporting() code below
  *
  */
+
+if ( isset( $_REQUEST['session_id'] ) ) {
+    session_id( $_REQUEST['session_id'] );
+}
+
 	define('ENVIRONMENT', 'development');
 /*
  *---------------------------------------------------------------

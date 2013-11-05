@@ -54,7 +54,7 @@ define ([
         _doLogin: function() {
             this._getUserInput();
             auth.doLogin( this._email , this._password );
-         },
+        },
 
         render: function() {
             this.$el.html( Mustache.to_html( this.template ) );

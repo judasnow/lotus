@@ -7,7 +7,7 @@
 require_once(APPPATH . '/libraries/REST_Controller.php');
 
 class Auth_api extends REST_Controller {
-    
+
     public function __construct() {
         parent::__construct();
         session_start();
@@ -27,7 +27,6 @@ class Auth_api extends REST_Controller {
         }
     }
         
-
     /**
      * 登录系统
      *
@@ -39,31 +38,23 @@ class Auth_api extends REST_Controller {
      */
     public function do_login_post() {
         //@todo remember ? on : off
+        $this->load->library('auth_lib');
         $email = $this->input->post('email', TRUE);
         $password = $this->input->post('password', TRUE);
         $remember = $this->input->post('remember', TRUE);//默认一周时间过期
-        $this->load->library('auth_lib');
         $res = $this->auth_lib->do_login($email, $password, $remember);
+
         if($res['res']) {
-            $this->response(
-                array(
-                    'result' => 'ok',
-                    'msg' => 'Login success',
-                    'data' => NULL
-                )
-            );
+            //login ok 返回当前分配的 session_id 
+            $this->response( ['session_id'=> session_id()] , 200 );
         } else {
             $msg = 'Email or password wrong';
+
             if (count($res['msg']) > 0) {
                 $msg = implode('; ', $res['msg']);
             }
-            $this->response(
-                array(
-                    'result' => 'fail',
-                    'msg' => $msg,
-                    'data' => NULL
-                )
-            );
+
+            $this->response( ['msg' => $msg] , 400 );
         }
         
     }
