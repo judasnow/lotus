@@ -17,24 +17,30 @@ define([
     var Routes = Backbone.Router.extend({
 
         routes: {
-            "seller_signup": "_showSellerSignup",
-            "seller_login": "_showSellerLogin"
+            "main": "_showMainPage",
+            "seller_signup": "_showSellerSignupPage",
+            "seller_login": "_showSellerLoginPage"
         },
 
         initialize: function() {
             _.bindAll(
                 this ,
 
-                "_showSellerSignup",
-                "_showSellerLogin"
+                "_showMainPage",
+                "_showSellerSignupPage",
+                "_showSellerLoginPage"
             );
         },
 
-        _showSellerSignup: function() {
+        _showMainPage: function() {
+            console.log( "main page" );
+        },
+
+        _showSellerSignupPage: function() {
             new SellerSignupView();
         },
 
-        _showSellerLogin: function() {
+        _showSellerLoginPage: function() {
             new SellerLoginView();
         }
     });

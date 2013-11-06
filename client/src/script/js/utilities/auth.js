@@ -10,38 +10,56 @@ define([
 
     var auth = {};
 
-    var _loginSuccess = function() {
-        
-    };
+    var doLogin = function( info , success , fail ) {
+        if( arguments.length !== 3 ||
+            typeof info.email === "undefined" ||
+            typeof info.password === "undefined" ||
+            typeof success !== "function" ||
+            typeof fail !== "function"
+        ) {
 
-    var _loginFail = function() {
-        
-    };
+            throw new Error( "doLogin params invalid." );
 
-    var doLogin = function( email , password ) {
-        //@TODO 格式的合法性检查
-        $.ajax({
-            type: "POST",
-            dataType: "json",
-            url: config.serverAddress + "/auth_api/do_login/",
-            xhrFields: {
-                withCredentials: true
-            },
-            data: {
+        } else {
+            var email = info.email;
+            var password = info.password;
+
+            var data = {
                 email: email,
-                password: password,
-                session_id: document.cookie
-            },
-            success: function( res ) {
-                //login ok
-                var session_id = res.session_id;
-                document.cookie = session_id;
-            },
-            error: function( xhr , type ) {
-                //login fail
-                console.dir( xhr.status );
+                password: password
+            };
+
+            var session_id = window.sessionStorage.getItem( "session_id" );
+            if( session_id !== null ) {
+                data.session_id = session_id;
             }
-        });
+
+            //@TODO 格式的合法性检查
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: config.serverAddress + "/auth_api/do_login/",
+                data: data,
+
+                success: function( res ) {
+                    //login ok
+                    var session_id = res.session_id;
+                    window.sessionStorage.setItem( "session_id" , session_id );
+
+                    success();
+                },
+                error: function( xhr , type ) {
+                    //login fail
+                    if( xhr.status !== 400 ) {
+                        //登录失败期待的返回值是 400
+                        console.dir( "login fail but status code isn`t 400 but " + xhr.status );
+                    }
+
+                    fail();
+                }
+            });
+
+        }
     };
 
     auth.doLogin = doLogin;

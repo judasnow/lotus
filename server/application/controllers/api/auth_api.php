@@ -37,11 +37,14 @@ class Auth_api extends REST_Controller {
      * @return restful
      */
     public function do_login_post() {
-        //@todo remember ? on : off
+        //@TODO remember ? on : off
         $this->load->library('auth_lib');
+
         $email = $this->input->post('email', TRUE);
         $password = $this->input->post('password', TRUE);
-        $remember = $this->input->post('remember', TRUE);//默认一周时间过期
+        //默认一周时间过期
+        $remember = $this->input->post('remember', TRUE);
+
         $res = $this->auth_lib->do_login($email, $password, $remember);
 
         if($res['res']) {
@@ -56,7 +59,6 @@ class Auth_api extends REST_Controller {
 
             $this->response( ['msg' => $msg] , 400 );
         }
-        
     }
 
     /**

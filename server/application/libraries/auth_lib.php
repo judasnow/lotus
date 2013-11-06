@@ -11,21 +11,45 @@ class Auth_lib {
         $this->_CI =& get_instance();
     }
 
+    private function _check_cookies() {
+        if (isset($_COOKIE['maoejie_session_id'])) {
+            $this->_CI->load->model('cookie_model', 'cookie_m');
+            if ($res = $this->_CI->cookie_m->get_user_cookie($_COOKIE['maoejie_session_id'])) {
+                if ($res['user_agent'] == $_SERVER['HTTP_USER_AGENT']) {
+                    $_SESSION['object_user_id'] = (int) $res['user_id'];
+                }
+            }
+        }
+    }
+
+    /**
+     * 检查用户是否已经登录
+     *
+     * @return boolean
+     */
+    public function user_is_login() {
+        if (isset($_SESSION['object_user_id']) && intval($_SESSION['object_user_id'])) {
+            return TRUE;
+        } else {
+            return FALSE;
+        }
+    }
+
     /**
      * 执行用户登录功能
      *
-     * @return array $res
+     * @return array $res => [boolean, Array]
      */
     public function do_login($email, $password, $remember) {
+        $this->_CI->load->library('regulation');
+        $this->_CI->load->model('user_model', 'user_m');
+        $this->_CI->load->model('cookie_model', 'cookie_m');
 
         if ($this->user_is_login()) {
-            $this->err_msg[] = 'User has login';
-            return array( "login ok" , 200 );
+            return [ 'res' => FALSE , 'msg' => ["user has logged in"] ];
         }
 
-        $this->_CI->load->library('regulation');
         $arr = array('email' => $email, 'password' => $password);
-
         foreach ($arr as $key => $value) {
             $this->_CI->regulation->validate($key, $value);
         }
@@ -39,9 +63,6 @@ class Auth_lib {
                 'msg' => $this->err_msg
             );
         }
-
-        $this->_CI->load->model('user_model', 'user_m');
-        $this->_CI->load->model('cookie_model', 'cookie_m');
 
         if($hash_password_db = $this->_CI->user_m->get_hash_password($email)) {
             if($hash_password_db['password'] === md5($password)) {
@@ -59,32 +80,12 @@ class Auth_lib {
             }
         }
 
-        $this->err_msg[] = 'Email or password wrong...';
+        $this->err_msg[] = 'email or password wrong';
         return array(
             'res' => FALSE,
             'msg' => $this->err_msg
         );
     }
-
-    /**
-     * 检查用户是否已经登录
-     */
-    public function user_is_login() {
-        if (isset($_COOKIE['maoejie_session_id'])) {
-            $this->_CI->load->model('cookie_model', 'cookie_m');
-            if ($res = $this->_CI->cookie_m->get_user_cookie($_COOKIE['maoejie_session_id'])) {
-                if ($res['user_agent'] == $_SERVER['HTTP_USER_AGENT']) {
-                    $_SESSION['object_user_id'] = (int) $res['user_id'];
-                }
-            }
-        }
-        if (!empty($_SESSION['object_user_id'])) {
-            return TRUE;
-        } else {
-            return FALSE;
-        }
-    }
-
 
     /**
      * 获取用户基本信息

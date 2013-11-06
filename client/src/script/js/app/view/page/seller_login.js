@@ -53,7 +53,20 @@ define ([
 
         _doLogin: function() {
             this._getUserInput();
-            auth.doLogin( this._email , this._password );
+
+            auth.doLogin({
+
+                email: this._email,
+                password: this._password
+
+            }, function() {
+                //ok
+                //window.routes.navigate( "main" , {trigger: true});
+                console.dir( "ok" );
+            }, function() {
+                //fail
+                console.log( "login fail" );
+            });
         },
 
         render: function() {

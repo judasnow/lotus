@@ -58,5 +58,6 @@ function(
     var footerView = new FooterView();
 
     var routes = new Routes();
+    window.routes = routes;
     Backbone.history.start();
 });
