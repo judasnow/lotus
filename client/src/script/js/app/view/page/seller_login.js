@@ -1,4 +1,3 @@
-//page 
 define ([
 
     "zepto",
@@ -42,17 +41,26 @@ define ([
         },
 
         _getUserInput: function() {
-            var _$el = this.$el;
-
-            this._$email = _$el.find( "input[name='email']" );
-            this._$password = _$el.find( "input[name='password']" );
 
             this._email = this._$email.val();
             this._password = this._$password.val();
         },
 
+        _checkInputValues: function() {
+            
+        },
+
+        _getEls: function() {
+            var _$el = this.$el;
+
+            this._$email = _$el.find( "input[name='email']" );
+            this._$password = _$el.find( "input[name='password']" );
+        },
+
         _doLogin: function() {
-            this._getUserInput();
+            var that = this;
+
+            this._checkInputValues();
 
             auth.doLogin({
 
@@ -62,16 +70,19 @@ define ([
             }, function() {
                 //ok
                 //window.routes.navigate( "main" , {trigger: true});
-                console.dir( "ok" );
             }, function() {
                 //fail
-                console.log( "login fail" );
+                that._$error_info.text( "用户名或密码错误" );
             });
         },
 
         render: function() {
             this.$el.html( Mustache.to_html( this.template ) );
             page.loadPage( this.$el );
+
+            this._getUserInput();
+            this._$error_info = this.$el.find( ".error_info" );
+
             return this;
         }
     });
