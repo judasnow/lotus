@@ -17,6 +17,7 @@ define([
 
         _getEls: function() {
             this._$loading = this.$el.find( ".loading" );
+            console.dir( this._$loading )
         },
 
         initialize: function() {

@@ -55,6 +55,8 @@ function(
     console.log( "init ok." );
 
     var navView = new NavView();
+    window.navView = navView;
+
     var footerView = new FooterView();
 
     var routes = new Routes();

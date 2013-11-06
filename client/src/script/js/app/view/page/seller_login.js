@@ -35,13 +35,12 @@ define ([
         },
 
         initialize: function() {
-            _.bindAll( this  , "_doLogin" , "_getUserInput" , "render" );
+            _.bindAll( this  , "_doLogin" , "_getEls" , "_getUserInput" , "render" );
 
             this.render();
         },
 
         _getUserInput: function() {
-
             this._email = this._$email.val();
             this._password = this._$password.val();
         },
@@ -58,6 +57,8 @@ define ([
         },
 
         _doLogin: function() {
+            window.navView.showLoading();
+
             var that = this;
 
             this._checkInputValues();
@@ -80,6 +81,7 @@ define ([
             this.$el.html( Mustache.to_html( this.template ) );
             page.loadPage( this.$el );
 
+            this._getEls();
             this._getUserInput();
             this._$error_info = this.$el.find( ".error_info" );
 
