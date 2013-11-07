@@ -18,7 +18,8 @@ require.config({
 
         utilities: "js/utilities",
         routes: "js/routes",
-        config: "js/app_config"
+        config: "js/config",
+        global_events: "js/global_events"
     },
 
     shim: {
@@ -38,26 +39,32 @@ require.config({
 require(
 [
     "zepto",
+    "underscore",
 
     "v/nav",
     "v/footer",
 
-    "routes"
+    "routes",
+
+    "global_events"
 ],
 function(
     $,
+    _,
 
     NavView,
     FooterView,
 
-    Routes
+    Routes,
+
+    GlobalEvents
 ) {
-    console.log( "init ok." );
+    "use strict";
 
     var navView = new NavView();
-    window.navView = navView;
-
     var footerView = new FooterView();
+
+    window.e = new GlobalEvents({ nav_view: navView }).e;
 
     var routes = new Routes();
     window.routes = routes;

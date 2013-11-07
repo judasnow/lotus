@@ -43,6 +43,7 @@ define([
 
                 success: function( res ) {
                     //login ok
+                    //返回当前 session_id
                     var session_id = res.session_id;
                     window.sessionStorage.setItem( "session_id" , session_id );
 

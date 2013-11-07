@@ -4,8 +4,11 @@ define ([
     "backbone",
     "mustache",
 
+    "m/user",
+
     "utilities/page",
     "utilities/auth",
+    "utilities/common",
 
     "text!tpl/page/seller_login.mustache"
 
@@ -15,8 +18,11 @@ define ([
     Backbone ,
     Mustache ,
 
+    User,
+
     page,
     auth,
+    common,
 
     sellerLoginPageTpl 
 ) {
@@ -57,11 +63,12 @@ define ([
         },
 
         _doLogin: function() {
-            window.navView.showLoading();
+            window.e.trigger( "show_loading" );
 
+            //this._checkInputValues();
+
+            this._getUserInput();
             var that = this;
-
-            this._checkInputValues();
 
             auth.doLogin({
 
@@ -70,10 +77,23 @@ define ([
 
             }, function() {
                 //ok
-                //window.routes.navigate( "main" , {trigger: true});
+                window.routes.navigate( "main" , {trigger: true});
+                window.e.trigger( "hide_loading" );
+
+                var objectUser = new User();
+                objectUser.fetch({
+                    data: {
+                        session_id: common.getSessionId()
+                    }
+                });
+
+                window.objectUser = objectUser;
+                window.e.trigger( "login_ok" );
+
             }, function() {
-                //fail
+                //fail:
                 that._$error_info.text( "用户名或密码错误" );
+                window.e.trigger( "hide_loading" );
             });
         },
 
@@ -82,7 +102,6 @@ define ([
             page.loadPage( this.$el );
 
             this._getEls();
-            this._getUserInput();
             this._$error_info = this.$el.find( ".error_info" );
 
             return this;

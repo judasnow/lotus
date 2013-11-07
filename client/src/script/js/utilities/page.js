@@ -15,7 +15,7 @@ define([
         $wrapper.animate({
             opacity: 0
         }, {
-            duration: 30,
+            duration: 100,
             complete: cb
         });
     };//}}}
@@ -25,7 +25,7 @@ define([
         $wrapper.animate({
             opacity: 100
         }, {
-            duration: 30,
+            duration: 50,
             complete: cb
         });
     };//}}}

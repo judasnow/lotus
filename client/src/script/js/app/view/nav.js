@@ -2,10 +2,22 @@ define([
 
     "zepto",
     "backbone",
+    "mustache",
 
-    "v/categories_browse"
+    "v/categories_browse",
 
-] , function( $ , Backbone , CategoriesBrowseView ) {
+    "text!tpl/nav_username.mustache"
+
+] , function(
+    $ ,
+    Backbone ,
+    Mustache,
+
+    CategoriesBrowseView,
+
+    usernameTpl
+ ) {
+    "use strict";
 
     var Nav = Backbone.View.extend({
 
@@ -15,20 +27,23 @@ define([
             "click .categories_browse_btn": "toggleCategoriesBrowse"
         },
 
-        _getEls: function() {
-            this._$loading = this.$el.find( ".loading" );
-            console.dir( this._$loading )
-        },
-
         initialize: function() {
-            _.bindAll( this , "toggleCategoriesBrowse" , "_getEls" , "showLoading" , "hideLoading" );
+            _.bindAll(
+                this ,
+                "toggleCategoriesBrowse" ,
+                "_getEls" ,
+                "showObjectUserInfo" ,
+                "showLoading" ,
+                "hideLoading"
+            );
 
             this._getEls();
             this._categoriesBrowseView = new CategoriesBrowseView();
         },
 
-        toggleCategoriesBrowse: function() {
-            this._categoriesBrowseView.toggle();
+        _getEls: function() {
+            this._$userinfo = this.$el.find( ".userinfo" );
+            this._$loading = this.$el.find( ".loading" );
         },
 
         showLoading: function() {
@@ -37,7 +52,15 @@ define([
 
         hideLoading: function() {
             this._$loading.hide();
-        }
+        },
+
+        showObjectUserInfo: function() {
+            this._$userinfo.html( Mustache.to_html( usernameTpl , window.objectUser.toJSON() ) );
+        },
+
+        toggleCategoriesBrowse: function() {
+            this._categoriesBrowseView.toggle();
+        },
 
     });
 

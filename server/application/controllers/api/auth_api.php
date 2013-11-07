@@ -42,14 +42,17 @@ class Auth_api extends REST_Controller {
 
         $email = $this->input->post('email', TRUE);
         $password = $this->input->post('password', TRUE);
-        //默认一周时间过期
         $remember = $this->input->post('remember', TRUE);
 
         $res = $this->auth_lib->do_login($email, $password, $remember);
 
         if($res['res']) {
+
             //login ok 返回当前分配的 session_id 
-            $this->response( ['session_id'=> session_id()] , 200 );
+            $this->response([
+                'session_id' => session_id()
+            ] , 200 );
+
         } else {
             $msg = 'Email or password wrong';
 
