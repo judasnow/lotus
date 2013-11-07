@@ -46,6 +46,8 @@ require(
 
     "routes",
 
+    "utilities/common",
+
     "global_events"
 ],
 function(
@@ -56,6 +58,8 @@ function(
     FooterView,
 
     Routes,
+
+    common,
 
     GlobalEvents
 ) {
@@ -69,4 +73,12 @@ function(
     var routes = new Routes();
     window.routes = routes;
     Backbone.history.start();
+
+    //在用户刷新页面之后根据当前的状态初始化页面
+    //is login ?
+    console.dir( common.getSessionId() )
+    if( common.getSessionId() !== null ) {
+        // has logged in 
+        window.e.trigger( "login_ok" );
+    }
 });
