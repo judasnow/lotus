@@ -88,6 +88,7 @@ define ([
                 });
 
                 window.objectUser = objectUser;
+
                 window.e.trigger( "login_ok" );
 
             }, function() {
