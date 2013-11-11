@@ -70,15 +70,15 @@ function(
 
     window.e = new GlobalEvents({ nav_view: navView }).e;
 
+    //在用户刷新页面之后根据当前的状态初始化页面
+    //is login ?
+    if( common.getSessionId() !== null ) {
+        // has logged in
+        window.e.trigger( "login_ok" );
+    }
+
     var routes = new Routes();
     window.routes = routes;
     Backbone.history.start();
-
-    //在用户刷新页面之后根据当前的状态初始化页面
-    //is login ?
-    console.dir( common.getSessionId() )
-    if( common.getSessionId() !== null ) {
-        // has logged in 
-        window.e.trigger( "login_ok" );
-    }
 });
+

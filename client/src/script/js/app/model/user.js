@@ -7,10 +7,11 @@ define([
     "use strict";
 
     var User = Backbone.Model.extend({
+
         defaults: {
+            user_id: "",
             email: "",
-            password: "",
-            role: ""
+            user_role: ""
         },
 
         initialize: function() {

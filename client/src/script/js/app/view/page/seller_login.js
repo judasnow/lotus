@@ -41,7 +41,14 @@ define ([
         },
 
         initialize: function() {
-            _.bindAll( this  , "_doLogin" , "_getEls" , "_getUserInput" , "render" );
+            _.bindAll(
+                this,
+
+                "_doLogin",
+                "_getEls",
+                "_getUserInput",
+                "render" 
+            );
 
             this.render();
         },
@@ -79,20 +86,10 @@ define ([
                 //ok
                 window.routes.navigate( "main" , {trigger: true});
                 window.e.trigger( "hide_loading" );
-
-                var objectUser = new User();
-                objectUser.fetch({
-                    data: {
-                        session_id: common.getSessionId()
-                    }
-                });
-
-                window.objectUser = objectUser;
-
                 window.e.trigger( "login_ok" );
 
             }, function() {
-                //fail:
+                //fail
                 that._$error_info.text( "用户名或密码错误" );
                 window.e.trigger( "hide_loading" );
             });

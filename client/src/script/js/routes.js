@@ -2,12 +2,16 @@ define([
     "underscore",
     "backbone",
 
+    "utilities/auth",
+
     "v/page/seller_signup",
     "v/page/seller_login"
 
 ] , function(
     _,
     Backbone,
+
+    auth,
 
     SellerSignupView,
     SellerLoginView
@@ -19,7 +23,8 @@ define([
         routes: {
             "main": "_showMainPage",
             "seller_signup": "_showSellerSignupPage",
-            "seller_login": "_showSellerLoginPage"
+            "seller_login": "_showSellerLoginPage",
+            "seller_logout": "_sellerLogout"
         },
 
         initialize: function() {
@@ -28,7 +33,8 @@ define([
 
                 "_showMainPage",
                 "_showSellerSignupPage",
-                "_showSellerLoginPage"
+                "_showSellerLoginPage",
+                "_sellerLogout"
             );
         },
 
@@ -42,6 +48,12 @@ define([
 
         _showSellerLoginPage: function() {
             new SellerLoginView();
+        },
+
+        _sellerLogout: function() {
+            auth.doLogout( function() {
+                window.routes.navigate( "main" , {trigger: true} );
+            });
         }
     });
 

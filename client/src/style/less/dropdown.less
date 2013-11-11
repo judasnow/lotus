@@ -1,0 +1,46 @@
+.dropdown {
+    .var {
+        @width: 128px;
+    }
+    .var;
+
+    width: @width;
+    min-height: 64px;
+    //top: 47px;
+    padding-top: 8px;
+    position: fixed;
+    background: rgba(200,200,200,0.9);
+    border: 1px solid #999;
+    border-top: 0;
+    border-radius: 4px;
+    box-shadow: 0 0px 8px rgb(192,192,192, 0.9);
+    display: none;
+
+    .menu {
+
+    }
+
+    .menuitem {
+        .var {
+            @height: 24px;
+            @padding: 8px;
+        }
+        .var;
+        height: @height;
+
+        margin-bottom: 4px;
+        padding: 0 @padding;
+        display: inline-block;
+        .dropdown > .var;
+        width: @width - (@padding * 2);
+        line-height: @height;
+        float: left;
+        clear: both;
+
+        cursor: pointer;
+
+        &:hover {
+            background: #bbb;
+        }
+    }
+}

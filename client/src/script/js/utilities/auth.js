@@ -5,21 +5,19 @@ define([
     "config"
 
 ] , function( $ , config ) {
-
     "use strict";
 
     var auth = {};
 
     var doLogin = function( info , success , fail ) {
+    //{{{
         if( arguments.length !== 3 ||
             typeof info.email === "undefined" ||
             typeof info.password === "undefined" ||
             typeof success !== "function" ||
             typeof fail !== "function"
         ) {
-
-            throw new Error( "doLogin params invalid." );
-
+            throw new Error( "params invalid" + arguments );
         } else {
             var email = info.email;
             var password = info.password;
@@ -61,9 +59,21 @@ define([
             });
 
         }
-    };
+    };//}}}
+
+    //@XXX 退出登录失败的情况是否需要同时考虑 ?
+    // 先不考虑
+    var doLogout = function( success ) {
+    //{{{
+        window.sessionStorage.clear();
+
+        if( typeof success === "function" ) {
+            success();
+        }
+    };//}}}
 
     auth.doLogin = doLogin;
+    auth.doLogout = doLogout;
 
     return auth;
 });

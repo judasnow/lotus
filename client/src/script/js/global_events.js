@@ -4,9 +4,17 @@ define([
     "underscore",
     "backbone",
 
+    "utilities/common",
+
     "v/nav"
 
-], function( $ , _ , Backbone ) {
+], function(
+    $ ,
+    _ ,
+    Backbone,
+
+    common
+) {
     "use strict";
 
     var GlobleEvents = function( views ) {
@@ -16,7 +24,12 @@ define([
 
         e.on( "show_loading" , navView.showLoading );
         e.on( "hide_loading" , navView.hideLoading );
-        e.on( "login_ok" , navView.showObjectUserInfo );
+
+        e.on( "login_ok" , function() {
+            common.getObjectUserInfo( function() {
+                navView.showObjectUserInfo();
+            });
+        });
 
         this.e = e;
     };

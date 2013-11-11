@@ -89,21 +89,15 @@
         .nav_user {
             float: right;
 
-            .login_btn {
-                @bg_color: #4ea074;
-                background: @bg_color;
-                &:hover {
-                    .item_active(@bg_color);
-                }
-            }
-
-            .signup {
-                background-color: rgba(255,255,255,0.6);
-            }
-
             .userinfo {
-                background: #b5b5b5;
-                color: #000;
+                min-width: 64px;
+                //background: rgba(192,192,192,0.9);
+                //border: 0;
+                //color: @link_color2;
+
+                &:hover {
+                    //background: rgba(192,192,192,0.5);
+                }
             }
         }
     }
