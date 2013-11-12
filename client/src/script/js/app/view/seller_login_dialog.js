@@ -3,7 +3,7 @@ define([
     "zepto",
     "backbone",
 
-    "text!tpl/seller_login_dialog.mustache"
+    "text!tpl/dialog/seller_login.mustache"
 
 ] , function(
 
@@ -15,10 +15,6 @@ define([
     "use strict";
 
     var SellerLoginDialogView = Backbone.View.extend({
-
-        tagName: "div",
-        className: "dialog_box",
-        id: "seller_login_dialog",
 
         tpl: sellerLoginDialogTpl,
 
@@ -47,6 +43,7 @@ define([
 
         render: function() {
             this.$el.html( this.tpl );
+
             $( "body" ).append( this.$el );
         }
     });

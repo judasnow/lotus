@@ -1,24 +1,26 @@
-.dialog_box {
+.dialog_box_base( @_width , @_height ) {
+//{{{
     .dialog_box_var {
-        @width: 384px;
-        @height: 256px;
+        @padding: 4px;
+        @width: @_width - (@padding * 2) - 2;
+        @height: @_height - (@padding * 2) - 2;
+        @radius: 6px;
     }
 
     .dialog_box_var;
+
     width: @width;
     min-height: @height;
 
-    position: fixed;
-    //bottom: 50%;
     left: 50%;
-    top: 128px;
+    top: 35%;
     margin-left: -(@width / 2);
-    //margin-bottom: -(@height / 2);
+    margin-top: -(@height / 2);
+    position: fixed;
 
-    background: #fff;
-    background-clip: padding-box;
-    border: 8px solid rgba(0,0,0,0.128);
-    border-radius: 4px;
+    border: 1px solid #757575;
+    padding: 4px;
+    border-radius: @radius;
 
     .dialog {
         .dialog_var {
@@ -27,19 +29,23 @@
             @dialog_padding: 8px;
         }
         .dialog_var;
-        border: 1px solid #bbb;
+
+        border: 1px solid #656565;
+        background: #f6f6f6;
+        border-radius: @radius;
 
         .header {
             height: @header_height;
 
             line-height: @header_height;
 
-            border-bottom: 1px solid #eee;
-            background: #f6f6f6;
+            border-bottom: 1px solid #ddd;
+            border-top-right-radius: @radius;
+            border-top-left-radius: @radius;
 
-            text-align: center;
+            text-align: left;
 
-            padding: 0 @dialog_padding;
+            padding: 8px @dialog_padding;
 
             .close {
                 cursor: pointer;
@@ -51,6 +57,13 @@
 
             .title {
                 font-weight: bolder;
+                color: @link_color2;
+            }
+
+            .sub_title {
+                color: #ccc;
+                font-size: 12px;
+                line-height: @header_height;
             }
         }
 
@@ -66,10 +79,11 @@
                 .input {
                     .dialog_box_var;
                     .dialog_var;
-                    @padding_left_right: 8px;
 
-                    width: @width - (@padding_left_right * 2) - (@dialog_padding * 2);
-                    padding: @padding_left_right 4px;
+                    @padding_left_right: 4px;
+
+                    width: (@width - (@padding * 2) - 2) - (@dialog_padding * 2) - 2;
+                    padding: 8px @padding_left_right;
 
                     border: 1px solid #ddd;
                     border-radius: 4px;
@@ -80,9 +94,29 @@
                     }
                 }
 
+                .select {
+                    border: none;
+                    border-radius: 4px;
+                    font-size: 14px;
+                    background: #dedede;
+                    padding: 4px;
+                    -webkit-appearance: initial;
+                    min-width: 64px;
+                }
+
+                .small_input {
+                    width: 64px;
+                }
+
                 .error_info {
                     color: #bd082d;
+                    background: #fdd;
                     text-decoration: underline;
+                }
+
+                .hint {
+                    font-size: 12px;
+                    color: #ccc;
                 }
             }
         }
@@ -90,18 +124,39 @@
         .footer {
             height: @footer_height;
             line-height: @footer_height;
-            border-top: 1px solid #eee;
-            background: #f6f6f6;
+            padding: 12px @dialog_padding;
+
+            border-top: 1px double #ddd;
+            border-bottom-right-radius: @radius;
+            border-bottom-left-radius: @radius;
             text-align: right;
-            padding: 0 @dialog_padding;
 
             .text {
 
             }
         }
     }
+}//}}}
+
+.dialog_wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: rgba(0,0,0,0.3);
+    width: 100%;
+    height: 100%;
+    z-index: 999;
+}
+
+//default
+.dialog_box {
+    .dialog_box_base( 384px , 256px );
 }
 
 #seller_login_dialog {
     
+}
+
+#add_new_product_dialog {
+    .dialog_box_base( 512px , 256px );
 }

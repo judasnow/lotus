@@ -6,6 +6,7 @@ define([
 
     "v/categories_browse",
     "v/dropdown",
+    "v/add_new_product_dialog",
 
     "utilities/common",
 
@@ -19,6 +20,8 @@ define([
 
     CategoriesBrowseView,
     DropdownView,
+    AddNewProductDialog,
+
     common,
 
     usernameTpl,
@@ -50,6 +53,7 @@ define([
 
             this._getEls();
             this._categoriesBrowseView = new CategoriesBrowseView();
+            new AddNewProductDialog();
         },//}}}
 
         _getEls: function() {
@@ -79,9 +83,16 @@ define([
             var id = "object_user_dropdown";
             var offset = $(e.currentTarget).offset();
 
+            //@XXX 这样的设置是不是显得有点碎片化了？
+            //是不是应该将 DropdownView 派生一下？
             if( typeof this.dropdownView === "undefined" ) {
-                this.dropdownView = new DropdownView( offset , "object_user_dropdown" , objectUserDropdownTpl );
-                this.dropdownView.$el.on( "") = { "click": function(){ alert( 123 )} }
+                var e = {
+                    "click .add_new_product": function() {
+                        new AddNewProductDialog();
+                    }
+                };
+
+                this.dropdownView = new DropdownView( offset , "object_user_dropdown" , objectUserDropdownTpl , e );
             }
 
             this.dropdownView.$el.toggle();

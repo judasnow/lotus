@@ -10,6 +10,7 @@ require.config({
         backbone: "third_party/backbone",
         mustache: "third_party/mustache",
         async: "third_party/async",
+        q: "third_party/q",
 
         m: "js/app/model",
         v: "js/app/view",
