@@ -5,6 +5,7 @@ define([
     "mustache",
 
     "v/categories_browse",
+    "v/dropdown",
 
     "utilities/common",
 
@@ -17,6 +18,7 @@ define([
     Mustache,
 
     CategoriesBrowseView,
+    DropdownView,
     common,
 
     usernameTpl,
@@ -77,17 +79,12 @@ define([
             var id = "object_user_dropdown";
             var offset = $(e.currentTarget).offset();
 
-            if( typeof this.$dropdown === "undefined" ) {
-                var $dropdown = common.dropdown( offset , "object_user_dropdown" , objectUserDropdownTpl );
-
-                $dropdown.events = { "click .add_new_product": function() {
-                    
-                }};
-
-                this.$dropdown = $dropdown;
+            if( typeof this.dropdownView === "undefined" ) {
+                this.dropdownView = new DropdownView( offset , "object_user_dropdown" , objectUserDropdownTpl );
+                this.dropdownView.$el.on( "") = { "click": function(){ alert( 123 )} }
             }
 
-            this.$dropdown.toggle();
+            this.dropdownView.$el.toggle();
         },//}}}
 
         toggleCategoriesBrowse: function() {
