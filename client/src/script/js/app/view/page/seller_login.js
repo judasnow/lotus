@@ -47,7 +47,7 @@ define ([
                 "_doLogin",
                 "_getEls",
                 "_getUserInput",
-                "render" 
+                "render"
             );
 
             this.render();
