@@ -189,6 +189,4 @@ class Apply_api extends REST_Controller {
 
 }
 
-
 ?>
-                array(

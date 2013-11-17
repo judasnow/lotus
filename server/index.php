@@ -2,6 +2,11 @@
 //for cross domain ajax
 header('Access-Control-Allow-Origin: *');
 
+//composer
+//{{{
+include_once './vendor/autoload.php';
+//}}}
+
 // 思路就是用户如果登录成功 就手动保存 session_id 到 本地的 cookies 上 
 // 而且 每次请求的时候 都要带上这个参数
 // 但是这样 似乎是有 漏洞的 而且 持久化登录也还没有很好的解决方案

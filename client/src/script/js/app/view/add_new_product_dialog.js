@@ -105,7 +105,7 @@ define([
         },
 
         _get_user_input: function() {
-
+            
         },
 
         do_submit: function() {

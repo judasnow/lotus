@@ -1,0 +1,123 @@
+body {
+    font-family: Helvetica, Tahoma, Arial, STXihei, "华文细黑", Heiti, "黑体", "Microsoft YaHei", "微软雅黑", SimSun, "宋体", sans-serif;
+    color: #333;
+    font-size: 14px;
+    padding: 0;
+    margin: 0;
+}
+
+a {
+    text-decoration: none;
+    color: #1b98f8;
+}
+
+ul{
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+@link-color: #872450;
+@link-color2: #5781b9;
+
+.btn {
+    background: #ddd;
+    color: #333;
+    padding: 4px 8px;
+    border-radius: 2px;
+    display: inline-block;
+    cursor: pointer;
+}
+
+#nav {
+    @nav-height: 48px - 1;
+    height: @nav-height;
+    line-height: @nav-height;
+    border-bottom: 1px dashed #ededed;
+
+    .title {
+        color: @link-color;
+        font-weight: 500;
+    }
+
+    .nav-item {
+        padding: 0 8px;
+        cursor: pointer;
+        display: inline-block;
+        float: left;
+
+        a {
+            color: #333;
+            min-width: 64px;
+            padding: 0 4px;
+            display: inline-block;
+            text-align: center;
+            &:hover {
+                color: @link-color;
+                background: #eee;
+            }
+        }
+
+    }
+
+    .nav-item-active {
+        background: #dedede;
+    }
+}
+
+#main {
+    margin: 12px auto;
+}
+
+#applies-list {
+    padding: 12px 0;
+
+    table {
+        width: 100%;
+        text-align: center;
+        border-collapse: collapse;
+    }
+
+    th {
+        background: #dedede;
+    }
+
+    tr {
+        line-height: 24px;
+        min-height: 24px;
+        border-bottom: 1px solid #eee;
+    }
+}
+
+#auth_box {
+    width: 100%;
+    margin-top: 100px;
+}
+
+#auth {
+    .var {
+        @auth-width-raw: 400px;
+        @auth-padding-lr: 8px;
+    }
+    .var;
+
+    @auth-width: @auth-width-raw - (@auth-padding-lr * 2);
+    width: @auth-width;
+    padding: 24px @auth-padding-lr;
+    min-height: 128px;
+    margin: 0 auto;
+    border: 1px solid #999;
+
+    input {
+        padding: 8px 0;
+        font-size: 14px;
+        width: @auth-width - 2;
+        border: 1px solid #999;
+        border-radius: 4px;
+    }
+
+    .auth-item {
+        text-align: center;
+        margin-bottom: 24px;
+    }
+}
