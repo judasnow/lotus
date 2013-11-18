@@ -8,6 +8,7 @@ class Admin_auth_lib {
 
     public function __construct() {
         $this->_CI =& get_instance();
+        $this->load->library('session');
     }
 
     public function do_login($username, $password) {
