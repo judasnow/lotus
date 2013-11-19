@@ -59,12 +59,15 @@ class Main extends CI_Controller {
         $applies_info = $this->apply_m->applied();
         $admin_info = $this->session->userdata( 'admin_info' );
 
-        //这里就提现了类型系统的重要性
+        //@XXX 这里就提现了类型系统的重要性
         if( $admin_info === false ) {
-            $admin_info = ['username'=>''];
+            $admin_info = ['username'=>'','id'=>''];
         }
 
-        $this->load->view( 'admin/home' , ['applies_info'=>$applies_info , 'admin_info'=>$admin_info] );
+        $this->load->view( 
+            'admin/home' , 
+            ['applies_info'=>$applies_info , 'admin_info'=>json_decode( $admin_info , TRUE )] 
+        );
     }//}}}
 
     public function applying() {
