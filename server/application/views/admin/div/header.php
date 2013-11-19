@@ -7,6 +7,7 @@
 
     <title>lotus admin</title>
 
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
     <link rel="stylesheet/less" type="text/css" href="/static/style/admin/main.less" />
     <script src="/static/script/less.js" type="text/javascript"></script>
 </head>

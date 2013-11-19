@@ -2,7 +2,7 @@
 <div id="auth">
     <div class="auth-item"><span>管理员登录</span></div>
 
-    <form action="do_login" method="post">
+    <form action="/admin/main/do_login/" method="post">
     <div class="auth-item">
         <input type="text" name="username" placeholder="用户名">
     </div>
