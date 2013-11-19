@@ -11,9 +11,15 @@ class Admin_model extends Base_model {
     private $_CI;
     private $_table = 'admin';
 
+    private $_id;
+    private $_username; 
+    private $_password;
+
     public function __construct() {
         parent::__construct($this->_table);
         $this->_CI =& get_instance();
+
+        $this->_id = 132;
     }
 
     public function get_hash_password($username) {

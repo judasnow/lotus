@@ -22,12 +22,15 @@ class Admin_auth_lib {
 
             if ($hash_password['password'] == md5($password)) {
 
-                $admin_info = $this->_CI->admin_m->get_admin_id($username);
+                $admin_id = $this->_CI->admin_m->get_admin_id($username);
 
-                if ($admin_info) {
+                if ($admin_id) {
 
-                    $this->_CI->session->set_userdata( 'admin_id' , $admin_info['id'] );
-                    $this->_CI->session->set_userdata( 'admin_info' , json_encode( $admin_info ) );
+                    $this->_CI->session->set_userdata( 'admin_id' , $admin_id );
+                    $this->_CI->session->set_userdata(
+                        'admin_info' , 
+                        json_encode(['id'=>$admin_id , 'username'=>$username]) );
+
                     return TRUE;
                 }
 
