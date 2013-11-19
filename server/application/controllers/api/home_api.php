@@ -20,9 +20,9 @@ class Home_api extends REST_Controller {
         $this->load->library('home_lib');
 
         if($res = $this->home_lib->class_a()) {
-            $this->response( $res , 200 );
+            $this->response($res, 200);
         } else {
-            $this->response( "fail" , 500 );
+            $this->response("fail", 500);
         }
     }
 
@@ -35,9 +35,9 @@ class Home_api extends REST_Controller {
         $class_a_id = $this->input->get('class_a_id', TRUE);
 
         if($res = $this->home_lib->class_b( $class_a_id )) {
-            $this->response( $res , 200 );
+            $this->response($res, 200);
         } else {
-            $this->response( "fail" , 500 );
+            $this->response("fail", 500);
         }
     }
 
@@ -47,6 +47,8 @@ class Home_api extends REST_Controller {
     public function products_class_get() {
         $this->load->library('home_lib');
         if ($res = $this->home_lib->products_class()) {
+            $this->response($res, 200);
+            /**
             $this->response(
                 array(
                     'result' => 'ok',
@@ -54,6 +56,7 @@ class Home_api extends REST_Controller {
                     'data'   => $res
                 )
             );
+            */
         }
     }
 
@@ -64,6 +67,8 @@ class Home_api extends REST_Controller {
     public function popular_products_get() {
         $this->load->library('home_lib');
         if ($res = $this->home_lib->popular_product()) {
+            $this->response($res, 200);
+            /**
             $this->response(
                 array(
                     'result' => 'ok',
@@ -71,6 +76,7 @@ class Home_api extends REST_Controller {
                     'data'   => $res
                 )
             );
+            */
         }
     }
 
@@ -80,6 +86,8 @@ class Home_api extends REST_Controller {
     public function popular_shop_get() {
         $this->load->library('home_lib');
         if ($res = $this->home_lib->popular_shop()) {
+            $this->response($res, 200);
+            /**
             $this->response(
                 array(
                     'result' => 'ok',
@@ -87,6 +95,7 @@ class Home_api extends REST_Controller {
                     'data'   => $res
                 )
             );
+            */
         }
     }
 
@@ -99,6 +108,8 @@ class Home_api extends REST_Controller {
         $this->load->library('home_lib');
         $res = $this->home_lib->products_page($class_a, $class_b);
         if ($res['res']) {
+            $this->response(array('pages' => $res['data']), 200);
+            /**
             $this->response(
                 array(
                     'result' => 'ok',
@@ -108,6 +119,7 @@ class Home_api extends REST_Controller {
                     )
                 )
             );
+            */
         } else {
             //默认获取失败时返回的消息
             $msg = 'Get products page failed';
@@ -115,6 +127,8 @@ class Home_api extends REST_Controller {
             if (count($res['msg'] > 0)) {
                 $msg = implode("; ", $res['msg']);
             }
+            $this->response($msg, 500);
+            /**
             $this->response(
                 array(
                     'result' => 'fail',
@@ -122,6 +136,7 @@ class Home_api extends REST_Controller {
                     'data'   => NULL
                 )
             );
+            */
         }
     }
 
@@ -136,6 +151,8 @@ class Home_api extends REST_Controller {
         $this->load->library('home_lib');
         $res = $this->home_lib->product($class_a, $class_b, $page);
         if ($res['res']) {
+            $this->response($res['data'], 200);
+            /**
             $this->response(
                 array(
                     'result' => 'ok',
@@ -143,11 +160,14 @@ class Home_api extends REST_Controller {
                     'data'   => $res['data']
                 )
             );
+            */
         } else {
             $msg = 'Get products failed';
             if (count($res['msg']) > 0) {
                 $msg = implode("; ", $res['msg']);
             }
+            $this->response($msg, 500);
+            /**
             $this->response(
                 array(
                     'result' => 'fail',
@@ -155,6 +175,7 @@ class Home_api extends REST_Controller {
                     'data'   => NULL
                 )
             );
+            */
         }
     }
   

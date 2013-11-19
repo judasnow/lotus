@@ -18,6 +18,8 @@ class Admin_auth_api extends REST_Controller {
         $username = $this->input->post('username', TRUE);
         $password = $this->input->post('password', TRUE);
         if($this->admin_auth_lib->do_login($username, $password)) {
+            $this->response("ok", 200);
+            /**
             $this->response(
                 array(
                     'result' => 'ok',
@@ -25,7 +27,10 @@ class Admin_auth_api extends REST_Controller {
                     'data'   => NULL
                 )
             );
+            */
         } else {
+            $this->response("fail", 500);
+            /**
             $this->response(
                 array(
                     'result' => 'fail',
@@ -33,12 +38,15 @@ class Admin_auth_api extends REST_Controller {
                     'data'   => NULL
                 )
             );
+            */
         }
     }
 
     public function do_logout_post() {
         $this->load->library('admin_auth_lib');
         if ($this->admin_auth_lib->do_logout()) {
+            $this->response("ok", 200);
+            /**
             $this->response(
                 array(
                     'result' => 'ok',
@@ -46,7 +54,10 @@ class Admin_auth_api extends REST_Controller {
                     'data'   => NULL
                 )
             );
+            */
         } else {
+            $this->response("fail", 500);
+            /**
             $this->response(
                 array(
                     'result' => 'fail',
@@ -54,12 +65,15 @@ class Admin_auth_api extends REST_Controller {
                     'data'   => NULL
                 )
             );
+            */
         }
     }
 
     public function admin_is_login_get() {
         $this->load->library('admin_auth_lib');
         if ($this->admin_auth_lib->admin_is_login()) {
+            $this->response("ok", 200);
+            /**
             $this->response(
                 array(
                     'result' => 'ok',
@@ -67,7 +81,10 @@ class Admin_auth_api extends REST_Controller {
                     'data'   => NULL
                 )
             );
+            */
         } else {
+            $this->response("fail", 500);
+            /**
             $this->response(
                 array(
                     'result' => 'fail',
@@ -75,6 +92,7 @@ class Admin_auth_api extends REST_Controller {
                     'data'   => NULL
                 )
             );
+            */
         }
     }
 }

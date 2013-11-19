@@ -17,6 +17,8 @@ class Product_api extends REST_Controller {
         $this->load->library('auth_lib');
         $this->auth_lib->user_is_login();
         if (!isset($_SESSION['object_user_id'])) {
+            $this->response("User did not login", 500);
+            /**
             $this->response(
                 array(
                     'result' => 'fail',
@@ -24,6 +26,7 @@ class Product_api extends REST_Controller {
                     'data'   => NULL
                 )
             );
+            */
         }
     }
 
@@ -35,6 +38,8 @@ class Product_api extends REST_Controller {
         $this->load->library('product_lib');
         $res = $this->product_lib->product($product_id);
         if($res['res']) {
+            $this->response($res['data'], 200);
+            /**
             $this->response(
                 array(
                     'result' => 'ok',
@@ -42,11 +47,14 @@ class Product_api extends REST_Controller {
                     'data'   => $res['data']
                 )
             );
+            */
         } else {
             $msg = 'Get product info failed';
             if (count($res['msg'])) {
                 $msg = implode('; ', $res['msg']);
             }
+            $this->response($msg, 500);
+            /**
             $this->response(
                 array(
                     'result' => 'fail',
@@ -54,6 +62,7 @@ class Product_api extends REST_Controller {
                     'data'   => NULL
                 )
             );
+            */
         }
     }
 
@@ -77,6 +86,8 @@ class Product_api extends REST_Controller {
         $this->load->library('product_lib');
         $res = $this->product_lib->new_product($product_info);
         if ($res['res']) {
+            $this->response("ok", 200);
+            /**
             $this->response(
                 array(
                     'result' => 'ok',
@@ -84,11 +95,14 @@ class Product_api extends REST_Controller {
                     'data'   => NULL
                 )
             );
+            */
         } else {
             $msg = 'New product releases failed';
             if (count($res['msg']) > 0) {
                 $msg = implode('; ', $res['msg']);
             }
+            $this->response($msg, 500);
+            /**
             $this->response(
                 array(
                     'result' => 'fail',
@@ -96,6 +110,7 @@ class Product_api extends REST_Controller {
                     'data'   => NULL
                 )
             );
+            */
         }
     }
 
@@ -124,6 +139,8 @@ class Product_api extends REST_Controller {
         $this->load->library('product_lib');
         $res = $this->product_lib->product_update($product_info);
         if (!empty($this->access_lib->error)) {
+            $this->response("fail", 500);
+            /**
             $this->response(
                 array(
                     'result' => 'fail',
@@ -131,7 +148,10 @@ class Product_api extends REST_Controller {
                     'data'   => NULL
                 )
             );
+            */
         } elseif ($res['res']) {
+            $this->response("ok", 200);
+            /**
             $this->response(
                 array(
                     'result' => 'ok',
@@ -139,11 +159,14 @@ class Product_api extends REST_Controller {
                     'data'   => NULL
                 )
             );
+            */
         } else {
             $msg = 'Update product info failed';
             if (count($res['msg']) > 0) {
                 $msg = implode('; ', $res['msg']);
             }
+            $this->response($msg, 500);
+            /**
             $this->response(
                 array(
                     'result' => 'fail',
@@ -151,6 +174,7 @@ class Product_api extends REST_Controller {
                     'data'   => NULL
                 )
             );
+            */
         }
     }
    

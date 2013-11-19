@@ -31,6 +31,8 @@ class Apply_api extends REST_Controller {
         );
         $this->load->library('apply_lib');
         if($this->apply_lib->do_apply($apply_info)) {
+            $this->response("ok", 200);
+            /**
             $this->response(
                 array(
                     'result' => 'ok',
@@ -38,7 +40,10 @@ class Apply_api extends REST_Controller {
                     'data'   => NULL
                 )
             );
+            */
         } else {
+            $this->response("fail", 500);
+            /**
             $this->response(
                 array(
                     'result' => 'fail',
@@ -46,6 +51,7 @@ class Apply_api extends REST_Controller {
                     'data'   => NULL
                 )
             );
+            */
         }
     }
 
@@ -57,6 +63,8 @@ class Apply_api extends REST_Controller {
     public function apply_verifying_get() {
         //@Todo check privilege
         $this->load->library('apply_lib');
+        $this->response($this->apply_lib->apply_verifying(), 200);
+        /**
         $this->response(
             array(
                 'result' => 'ok',
@@ -64,6 +72,7 @@ class Apply_api extends REST_Controller {
                 'data'   => $this->apply_lib->apply_verifying()
             )
         );
+        */
     }
 
     /**
@@ -77,6 +86,8 @@ class Apply_api extends REST_Controller {
         $this->load->library('apply_lib');
         $res = $this->apply_lib->apply_verifying_detail($apply_id);
         if($res['res']) {
+            $this->response($res['data'], 200);
+            /**
             $this->response(
                 array(
                     'resutl' => 'ok',
@@ -84,11 +95,14 @@ class Apply_api extends REST_Controller {
                     'data'   => $res['data']
                 )
             );
+            */
         } else {
             $msg = 'Get verifying detail data failed';
             if (count($res['msg']) > 0) {
                 $msg = implode('; ', $res['msg']);
             }
+            $this->response($msg, 500);
+            /**
             $this->response(
                 array(
                     'resutl' => 'fail',
@@ -96,6 +110,7 @@ class Apply_api extends REST_Controller {
                     'data'   => NULL
                 )
             );
+            */
         }
         
     }
@@ -111,6 +126,8 @@ class Apply_api extends REST_Controller {
         $apply_id = (int) ($this->input->post('apply_id', TRUE));
         $res = $this->apply_lib->apply_verifying_pass($apply_id);
         if($res['res']) {
+            $this->response(array('register_code' => $res['data']), 200);
+            /**
             $this->response(
                 set rulerarray(
                     'result' => 'ok',
@@ -120,11 +137,14 @@ class Apply_api extends REST_Controller {
                     )
                 )
             );
+            */
         } else {
             $msg = 'Verifying passed failed';
             if (count($res['msg']) > 0) {
                 $msg = implode('; ', $res['msg']);
             }
+            $this->response($msg, 500);
+            /**
             $this->response(
                 array(
                     'result' => 'fail',
@@ -132,6 +152,7 @@ class Apply_api extends REST_Controller {
                     'data'   => NULL
                 )
             );
+            */
         }
     }
 
@@ -148,6 +169,8 @@ class Apply_api extends REST_Controller {
         $message  = $this->input->post('message', TRUE);
         $res = $this->apply_lib->apply_verifying_failed($apply_id, $message);
         if($res['res']) {
+            $this->response("ok", 200);
+            /**
             $this->response(
                 array(
                     'result' => 'ok',
@@ -155,11 +178,14 @@ class Apply_api extends REST_Controller {
                     'data'   => NULL
                 )
             );
+            */
         } else {
             $msg = 'Verifying failed';
             if (count($res['msg'] > 0)) {
                 $msg = implode('; ', $res['msg']);
             }
+            $this->response($msg, 500);
+            /**
             $this->response(
                 array(
                     'result' => 'fail',
@@ -167,6 +193,7 @@ class Apply_api extends REST_Controller {
                     'data'   => NULL
                 )
             );
+            */
         }
     }
     
@@ -178,6 +205,8 @@ class Apply_api extends REST_Controller {
     public function apply_verified_get() {
         //@Check privilege
         $this->load->library('apply_lib');
+        $this->response($this->apply_lib->apply_verified(), 200);
+        /**
         $this->response(
             array(
                 'result' => 'ok',
@@ -185,6 +214,7 @@ class Apply_api extends REST_Controller {
                 'data'   => $this->apply_lib->apply_verified()
             )
         );
+        */
     }
 
 }

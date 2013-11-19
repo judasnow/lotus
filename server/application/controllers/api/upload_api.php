@@ -20,6 +20,8 @@ class Upload_api extends REST_Controller {
         $this->load->library('auth_lib');
         $this->auth_lib->user_is_login();
         if (!isset($_SESSION['object_user_id'])) {
+            $this->response("User did not login", 500);
+            /**
             $this->response(
                 array(
                     'result' => 'fail',
@@ -27,6 +29,7 @@ class Upload_api extends REST_Controller {
                     'data'   => NULL
                 )
             );
+            */
         }
     }
 
@@ -38,6 +41,8 @@ class Upload_api extends REST_Controller {
         $this->load->library('upload_lib');
         $res = $this->upload_lib->do_upload_image($image_type);
         if ($res['res']) {
+            $this->response(array('image_name' => $res['data']), 200);
+            /**
             $this->response(
                 array(
                     'result' => 'ok',
@@ -47,11 +52,14 @@ class Upload_api extends REST_Controller {
                     )
                 )
             );
+            */
         } else {
             $msg = 'Upload image failed';
             if (count($res['msg']) > 0) {
                 $msg = implode('; ', $res['msg']);
             }
+            $this->response($msg, 500);
+            /**
             $this->response(
                 array(
                     'result' => 'fail',
@@ -59,6 +67,7 @@ class Upload_api extends REST_Controller {
                     'data'   => NULl
                 )
             );
+            */
         }
     }
 

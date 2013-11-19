@@ -17,6 +17,8 @@ class Shop_api extends REST_Controller {
         $this->load->library('auth_lib');
         $this->auth_lib->user_is_login();
         if (!isset($_SESSION['object_user_id'])) {
+            $this->response("User did not login", 500);
+            /**
             $this->response(
                 array(
                     'result' => 'fail',
@@ -24,6 +26,7 @@ class Shop_api extends REST_Controller {
                     'data'   => NULL
                 )
             );
+            */
         }
     }
 
@@ -34,6 +37,8 @@ class Shop_api extends REST_Controller {
         $this->is_login();
         $this->load->library('shop_lib');
         if ($shop_base_info = $this->shop_lib->shop_base_info()) {
+            $this->response($shop_base_info, 200);
+            /**
             $this->response(
                 array(
                     'result' => 'ok',
@@ -41,7 +46,10 @@ class Shop_api extends REST_Controller {
                     'data'   => $shop_base_info
                 )
             );
+            */
         } else {
+            $this->response("Get shop base info failed", 500);
+            /**
             $this->response(
                 array(
                     'result' => 'fail',
@@ -49,6 +57,7 @@ class Shop_api extends REST_Controller {
                     'data'   => NULL
                 )
             );
+            */
         }
     }
    
@@ -63,6 +72,8 @@ class Shop_api extends REST_Controller {
         $this->load->library('shop_lib');
         $res = $this->shop_lib->update_shop_base_info($base_info);
         if($res['res']) {
+            $this->response("ok", 200);
+            /**
             $this->response(
                 array(
                     'result' => 'ok',
@@ -70,11 +81,14 @@ class Shop_api extends REST_Controller {
                     'data'   => NULL
                 )
             );
+            */
         } else {
             $msg = 'Update shop base info failed';
             if (count($res['msg']) > 0) {
                 $msg = implode(': ', $res['msg']);
             }
+            $this->response($msg, 500);
+            /**
             $this->response(
                 array(
                     'result' => 'fail',
@@ -82,6 +96,7 @@ class Shop_api extends REST_Controller {
                     'data'   => NULL
                 )
             );
+            */
         }
     }
 
@@ -93,6 +108,8 @@ class Shop_api extends REST_Controller {
         $this->load->library('shop_lib');
         $res = $this->shop_lib->shop_info($shop_id);
         if ($res['res']) {
+            $this->response($res['data'], 200);
+            /**
             $this->response(
                 array(
                     'result' => 'ok',
@@ -100,11 +117,14 @@ class Shop_api extends REST_Controller {
                     'data'   => $res['data']
                 )
             );
+            */
         } else {
             $msg = 'Get shop info failed';
             if (count($res['msg']) > 0) {
                 $msg = implode('; ', $res['msg']);
             }
+            $this->response($msg, 500);
+            /**
             $this->response(
                 array(
                     'result' => 'fail',
@@ -112,6 +132,7 @@ class Shop_api extends REST_Controller {
                     'data'   => NULL
                 )
             );
+            */
         }
     }
 
@@ -123,6 +144,8 @@ class Shop_api extends REST_Controller {
         $this->load->library('shop_lib');
         $res = $this->shop_lib->product_count($shop_id);
         if ($res['res']) {
+            $this->response(array('shop_product_count' => $res['data']), 200);
+            /**
             $this->response(
                 array(
                     'result' => 'ok',
@@ -132,11 +155,14 @@ class Shop_api extends REST_Controller {
                     )
                 )
             );
+            */
         } else {
             $msg = 'Get product count failed';
             if (count($res['msg']) > 0) {
                 $msg = implode('; ', $res['msg']);
             }
+            $this->response($msg, 500);
+            /**
             $this->response(
                 array(
                     'result' => 'fail',
@@ -144,6 +170,7 @@ class Shop_api extends REST_Controller {
                     'data'   => NULL
                 )
             );
+            */
         }
     }
 
@@ -155,6 +182,8 @@ class Shop_api extends REST_Controller {
         $this->load->library('shop_lib');
         $res = $this->shop_lib->product_page_count($shop_id);
         if ($res['res']) {
+            $this->response(array('product_page_count' => $res['data']), 200);
+            /**
             $this->response(
                 array(
                     'result' => 'ok',
@@ -164,11 +193,14 @@ class Shop_api extends REST_Controller {
                     )
                 )
             );
+            */
         } else {
             $msg = 'Get product page count failed';
             if (count($res['msg'])> 0) {
                 $msg = implode(';', $res['msg']);
             }
+            $this->response("fail", 500);
+            /**
             $this->response(
                 array(
                     'res' => 'fail',
@@ -176,6 +208,7 @@ class Shop_api extends REST_Controller {
                     'data' => NULL
                 )
             );
+            */
         }
     } 
 
@@ -187,6 +220,8 @@ class Shop_api extends REST_Controller {
         $this->load->library('shop_lib');
         $res = $this->shop_lib->products($shop_id, $page, $flag);
         if ($res['res']) {
+            $this->response($res['data'], 200);
+            /**
             $this->response(
                 array(
                     'result' => 'ok',
@@ -194,18 +229,22 @@ class Shop_api extends REST_Controller {
                     'data'   => $res['data']
                 )
             );
+            */
         } else {
             $msg = 'Get products info failed';
             if (count($res['msg']) > 0) {
                 $msg = implode('; ', $res['msg']);
             }
+            $this->response($msg, 500);
+            /**
             $this->response(
-            array(
-                'result' => 'ok',
-                'msg'    => $msg,
-                'data'   => NULL
-            )
+                array(
+                    'result' => 'fail',
+                    'msg'    => $msg,
+                    'data'   => NULL
+                )
             );
+            */
         }
         
 
@@ -218,6 +257,8 @@ class Shop_api extends REST_Controller {
         $this->is_login();
         $this->load->library('shop_lib');
         if ($this->shop_lib->show_shop_tel()) {
+            $this->response("ok", 200);
+            /**
             $this->response(
                 array(
                     'result' => 'ok',
@@ -225,7 +266,10 @@ class Shop_api extends REST_Controller {
                     'data'   => NULL
                 )
             );
+            */
         } else {
+            $this->response("fail", 500);
+            /**
             $this->response(
                 array(
                     'result' => 'fail',
@@ -233,6 +277,7 @@ class Shop_api extends REST_Controller {
                     'data'   => NULL
                 )
             );
+            */
         }
     }
      
@@ -243,6 +288,8 @@ class Shop_api extends REST_Controller {
         $this->is_login();
         $this->load->library('shop_lib');
         if ($this->shop_lib->update_show_shop_tel()) {
+            $this->response("ok", 200);
+            /**
             $this->response(
                 array(
                     'result' => 'ok',
@@ -250,7 +297,10 @@ class Shop_api extends REST_Controller {
                     'data'   => NULL
                 )
             );
+            */
         } else {
+            $this->response("fail", 500);
+            /**
             $this->response(
                 array(
                     'result' => 'fail',
@@ -258,6 +308,7 @@ class Shop_api extends REST_Controller {
                     'data'   => NULL
                 )
             );
+            */
         }
     }
 }
