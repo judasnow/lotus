@@ -7,7 +7,7 @@
 require_once('base_model.php');
 
 class Admin_model extends Base_model {
-    
+
     private $_CI;
     private $_table = 'admin';
 
@@ -35,7 +35,5 @@ class Admin_model extends Base_model {
             return FALSE;
         }
     }
-
 }
 
-?>

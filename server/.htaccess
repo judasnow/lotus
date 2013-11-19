@@ -1,21 +1,10 @@
 RewriteEngine On
 RewriteBase /
 
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^(.*)face.jpg$ /picture/user_head_img/anonymous_face.jpg
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^(.*)face_small.jpg$ /picture/user_head_img/anonymous_face_small.jpg
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^(.*)face_48.jpg$ /picture/user_head_img/anonymous_face_48.jpg
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^(.*)face_32.jpg$ /picture/user_head_img/anonymous_face_32.jpg
-
-RewriteCond %{REQUEST_URI} !^.*(.css|.js|.gif|.png|.jpg|.jpeg)$ 
+RewriteCond %{REQUEST_URI} !^.*(.css|.js|.gif|.png|.jpg|.jpeg|.less)$ 
 
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 
 RewriteRule ^(.*)$ index.php/$1 [L]
-
-
 
