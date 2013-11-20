@@ -18,8 +18,6 @@ class Admin_model extends Base_model {
     public function __construct() {
         parent::__construct($this->_table);
         $this->_CI =& get_instance();
-
-        $this->_id = 132;
     }
 
     public function get_hash_password($username) {

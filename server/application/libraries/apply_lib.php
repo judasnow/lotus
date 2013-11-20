@@ -64,9 +64,14 @@ class Apply_lib {
         }
     }
 
+    //( int ) => array
     public function apply_verifying_pass($apply_id) {
         $this->_CI->load->library('regulation');
+        $this->_CI->load->library('format_lib');
+        $this->_CI->load->model('apply_model', 'apply_m');
+
         $this->_CI->regulation->validate('apply_id', $apply_id);
+
         if (count($this->_CI->regulation->err_msg) > 0) {
             $this->err_msg = $this->_CI->regulation->err_msg;
             $this->_CI->regulation->err_msg = array();
@@ -75,10 +80,10 @@ class Apply_lib {
                 'msg' => $this->err_msg
             );
         }
-        $this->_CI->load->library('format_lib');
-        $this->_CI->load->model('apply_model', 'apply_m');
+
         $this->_CI->db->trans_begin();
         try {
+
             $content = array(
                 'status'         => 'verified',
                 'verified_time'  => $this->_CI->format_lib->to_datetime(),
@@ -86,14 +91,18 @@ class Apply_lib {
                 'register_code'  => $this->_CI->format_lib->get_registger_code(),
                 'code_available' => 'y'
             );
+
             $this->_CI->apply_m->apply_verifying_pass($apply_id, $content);
             $this->_CI->db->trans_commit();
+
             //@todo return register code
             return array(
                 'res' => TRUE,
                 'data' => $this->register_code($apply_id)
             );
+
         } catch (Exception $e) {
+
             log_message('info', $e->getMessage() . "\n");
             $this->_CI->db->trans_rollback();
             $this->err_msg[] = 'Apply verifying failed';
@@ -102,13 +111,14 @@ class Apply_lib {
                 'msg' => $this->err_msg
             );
         }
-        
     }
 
+    // ( int , string ) => [string, string, string, string]
     public function apply_verifying_failed($apply_id, $message) {
         //@todo format
         $this->_CI->load->library('regulation');
         $this->_CI->regulation->validate('apply_id', $apply_id);
+
         if (count($this->_CI->regulation->err_msg) > 0) {
             $this->err_msg = $this->_CI->regulation->err_msg;
             $this->_CI->regulation->err_msg = array();
@@ -117,6 +127,7 @@ class Apply_lib {
                 'msg' => $this->err_msg
             );
         }
+
         //@todo avoid repeat invoke it
         $this->_CI->load->library('format_lib');
         $this->_CI->load->model('apply_model', 'apply_m');

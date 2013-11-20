@@ -61,7 +61,7 @@ class Regulation {
 
     //验证申请编号
     private function validate_apply_id($content) {
-        if (is_integer($content) && $content > 0) {
+        if (is_numeric($content) && $content > 0) {
             return TRUE;
         } else {
             $this->err_msg[] = 'Apply_id is illegal';
@@ -91,7 +91,7 @@ class Regulation {
 
     //验证页数
     private function validate_page_num($content) {
-        if (is_int($content) && $content > 0) {
+        if (is_numeric($content) && $content > 0) {
             return TRUE;
         } else {
             $this->err_msg[] = 'Parameter page_num is illeagle';
@@ -184,7 +184,7 @@ class Regulation {
 
     //验证商店编号
     private function validate_shop_id($content) {
-        if (is_integer($content) && !empty($content)) {
+        if (is_numeric($content) && !empty($content)) {
             return TRUE;
         } else {
             $this->err_msg[] = 'Shop id is illegal';

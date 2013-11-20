@@ -18,6 +18,7 @@ class Apply_model extends Base_model {
 
     public function apply(array $info) {
         $this->base_write($info);
+
         if($this->affected_rows() == 1) {
             return TRUE;
         } else {
@@ -51,6 +52,7 @@ class Apply_model extends Base_model {
         }
     }
 
+    //( int , array ) => boolean
     public function apply_verifying_pass($apply_id, array $content) {
         $this->base_update(
             array('id' => $apply_id), $content

@@ -1,7 +1,9 @@
 body {
-    font-family: Helvetica, Tahoma, Arial, STXihei, "华文细黑", Heiti, "黑体", "Microsoft YaHei", "微软雅黑", SimSun, "宋体", sans-serif;
-    color: #333;
-    font-size: 14px;
+    font-family: Helvetica, Tahoma, Arial, STXihei, "华文细黑", Heiti, 
+        "黑体", "Microsoft YaHei", "微软雅黑", SimSun, "宋体", sans-serif;
+    color: #444;
+    font-size: 14.5px;
+    line-height: 1.618;
     padding: 0;
     margin: 0;
 }
@@ -28,6 +30,93 @@ ul{
     display: inline-block;
     cursor: pointer;
     min-width: 64px;
+}
+
+.dialog-box {
+    display: none;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: rgba(0,0,0,0.4);
+
+    z-index: 998;
+}
+
+.dialog {
+    display: none;
+    .var {
+        @dialog-width: 512px;
+        @dialog-height: 64px;
+    }
+    .var;
+
+    width: @dialog-width;
+    min-height: @dialog-height;
+    padding: 12px 0;
+    border: 4px solid rgba(128,128,128,.8);
+    border-radius: 2px;
+    background: #fff;
+    background-clip: padding-box;
+    position: fixed;
+    top: 30%;
+    left: 50%;
+    margin-left: -(@dialog-width / 2);
+    z-index: 999;
+
+    .dialog-item {
+        .var {
+            @dialog-item-padding-lr: 8px;
+            @dialog-item-width: @dialog-width - (@dialog-item-padding-lr * 2);
+        }
+        .var;
+
+        padding: 0 @dialog-item-padding-lr;
+        margin-top: 12px;
+        width: @dialog-item-width;
+        text-align: center;
+    }
+
+    textarea {
+        .dialog-item > .var;
+        resize: none;
+        height: 128px;
+        padding: 0;
+        margin: 0;
+        width: @dialog-item-width - 2;
+        border: 1px dashed #999;
+        border-radius: 4px;
+        font-size: 14px;
+    }
+
+    .hint {
+        font-size: 12px;
+        color: #ddd;
+    }
+}
+
+#sys-notice {
+    .var {
+        @sys-notice-width: 192px;
+        @sys-notice-height: 36px;
+    }
+    .var;
+
+    width: @sys-notice-width;
+    min-height: @sys-notice-height;
+    line-height: @sys-notice-height;
+    border-radius: 6px;
+    background: rgba(0,0,0,.6);
+    color: #fff;
+    text-align: center;
+    position: fixed;
+    display: none;
+
+    bottom: 64px;
+    left: 50%;
+    margin-left: -(@sys-notice-width / 2);
+    z-index: 999;
 }
 
 #nav {
