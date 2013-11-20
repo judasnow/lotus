@@ -35,11 +35,13 @@ define([
     var AddNewProductDialog = Backbone.View.extend({
 
         events: {
+        //{{{
             'change .class_a_option': '_trySetClassBOptions',
             'click .submit': 'do_submit'
-        },
+        },//}}}
 
         initialize: function() {
+        //{{{
             _.bindAll( 
                 this ,
 
@@ -49,7 +51,8 @@ define([
                 'do_submit',
                 '_fetchClassAList',
                 '_setClassAOptions',
-                '_setClassBOptions'
+                '_setClassBOptions',
+                '_get_user_input'
             );
 
             this.model = new Product();
@@ -62,14 +65,16 @@ define([
 
             this.render();
             this._get_els();
-        },
+        },//}}}
 
         _setClassAOptions: function() {
+        //{{{
             var $classAOption = this.$el.find( '.class_a_option' );
             $classAOption.html( Mustache.to_html( classASelectOptionTpl , {options: this.classAColl.toJSON()} ) );
-        },
+        },//}}}
 
         _trySetClassBOptions: function( e ) {
+        //{{{
             var $option = $( e.currentTarget );
             this.classBColl.fetch({
                 data: {
@@ -79,22 +84,25 @@ define([
                     coll.trigger( 'fetch_ok' );
                 }
             });
-        },
+        },//}}}
 
         _setClassBOptions: function() {
+        //{{{
             var $classBOption = this.$el.find( '.class_b_option' );
             $classBOption.html( Mustache.to_html( classBSelectOptionTpl , {options: this.classBColl.toJSON()} ) );
-        },
+        },//}}}
 
         _fetchClassAList: function() {
+        //{{{
             this.classAColl.fetch({
                 success: function( coll ) {
                     coll.trigger( 'fetch_ok' );
                 }
             });
-        },
+        },//}}}
 
         _get_els: function() {
+        //{{{
             this._$name = this.$el.find( '.name' );
             this._$describe = this.$el.find( '.describe' );
             this._$price = this.$el.find( '.price' );
@@ -102,23 +110,25 @@ define([
             this._$quantity = this.$el.find( '.quantity' );
             this._$class_a = this.$el.find( '.class_a_option' );
             this._$class_b = this.$el.find( '.class_b_option' );
-        },
+        },//}}}
 
         _get_user_input: function() {
-            
-        },
+        //{{{
+            this.model.set( 'name' , this._$name.val() );
+        },//}}}
 
         do_submit: function() {
-            alert( 123 )
-        },
+        //{{{
+            this._get_user_input();
+        },//}}}
 
         render: function() {
+        //{{{
             this.$el.html( addNewProductDialogTpl );
             this._fetchClassAList();
 
             $( 'body' ).append( this.$el );
-        }
-
+        }//}}}
     });
 
     return AddNewProductDialog;

@@ -1,7 +1,6 @@
 define([
 
     "zepto",
-
     "config"
 
 ] , function( $ , config ) {
@@ -57,7 +56,6 @@ define([
                     fail();
                 }
             });
-
         }
     };//}}}
 
