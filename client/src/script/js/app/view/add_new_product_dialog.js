@@ -52,7 +52,7 @@ define([
                 '_fetchClassAList',
                 '_setClassAOptions',
                 '_setClassBOptions',
-                '_get_user_input'
+                '_setModel'
             );
 
             this.model = new Product();
@@ -112,14 +112,27 @@ define([
             this._$class_b = this.$el.find( '.class_b_option' );
         },//}}}
 
-        _get_user_input: function() {
+        _setModel: function() {
         //{{{
-            this.model.set( 'name' , this._$name.val() );
+            var attrs = {
+                name: this._$name.val(),
+                describe: this._$describe.val(),
+                price: this._$price.val(),
+                discount: this._$discount.val(),
+                quantity: this._$quantity.val(),
+                class_a: this._$class_a.val(),
+                class_b: this._$class_b.val()
+            };
+
+            this.model.set( attrs );
         },//}}}
 
         do_submit: function() {
         //{{{
-            this._get_user_input();
+            this._setModel();
+            console.dir( this.model.url );
+            this.model.save();
+            this.model.save();
         },//}}}
 
         render: function() {
