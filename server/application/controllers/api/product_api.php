@@ -2,7 +2,7 @@
 /**
  * Authentication
  *
- * @Author: odirus@163.com
+ * @Author odirus@163.com
  */
 require_once(APPPATH . '/libraries/REST_Controller.php');
 
@@ -10,15 +10,8 @@ class Product_api extends REST_Controller {
  
     public function __construct() {
         parent::__construct();
-        session_start();
-    }
-
-    public function is_login() {
         $this->load->library('auth_lib');
-        $this->auth_lib->user_is_login();
-        if (!isset($_SESSION['object_user_id'])) {
-            $this->response("User did not login", 500);
-        }
+        $this->load->library('product_lib');
     }
 
     /**
@@ -43,38 +36,44 @@ class Product_api extends REST_Controller {
      * 发布新产品
      */
     public function new_product_post() {
-        $this->is_login();
-        $product_info = array(
-            'product_class_a' => $this->input->post('product_class_a', TRUE),
-            'product_class_b' => $this->input->post('product_class_b', TRUE),
-            'product_name'    => $this->input->post('product_name', TRUE),
-            'product_describe' => $this->input->post('product_describe', TRUE),
-            'product_image'   => $this->input->post('product_image', TRUE),
-            'product_detail_image' => $this->input->post('product_detail_image', TRUE),
-            'product_original_price'   => $this->input->post('product_original_price', TRUE),
-            'product_discount' => $this->input->post('product_discount', TRUE),
-            'product_quantity' => $this->input->post('product_quantity', TRUE),
-        );
+    //{{{
+        if ($this->auth_lib->user_is_login()) {
 
-        $this->load->library('product_lib');
-        $res = $this->product_lib->new_product($product_info);
-        if ($res['res']) {
-            $this->response("ok", 200);
+            $this->response('User did not login', 500);
+
         } else {
-            $msg = 'New product releases failed';
-            if (count($res['msg']) > 0) {
-                $msg = implode('; ', $res['msg']);
+
+            $product_info = [
+                'product_class_a' => $this->post('class_a'),
+                'product_class_b' => $this->post('class_b'),
+                'product_name'    => $this->post('name'),
+                'product_describe' => $this->post('describe'),
+                'product_image'   => $this->post('image'),
+                'product_detail_image' => $this->post('detail_image'),
+                'product_original_price'   => $this->post('original_price'),
+                'product_discount' => $this->post('discount'),
+                'product_quantity' => $this->post('quantity'),
+            ];
+
+            $res = $this->product_lib->new_product($product_info);
+
+            if ($res['res']) {
+                $this->response("ok", 200);
+            } else {
+                $msg = 'New product releases failed';
+                if (count($res['msg']) > 0) {
+                    $msg = implode('; ', $res['msg']);
+                }
+                $this->response($msg, 500);
             }
-            $this->response($msg, 500);
         }
-    }
+    }//}}}
 
     /**
      * 修改产品信息
      */
     public function product_update_post() {
-        //检查用户是否登录
-        $this->is_login();
+        //@XXX 检查用户是否登录
         $product_info = array(
             'product_id'      => $this->input->post('product_id', TRUE),
             'product_class_a' => $this->input->post('product_class_a', TRUE),

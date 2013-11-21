@@ -40,12 +40,14 @@ class Upload_lib {
             imagejpeg($image, $output, 100);
             imagedestroy($image);
             break;
-		}
+        }
         return $image_name;
     }
 
     /**
      * 更新图片名称至数据库，同步图片至云存储
+     * 
+     * @param $type string [ shop | product ]
      */
     public function do_upload_image($type) {
         //检查当前图片类型，如果不在类型范围内则上传失败
@@ -58,7 +60,7 @@ class Upload_lib {
         }
 
         $user_id = $_SESSION['object_user_id'];
-        //todo 限制图片的张数
+        //@TODO 限制图片的张数
         $upload_path = getcwd() . '/file/image/' . "$type";
         
         $config   = array();
@@ -99,9 +101,7 @@ class Upload_lib {
                 'msg' => $this->err_msg
             );
         }
- 
     }
-
 }
 
-?>
+

@@ -10,23 +10,14 @@ class Auth_api extends REST_Controller {
 
     public function __construct() {
         parent::__construct();
-        session_start();
     }
 
     public function is_login() {
         $this->load->library('auth_lib');
         $this->auth_lib->user_is_login();
+
         if (!isset($_SESSION['object_user_id'])) {
             $this->response("User did not login", 500);
-            /**
-            $this->response(
-                array(
-                    'result' => 'fail',
-                    'msg'    => 'User did not login',
-                    'data'   => NULL
-                )
-            );
-            */
         }
     }
         
@@ -47,25 +38,21 @@ class Auth_api extends REST_Controller {
         $password = $this->input->post('password', TRUE);
         $remember = $this->input->post('remember', TRUE);
 
+        //[boolean, [string]]
         $res = $this->auth_lib->do_login($email, $password, $remember);
 
         if($res['res']) {
-            $this->response(array('session_id' => session_id()), 200);
-            /**
-            //login ok 返回当前分配的 session_id 
             $this->response([
                 'session_id' => session_id()
-            ] , 200 );
-            */
+            ], 200);
         } else {
             $msg = 'Email or password wrong';
 
             if (count($res['msg']) > 0) {
                 $msg = implode('; ', $res['msg']);
             }
+
             $this->response($msg, 400);
-           
-            //$this->response( ['msg' => $msg] , 400 );
         }
     }
 

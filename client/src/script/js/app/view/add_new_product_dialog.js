@@ -1,3 +1,4 @@
+//@TODO 上传文件的预览功能
 define([
 
     'zepto',
@@ -8,6 +9,8 @@ define([
 
     'c/class_a',
     'c/class_b',
+
+    'v/dialog_base',
 
     'm/product',
 
@@ -24,6 +27,9 @@ define([
 
     ClassAColl,
     ClassBColl,
+
+    DialogBaseView,
+
     Product,
 
     addNewProductDialogTpl,
@@ -32,17 +38,19 @@ define([
  ) {
     'use strict';
 
-    var AddNewProductDialog = Backbone.View.extend({
-
-        events: {
-        //{{{
-            'change .class_a_option': '_trySetClassBOptions',
-            'click .submit': 'do_submit'
-        },//}}}
+    //var AddNewProductDialog = Backbone.View.extend({
+    var AddNewProductDialog = DialogBaseView.extend({
 
         initialize: function() {
         //{{{
-            _.bindAll( 
+            this._baseInit();
+
+            this.events = _.extend({
+                'change .class_a_option': '_trySetClassBOptions',
+                'click .submit': 'do_submit'
+            } , this._baseEvents );
+
+            _.bindAll(
                 this ,
 
                 'render' ,
@@ -105,7 +113,7 @@ define([
         //{{{
             this._$name = this.$el.find( '.name' );
             this._$describe = this.$el.find( '.describe' );
-            this._$price = this.$el.find( '.price' );
+            this._$originalPrice = this.$el.find( '.original_price' );
             this._$discount = this.$el.find( '.discount' );
             this._$quantity = this.$el.find( '.quantity' );
             this._$class_a = this.$el.find( '.class_a_option' );
@@ -117,7 +125,7 @@ define([
             var attrs = {
                 name: this._$name.val(),
                 describe: this._$describe.val(),
-                price: this._$price.val(),
+                original_price: this._$originalPrice.val(),
                 discount: this._$discount.val(),
                 quantity: this._$quantity.val(),
                 class_a: this._$class_a.val(),
@@ -130,8 +138,6 @@ define([
         do_submit: function() {
         //{{{
             this._setModel();
-            console.dir( this.model.url );
-            this.model.save();
             this.model.save();
         },//}}}
 

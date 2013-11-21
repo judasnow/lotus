@@ -28,7 +28,7 @@ class Auth_lib {
      * @return boolean
      */
     public function user_is_login() {
-        if (isset($_SESSION['object_user_id']) && intval($_SESSION['object_user_id'])) {
+        if (isset($_SESSION['object_user_id']) && is_numeric($_SESSION['object_user_id'])) {
             return TRUE;
         } else {
             return FALSE;
@@ -38,7 +38,7 @@ class Auth_lib {
     /**
      * 执行用户登录功能
      *
-     * @return array $res => [boolean, Array]
+     * @return array $res => [boolean, [string]]
      */
     public function do_login($email, $password, $remember) {
         $this->_CI->load->library('regulation');

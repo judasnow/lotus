@@ -1,22 +1,21 @@
-//@TODO
+// @TODO 使用本类的目的在于 复用基本的 dialog 操作
+// 是否存在更好的做法？
 define([
 
     "zepto",
     "backbone"
 
-], function( $ , Backbone ) {
+] , function( $ , Backbone ) {
     "use strict";
 
     var DialogViewBase = Backbone.View.extend({
 
-        events: {
+        _baseEvents: {
             "click .close": "closeDialog",
         },
 
         _baseInit: function() {
-            _.bindAll( this , "closeDialog" , "showDialog" , "render" );
-
-            this.render();
+            _.bindAll( this , "closeDialog" , "showDialog" );
         },
 
         closeDialog: function() {
@@ -26,12 +25,6 @@ define([
         showDialog: function() {
             this.$el.show();
         },
-
-        render: function() {
-            this.$el.html( this.tpl );
-
-            $( "body" ).append( this.$el );
-        }
 
     });
 

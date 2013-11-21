@@ -1,8 +1,8 @@
 <?php 
 /**
- * @Author: odirus@163.com
+ * @Author odirus@163.com
  *
- * @todo 处理商品写入和取出时的折扣信息
+ * @TODO 处理商品写入和取出时的折扣信息
  */
 class Product_lib {
     
@@ -11,11 +11,13 @@ class Product_lib {
 
     public function __construct() {
         $this->_CI =& get_instance();
+        $this->_CI->load->library('regulation');
+        $this->_CI->load->model('product_model', 'product_m');
+        $this->_CI->load->model('view_model', 'view_m');
     }
 
     public function product($product_id) {
         $product_id_string = (string) $product_id;
-        $this->_CI->load->library('regulation');
         $this->_CI->regulation->validate('product_id', $product_id_string);
         if (count($this->_CI->regulation->err_msg) > 0) {
             $this->err_msg = $this->_CI->regulation->err_msg;
@@ -79,10 +81,10 @@ class Product_lib {
 
     //@todo 处理折扣信息
     public function new_product($product_info) {
-        $this->_CI->load->library('regulation');
         $product_info_validate = $product_info;
         $product_info_validate['product_price'] = $product_info_validate['product_original_price'];
         unset($product_info_validate['product_original_price']);
+
         //可选参数处理
         $opt_array = array(
             'product_describe' => $product_info_validate['product_describe'],
@@ -109,6 +111,7 @@ class Product_lib {
         }
 
         $this->_CI->load->model('shop_model', 'shop_m');
+
         //格式化产品信息
         $info = array();
         $info['shop_id'] = $this->_CI->shop_m->get_shop_id($_SESSION['object_user_id']);
@@ -121,9 +124,6 @@ class Product_lib {
         $info['quantity'] = $product_info['product_quantity'];
         $info['image'] = $product_info['product_image'];
         $info['detail_image'] = $product_info['product_detail_image'];
-
-        $this->_CI->load->model('product_model', 'product_m');
-        $this->_CI->load->model('view_model', 'view_m');
 
         //@todo 此处应该使用事务
         if ($product_sn = $this->_CI->product_m->new_product($info)) {
