@@ -16,6 +16,8 @@ define([
 
     'config',
 
+    'utilities/common',
+
     'text!tpl/dialog/add_new_product.mustache',
     'text!tpl/dialog/class_a_select.mustache',
     'text!tpl/dialog/class_b_select.mustache'
@@ -35,6 +37,8 @@ define([
     Product,
 
     config,
+
+    common,
 
     addNewProductDialogTpl,
     classASelectOptionTpl,
@@ -144,28 +148,23 @@ define([
         },//}}}
 
         _upload_img: function() {
-            var file = this._$picture_input[0].value;
+        //{{{
+            var that = this;
+            var file = this._$picture_input[0].files[0];
+            var targetUrl = "upload_api/do_upload_image/";
 
-            if( file !== '' ) {
-                var xhr = new XMLHttpRequest();
-                var formData = new FormData();
-
-                formData.append( "user_upload_picture" , file );
-                formData.append( "image_type" , 'product' );
-
-                xhr.onload = function() {
-
-                };
-
-                xhr.open( "POST" , config.serverAddress + "upload_api/do_upload_image/" );
-                xhr.send( formData );
-            }
-        },
+            common.uploadFile( file , targetUrl , function( resText ) {
+                var resObj = JSON.parse( resText );
+                var imageName = resObj.image_name;
+                that.model.set( '' );
+            });
+        },//}}}
 
         do_submit: function() {
         //{{{
             this._setModel();
             this._upload_img();
+
             this.model.save();
         },//}}}
 

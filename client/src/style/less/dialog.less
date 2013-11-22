@@ -1,57 +1,55 @@
 .dialog_box_base( @_width , @_height ) {
 //{{{
     .dialog_box_var {
-        @padding: 4px;
-        @width: @_width - (@padding * 2) - 2;
-        @height: @_height - (@padding * 2) - 2;
-        @radius: 6px;
+        @dialog_box_padding: 4px;
+        @dialog_box_width: @_width - (@dialog_box_padding * 2) - 2;
+        @dialog_box_height: @_height - (@dialog_box_padding * 2) - 2;
+        @dialog_box_border_radius: 6px;
     }
-
     .dialog_box_var;
 
-    width: @width;
-    min-height: @height;
+    width: @dialog_box_width;
+    min-height: @dialog_box_height;
 
     left: 50%;
-    top: 30%;
-    margin-left: -(@width / 2);
-    margin-top: -(@height / 2);
-    position: fixed;
+    top: 128px;
+    margin-left: -(@dialog_box_width / 2);
+    margin-top: -(@dialog_box_height / 2);
+    position: absolute;
 
     border: 1px solid #757575;
-    padding: 4px;
-    border-radius: @radius;
+    padding: @dialog_box_padding;
+    border-radius: @dialog_box_border_radius;
 
     .dialog {
         .dialog_var {
-            @header_height: 32px;
-            @footer_height: 32px;
+            @dialog_header_height: 32px;
+            @dialog_footer_height: 32px;
             @dialog_padding: 8px;
         }
         .dialog_var;
 
-        border: 1px solid #656565;
+        border: 1px solid #555;
         background: #fbfbfb;
-        border-radius: @radius;
+        border-radius: @dialog_box_border_radius;
 
         .header {
-            height: @header_height;
-
-            line-height: @header_height;
+            height: @dialog_header_height;
+            line-height: @dialog_header_height;
 
             border-bottom: 1px solid #ddd;
-            border-top-right-radius: @radius;
-            border-top-left-radius: @radius;
+            border-top-right-radius: @dialog_box_border_radius;
+            border-top-left-radius: @dialog_box_border_radius;
 
             text-align: left;
 
-            padding: 8px @dialog_padding;
+            padding: @dialog_padding;
 
             .close {
                 cursor: pointer;
                 float: right;
                 display: inline-block;
-                line-height: @header_height;
+                line-height: @dialog_header_height;
                 color: #333;
             }
 
@@ -63,14 +61,14 @@
             .sub_title {
                 color: #ccc;
                 font-size: 12px;
-                line-height: @header_height;
+                line-height: @dialog_header_height;
             }
         }
 
         .body {
             .dialog_box_var;
 
-            min-height: @height - @header_height - @header_height - (@dialog_padding * 2) - 2;
+            min-height: @dialog_box_height - (@dialog_header_height * 2) - (@dialog_padding * 2) - 2;
             padding: @dialog_padding;
 
             .item {
@@ -80,10 +78,10 @@
                     .dialog_box_var;
                     .dialog_var;
 
-                    @padding_left_right: 4px;
+                    @dialog_body_item_padding_lr: 4px;
 
-                    width: (@width - (@padding * 2) - 2) - (@dialog_padding * 2) - 2;
-                    padding: 8px @padding_left_right;
+                    width: (@dialog_box_width - (@dialog_box_padding * 2) - 2) - (@dialog_padding * 2) - 2;
+                    padding: 8px @dialog_body_item_padding_lr;
 
                     border: 1px solid #ddd;
                     border-radius: 4px;
@@ -122,8 +120,8 @@
         }
 
         .footer {
-            height: @footer_height;
-            line-height: @footer_height;
+            height: @dialog_footer_height;
+            line-height: @dialog_footer_height;
             padding: 12px @dialog_padding;
 
             border-top: 1px double #ddd;
@@ -139,10 +137,10 @@
 }//}}}
 
 .dialog_wrapper {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
-    background: rgba(0,0,0,0.3);
+    background: rgba(0,0,0,0.4);
     width: 100%;
     height: 100%;
     z-index: 999;
@@ -158,5 +156,22 @@
 }
 
 #add_new_product_dialog {
-    .dialog_box_base( 512px , 256px );
+    @add-new-product-dialog-width: 512px;
+    @add-new-product-dialog-height: 256px;
+    .dialog_box_base( @add-new-product-dialog-width , @add-new-product-dialog-height );
+
+    .detail-image-preview-list {
+        @dialog-padding: 8px;
+
+        .detail-image-preview-img-box {
+            max-width: ((@add-new-product-dialog-width - 16) / 3 ) - 2;
+            max-height: 128px;
+            border: 1px solid #ddd;
+            overflow: hidden;
+        }
+        .detail-image-preview-img {
+            max-width: 256px;
+            max-height: 256px;
+        }
+    }
 }

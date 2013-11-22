@@ -10,7 +10,6 @@ class Shop_api extends REST_Controller {
 
     public function __construct() {
         parent::__construct();
-        session_start();
     }
 
     public function is_login() {

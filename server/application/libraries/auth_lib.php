@@ -46,7 +46,7 @@ class Auth_lib {
         $this->_CI->load->model('cookie_model', 'cookie_m');
 
         if ($this->user_is_login()) {
-            return [ 'res' => FALSE , 'msg' => ["user has logged in"] ];
+            return [ 'res' => FALSE , 'msg' => ['user has logged in'] ];
         }
 
         $arr = array('email' => $email, 'password' => $password);

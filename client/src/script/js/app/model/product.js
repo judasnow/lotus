@@ -3,14 +3,16 @@ define([
     'zepto',
     'backbone',
 
-    'config'
+    'config',
 
-] , function( $ , Backbone , config ) {
+    'utilities/common'
+
+] , function( $ , Backbone , config , common ) {
     'use strict';
 
     var Product = Backbone.Model.extend({
         initialize: function() {
-            this.urlRoot = config.serverAddress + 'product_api/new_product/';
+            this.urlRoot = config.serverAddress + 'product_api/new_product/?session_id=' + common.getSessionId();
         }
     });
 
