@@ -59,10 +59,10 @@ class Upload_lib {
             );
         }
 
-        $user_id = $_SESSION['object_user_id'];
+        //$user_id = $_SESSION['object_user_id'];
         //@TODO 限制图片的张数
         $upload_path = getcwd() . '/file/image/' . "$type";
-        
+
         $config   = array();
         $config['upload_path']   = $upload_path;
         $config['allowed_types'] = 'jpg|jpeg|png';

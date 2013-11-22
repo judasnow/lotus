@@ -14,6 +14,8 @@ define([
 
     'm/product',
 
+    'config',
+
     'text!tpl/dialog/add_new_product.mustache',
     'text!tpl/dialog/class_a_select.mustache',
     'text!tpl/dialog/class_b_select.mustache'
@@ -31,6 +33,8 @@ define([
     DialogBaseView,
 
     Product,
+
+    config,
 
     addNewProductDialogTpl,
     classASelectOptionTpl,
@@ -60,7 +64,8 @@ define([
                 '_fetchClassAList',
                 '_setClassAOptions',
                 '_setClassBOptions',
-                '_setModel'
+                '_setModel',
+                '_upload_img'
             );
 
             this.model = new Product();
@@ -111,13 +116,16 @@ define([
 
         _get_els: function() {
         //{{{
+            //@TODO 修改 class name
             this._$name = this.$el.find( '.name' );
             this._$describe = this.$el.find( '.describe' );
             this._$originalPrice = this.$el.find( '.original_price' );
             this._$discount = this.$el.find( '.discount' );
             this._$quantity = this.$el.find( '.quantity' );
-            this._$class_a = this.$el.find( '.class_a_option' );
-            this._$class_b = this.$el.find( '.class_b_option' );
+            this._$classA = this.$el.find( '.class_a_option' );
+            this._$classB = this.$el.find( '.class_b_option' );
+            
+            this._$picture_input = this.$el.find( '.picture_input' );
         },//}}}
 
         _setModel: function() {
@@ -128,16 +136,36 @@ define([
                 original_price: this._$originalPrice.val(),
                 discount: this._$discount.val(),
                 quantity: this._$quantity.val(),
-                class_a: this._$class_a.val(),
-                class_b: this._$class_b.val()
+                class_a: this._$classA.val(),
+                class_b: this._$classB.val()
             };
 
             this.model.set( attrs );
         },//}}}
 
+        _upload_img: function() {
+            var file = this._$picture_input[0].value;
+
+            if( file !== '' ) {
+                var xhr = new XMLHttpRequest();
+                var formData = new FormData();
+
+                formData.append( "user_upload_picture" , file );
+                formData.append( "image_type" , 'product' );
+
+                xhr.onload = function() {
+
+                };
+
+                xhr.open( "POST" , config.serverAddress + "upload_api/do_upload_image/" );
+                xhr.send( formData );
+            }
+        },
+
         do_submit: function() {
         //{{{
             this._setModel();
+            this._upload_img();
             this.model.save();
         },//}}}
 

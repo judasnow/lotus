@@ -11,12 +11,12 @@ class Upload_api extends REST_Controller {
     public function __construct() {
         parent::__construct();
 
-        $this->load->libraries('auth_lib');
+        $this->load->library('auth_lib');
         $this->load->library('upload_lib');
     }
 
     public function do_upload_image_post() {
-        if (!$this->auth_lib->user_is_login()) {
+        if ($this->auth_lib->user_is_login()) {
             $this->response('User did not login', 500);
         } else {
 
