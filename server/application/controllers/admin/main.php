@@ -111,7 +111,6 @@ class Main extends CI_Controller {
         }
 
         http_response_code( 500 );
-        var_dump( json_encode( $result ) );
     }
 
     public function pass( $id = -1 ) {

@@ -16,7 +16,7 @@ class Upload_api extends REST_Controller {
     }
 
     public function do_upload_image_post() {
-        if ($this->auth_lib->user_is_login()) {
+        if (! $this->auth_lib->user_is_login()) {
             $this->response('User did not login', 500);
         } else {
 

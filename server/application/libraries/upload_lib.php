@@ -1,15 +1,18 @@
 <?php
 /**
  * 处理上传文件
+ *
  * @todo 上传店铺图片时的问题待考虑
  */
 class Upload_lib {
-    
+
     private $_CI;
     public $err_msg = array();
 
     public function __construct() {
         $this->_CI =& get_instance();
+        $this->_CI->load->model('shop_model', 'shop_m');
+        $this->_CI->load->library('qiniuyun_lib');
     }
 
     /**
@@ -20,6 +23,7 @@ class Upload_lib {
         $input = $image_info['full_path'];
         $output = getcwd() . '/file/image/' . "$type" . "/$image_name" . '.jpg';
         $file_type = $image_info['file_type'];
+
         switch($file_type) {
         case 'image/jpeg':
             rename($input, $output);
@@ -59,7 +63,7 @@ class Upload_lib {
             );
         }
 
-        //$user_id = $_SESSION['object_user_id'];
+        $user_id = $_SESSION['object_user_id'];
         //@TODO 限制图片的张数
         $upload_path = getcwd() . '/file/image/' . "$type";
 
@@ -68,7 +72,7 @@ class Upload_lib {
         $config['allowed_types'] = 'jpg|jpeg|png';
         $config['file_name']     = uniqid();
         $this->_CI->load->library('upload', $config);
-        $this->_CI->load->model('shop_model', 'shop_m');
+
         if ($this->_CI->upload->do_upload()) {
             $image_name = $this->format_image($this->_CI->upload->data(), $type);
             //@todo 上传店铺图片的时候，放在此处是否合适
@@ -80,8 +84,7 @@ class Upload_lib {
             }
             $file = $upload_path . "/$image_name.jpg";
             $image_full_name = $image_name . '.jpg';
-            $this->_CI->load->library('qiniuyun_lib');
-            
+
             if ($this->_CI->qiniuyun_lib->upload($image_full_name, $file)) {
                 return array(
                     'res' => TRUE,
