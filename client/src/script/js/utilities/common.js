@@ -6,6 +6,7 @@ define([
     "m/user"
 
 ] , function (
+
     $ ,
     async,
 
