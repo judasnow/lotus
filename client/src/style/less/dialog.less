@@ -164,11 +164,16 @@
     .detail-image-preview-list {
         @dialog-padding: 8px;
 
+        margin: 14px 0;
+        display: inline-block;
+        width: 100%;
+
         .detail-image-preview-img-box {
             max-width: ((@add-new-product-dialog-width - 16) / 3 ) - 2;
             max-height: 128px;
-            border: 1px solid #ddd;
+            border: 1px dashed #eee;
             overflow: hidden;
+            float: left;
         }
         .detail-image-preview-img {
             max-width: 256px;
