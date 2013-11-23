@@ -125,8 +125,8 @@
             padding: 12px @dialog_padding;
 
             border-top: 1px double #ddd;
-            border-bottom-right-radius: @radius;
-            border-bottom-left-radius: @radius;
+            border-bottom-right-radius: @dialog_box_border_radius;
+            border-bottom-left-radius: @dialog_box_border_radius;
             text-align: right;
 
             .text {
@@ -137,12 +137,13 @@
 }//}}}
 
 .dialog_wrapper {
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
-    background: rgba(0,0,0,0.4);
+    background: rgba(0,0,0,0.2);
     width: 100%;
-    height: 100%;
+    //@XXX 需要根据不同的情况进行改变
+    height: 400%;
     z-index: 999;
 }
 
