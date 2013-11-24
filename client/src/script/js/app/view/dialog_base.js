@@ -26,6 +26,15 @@ define([
             this.$el.show();
         },
 
+        toggle: function() {
+            //warpper
+            this.$el.toggle();
+        },
+
+        baseRender: function() {
+            
+        }
+
     });
 
     return DialogViewBase;

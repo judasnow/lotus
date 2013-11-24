@@ -17,8 +17,6 @@ define([
 ) {
     "use strict";
 
-    var common = {};
-
     //独立出来是为了方便之后的处理
     //(void) => number | null
     var getSessionId = function() {
@@ -66,9 +64,11 @@ define([
         }
     };//}}}
 
-    common.getSessionId = getSessionId;
-    common.getObjectUserInfo = getObjectUserInfo;
-    common.uploadFile = uploadFile;
+    var common = { 
+        getSessionId: getSessionId,
+        getObjectUserInfo: getObjectUserInfo,
+        uploadFile: uploadFile
+    }
 
     return common;
 });

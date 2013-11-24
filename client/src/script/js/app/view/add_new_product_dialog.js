@@ -1,4 +1,3 @@
-//@TODO 上传文件的预览功能
 define([
 
     'zepto',
@@ -6,6 +5,7 @@ define([
     'backbone',
     'mustache',
     'q',
+    'async',
 
     'c/class_a',
     'c/class_b',
@@ -20,7 +20,8 @@ define([
 
     'text!tpl/dialog/add_new_product.mustache',
     'text!tpl/dialog/class_a_select.mustache',
-    'text!tpl/dialog/class_b_select.mustache'
+    'text!tpl/dialog/class_b_select.mustache',
+    'text!tpl/dialog/add_new_product_picture_preview_item.mustache'
 
 ] , function(
     $ ,
@@ -28,6 +29,7 @@ define([
     Backbone,
     Mustache,
     Q,
+    async,
 
     ClassAColl,
     ClassBColl,
@@ -42,12 +44,14 @@ define([
 
     addNewProductDialogTpl,
     classASelectOptionTpl,
-    classBSelectOptionTpl
+    classBSelectOptionTpl,
+    addNewProductPicturePreviewItem
  ) {
     'use strict';
 
-    //var AddNewProductDialog = Backbone.View.extend({
     var AddNewProductDialog = DialogBaseView.extend({
+        id: 'add_new_product_dialog',
+        className: 'dialog_box',
 
         initialize: function() {
         //{{{
@@ -55,7 +59,12 @@ define([
 
             this.events = _.extend({
                 'change .class_a_option': '_trySetClassBOptions',
-                'click .submit': 'do_submit'
+                'change .image_input': '_changeImageInput',
+                'change .detail_image_input': '_changeImageInput',
+                'mouseover .preview-img-box': '_showFuncBtns',
+                'mouseout .preview-img-box': '_hideFuncBtns',
+                'click .preview-img-func-remove': '_removeThisImage',
+                'click .submit': 'doSubmit'
             } , this._baseEvents );
 
             _.bindAll(
@@ -63,13 +72,18 @@ define([
 
                 'render' ,
 
-                '_get_els',
-                'do_submit',
+                '_getEls',
+                'doSubmit',
                 '_fetchClassAList',
                 '_setClassAOptions',
                 '_setClassBOptions',
                 '_setModel',
-                '_upload_img'
+                '_previewImage',
+                '_changeImageInput',
+                '_showFuncBtns',
+                '_hideFuncBtns',
+                '_removeThisImage',
+                '_uploadImages'
             );
 
             this.model = new Product();
@@ -81,7 +95,15 @@ define([
             this.classBColl.on( 'fetch_ok' , this._setClassBOptions );
 
             this.render();
-            this._get_els();
+            this._getEls();
+
+            //size = 1
+            this._imageFiles = {};
+            //size >= 1
+            this._detailImageFiles = {};
+
+            this._imageName = '';
+            this._detailNames = [];
         },//}}}
 
         _setClassAOptions: function() {
@@ -118,7 +140,21 @@ define([
             });
         },//}}}
 
-        _get_els: function() {
+        _showFuncBtns: function( e ) {
+        //{{{
+            $( e.currentTarget )
+                .find( '.preview-img-func' )
+                .css( 'z-index' , '999' );
+        },//}}}
+
+        _hideFuncBtns: function( e ) {
+        //{{{
+            $( e.currentTarget )
+                .find( '.preview-img-func' )
+                .css( 'z-index' , '997' );
+        },//}}}
+
+        _getEls: function() {
         //{{{
             //@TODO 修改 class name
             this._$name = this.$el.find( '.name' );
@@ -128,8 +164,11 @@ define([
             this._$quantity = this.$el.find( '.quantity' );
             this._$classA = this.$el.find( '.class_a_option' );
             this._$classB = this.$el.find( '.class_b_option' );
-            
-            this._$picture_input = this.$el.find( '.picture_input' );
+
+            this._$imageInput = this.$el.find( '.image_input' );
+            this._$imagePreview = this.$el.find( '.image-preview' );
+            this._$detailImageInput = this.$el.find( '.detail_image_input' );
+            this._$detailImagePreviewList = this.$el.find( '.detail-image-preview-list' );
         },//}}}
 
         _setModel: function() {
@@ -147,25 +186,141 @@ define([
             this.model.set( attrs );
         },//}}}
 
-        _upload_img: function() {
+        _uploadImages: function( cb ) {
         //{{{
             var that = this;
-            var file = this._$picture_input[0].files[0];
             var targetUrl = "upload_api/do_upload_image/";
 
-            common.uploadFile( file , targetUrl , function( resText ) {
-                var resObj = JSON.parse( resText );
-                var imageName = resObj.image_name;
-                that.model.set( '' );
+            var fileLists = {
+                image: this._imageFiles,
+                detail_image: this._detailImageFiles
+            };
+
+            _.each( fileLists , function( files , type ) {
+
+                async.each(
+
+                    files ,
+
+                    function( file , cb ) {
+                        common.uploadFile( file , targetUrl , function( resText ) {
+                            var resObj = JSON.parse( resText );
+                            var imageName = resObj.image_name;
+
+                            if( type === 'image' ) {
+                                that._imageName = imageName;
+                            } else if( type === 'detail_image' ) {
+                                that._detailNames.push( imageName );
+                            }
+
+                            cb( null );
+
+                        });
+                    },
+
+                    function( err ) {
+                        if( err !== null ) {
+                            console.dir( 'err' + err );
+                        } else {
+
+                            if( type === 'image' ) {
+                                that.model.set( 'image' , that._imageName );
+                            } else {
+                                that.model.set( 'detail_image' , that._detailNames.join( ',' ) );
+                            }
+
+                            cb();
+                        }
+                    }
+
+                );
             });
         },//}}}
 
-        do_submit: function() {
+        //@parem where string ['image'|'detail_image']
+        _previewImage: function( where ) {
         //{{{
-            this._setModel();
-            this._upload_img();
+            var to$El = null;
+            var files = [];
 
-            this.model.save();
+            if( where === 'image' ) {
+                to$El = this._$imagePreview;
+                to$El.html( '' );
+                files = this._imageFiles;
+            } else if( where === 'detail_image' ) {
+                to$El = this._$detailImagePreviewList;
+                files = this._detailImageFiles;
+            } else {
+                //shoud not be here
+            }
+
+            _.each( files , function( file , index ) {
+                var reader = new FileReader();
+
+                reader.onload = function( e ) {
+                    to$El.prepend( Mustache.to_html(
+                        addNewProductPicturePreviewItem,
+                        {
+                            index: index,
+                            src: e.target.result 
+                        }
+                    ));
+                }
+
+                reader.readAsDataURL( file );
+            });
+        },//}}}
+
+        //@parem e event object
+        _changeImageInput: function( e ) {
+        //{{{
+            var $input = $( e.currentTarget );
+            var files = $input[0].files;
+
+            if( $input.hasClass( 'image_input' ) ) {
+                this._imageFiles = files;
+                this._previewImage( 'image' );
+            } else if( $input.hasClass( 'detail_image_input' ) ) {
+                _.extend( this._detailImageFiles , files );
+                this._previewImage( 'detail_image' );
+            } else {
+                //shoud not be here
+            }
+        },//}}}
+
+        _removeThisImage: function( e ) {
+        //{{{
+            $( e.currentTarget )
+                .parent()
+                .parent()
+                .remove();
+        },//}}}
+
+        doSubmit: function() {
+        //{{{
+            var that = this;
+            this._setModel();
+            window.e.trigger( 'show_loading' );
+
+            async.series([
+
+                function( cb ) {
+                    that._uploadImages( cb );
+                },
+
+                function( cb ) {
+                    that.model.save( null , {
+                        success: function() {
+                            console.log( 'save ok' )
+                            window.e.trigger( 'hide_loading' );
+                            cb();
+                            that.$el.hide();
+                        }
+                    });
+                }
+
+            ]);
+
         },//}}}
 
         render: function() {

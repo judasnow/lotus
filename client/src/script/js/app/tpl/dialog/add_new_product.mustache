@@ -1,5 +1,3 @@
-<div class='dialog_wrapper'>
-<div id='add_new_product_dialog' class='dialog_box'>
 <div class='dialog'>
 
 <div class='header'>
@@ -40,24 +38,17 @@
     </div>
 
     <div class="item">
-        <form enctype="multipart/form-data">
-            <input class="picture_input" type="file" accept="image/*">
-        </form>
+        <input class="image_input" type="file" accept="image/*">
         <br />
         <span class='hint'>上传一张商品封面图片</span>
+        <ul class="image-preview preview-list"></ul>
     </div>
 
     <div class="item">
-        <form enctype="multipart/form-data">
-            <input class="picture_input" type="file" accept="image/*">
-        </form>
+        <input class="detail_image_input" type="file" multiple accept="image/*">
         <br />
         <span class="hint">上传多张商品相关的细节照片</span>
-        <ul class="detail-image-preview-list">
-            <li class='detail-image-preview-img-box'>
-                <img class='detail-image-preview-img' src="http://maoejie.u.qiniudn.com/maoejie5273cd632686b.jpg?token=ylMDiB_RbB1C1JRaEWHg8fqLmCXxf7RuBbOLKCZu:YFnItksRBgZ0guheCjV_-aGH2uE=:eyJTIjoibWFvZWppZS51LnFpbml1ZG4uY29tL21hb2VqaWU1MjczY2Q2MzI2ODZiLmpwZyIsIkUiOjEzODUxOTc1NDN9&download">
-            </li>
-        </ul>
+        <ul class="detail-image-preview-list preview-list"></ul>
     </div>
 
     <div class='item'>
@@ -70,6 +61,4 @@
 </div>
 </div>
 
-</div>
-</div>
 

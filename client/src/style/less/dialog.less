@@ -157,27 +157,64 @@
 }
 
 #add_new_product_dialog {
-    @add-new-product-dialog-width: 512px;
-    @add-new-product-dialog-height: 256px;
+    @add-new-product-dialog-width: 666;
+    @add-new-product-dialog-height: 222;
     .dialog_box_base( @add-new-product-dialog-width , @add-new-product-dialog-height );
 
-    .detail-image-preview-list {
-        @dialog-padding: 8px;
-
+    .preview-list {
         margin: 14px 0;
         display: inline-block;
         width: 100%;
 
-        .detail-image-preview-img-box {
-            max-width: ((@add-new-product-dialog-width - 16) / 3 ) - 2;
-            max-height: 128px;
-            border: 1px dashed #eee;
+        .preview-img-box {
+            .preview-img-box-var {
+                @count-preview-img-box-by-row: 4;
+                @preview-img-box-max-width: ((@dialog_box_width - 2) / @count-preview-img-box-by-row) - (@count-preview-img-box-by-row * 2);
+            }
+            .preview-img-box-var;
+
+            width: @preview-img-box-max-width;
+            height: @preview-img-box-max-width;
+
             overflow: hidden;
             float: left;
+
+            display: block;
+            background: #efefef;
         }
-        .detail-image-preview-img {
-            max-width: 256px;
-            max-height: 256px;
+
+        .preview-img {
+            .preview-img-box > .preview-img-box-var;
+
+            @size: @preview-img-box-max-width * 3;
+            position: relative;
+            max-width: @size;
+            max-height: @size;
+            left: 33.3%;
+            top: 33.3%;
+            margin-left: -(@size / 3);
+            margin-top: -(@size / 3);
+            z-index: 998;
+        }
+
+        .preview-img-func {
+            @preview-img-remove-size: 48px;
+
+            width: 100%;
+            height: @preview-img-remove-size;
+            line-height: @preview-img-remove-size;
+            text-align: center;
+            display: inline-block;
+            position: relative;
+            top: 50%;
+            margin-top: -(@preview-img-remove-size / 2);
+            z-index: 997;
+
+            i {
+                cursor: pointer;
+                color: @link_color;
+                font-size: @preview-img-remove-size;
+            }
         }
     }
 }

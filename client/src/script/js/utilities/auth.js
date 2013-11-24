@@ -6,8 +6,6 @@ define([
 ] , function( $ , config ) {
     "use strict";
 
-    var auth = {};
-
     var doLogin = function( info , success , fail ) {
     //{{{
         if( arguments.length !== 3 ||
@@ -46,6 +44,7 @@ define([
 
                     success();
                 },
+
                 error: function( xhr , type ) {
                     //login fail
                     if( xhr.status !== 400 ) {
@@ -70,8 +69,10 @@ define([
         }
     };//}}}
 
-    auth.doLogin = doLogin;
-    auth.doLogout = doLogout;
+    var auth = {
+        doLogin: doLogin,
+        doLogout: doLogout
+    };
 
     return auth;
 });

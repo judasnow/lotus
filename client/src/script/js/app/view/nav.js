@@ -88,7 +88,12 @@ define([
             if( typeof this.dropdownView === "undefined" ) {
                 var e = {
                     "click .add_new_product": function() {
-                        new AddNewProductDialog();
+                        var $addNewProductDialog = $( '#add_new_product' );
+                        if( $addNewProductDialog.length !== 0 ) {
+                            new AddNewProductDialog();
+                        } else {
+                            $addNewProductDialog.toggle();
+                        }
                     }
                 };
 
