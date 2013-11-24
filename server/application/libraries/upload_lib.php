@@ -73,7 +73,7 @@ class Upload_lib {
         $config['file_name']     = uniqid();
         $this->_CI->load->library('upload', $config);
 
-        if ($this->_CI->upload->do_upload()) {
+        if ($res = $this->_CI->upload->do_upload()) {
             $image_name = $this->format_image($this->_CI->upload->data(), $type);
             //@todo 上传店铺图片的时候，放在此处是否合适
             if($type == 'shop') {
@@ -98,6 +98,7 @@ class Upload_lib {
                 );
             }
         } else {
+            $this->err_msg[] = $this->_CI->upload->display_errors();
             $this->err_msg[] = 'Do upload image failed';
             return array(
                 'res' => FALSE,
