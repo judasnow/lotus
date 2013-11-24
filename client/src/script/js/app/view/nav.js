@@ -14,8 +14,9 @@ define([
     "text!tpl/nav/object_user_dropdown.mustache"
 
 ] , function(
-    $ ,
-    Backbone ,
+
+    $,
+    Backbone,
     Mustache,
 
     CategoriesBrowseView,
@@ -26,6 +27,7 @@ define([
 
     usernameTpl,
     objectUserDropdownTpl
+
  ) {
     "use strict";
 
@@ -53,7 +55,6 @@ define([
 
             this._getEls();
             this._categoriesBrowseView = new CategoriesBrowseView();
-            new AddNewProductDialog();
         },//}}}
 
         _getEls: function() {
@@ -88,12 +89,9 @@ define([
             if( typeof this.dropdownView === "undefined" ) {
                 var e = {
                     "click .add_new_product": function() {
-                        var $addNewProductDialog = $( '#add_new_product' );
-                        if( $addNewProductDialog.length !== 0 ) {
-                            new AddNewProductDialog();
-                        } else {
-                            $addNewProductDialog.toggle();
-                        }
+                        //@XXX 实例化的位置在哪里比较好？
+                        window.addNewProductDialogView = window.addNewProductDialogView || new AddNewProductDialog();
+                        window.addNewProductDialogView.toggle();
                     }
                 };
 

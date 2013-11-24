@@ -31,7 +31,7 @@ define([
         },
 
         initialize: function( $categoriesBrowse ) {
-
+        //{{{
             this._$categoriesBrowse = $categoriesBrowse;
 
             _.bindAll( this , "_addAll" , "_addOne" , "_show_class_b" , "_mouseleave_row" , "render" );
@@ -45,8 +45,7 @@ define([
                 }
             });
 
-            this.render();
-        },
+        },//}}}
 
         //在 bubbling 阶段捕获该事件 获取当前元素
         _show_class_b: function( event ) {
@@ -64,6 +63,7 @@ define([
 
         _addAll: function() {
             this._coll.each( this._addOne );
+            this.render();
         },
 
         _addOne: function( item ) {

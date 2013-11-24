@@ -1,5 +1,6 @@
 .dialog_box_base( @_width , @_height ) {
 //{{{
+
     .dialog_box_var {
         @dialog_box_padding: 4px;
         @dialog_box_width: @_width - (@dialog_box_padding * 2) - 2;
@@ -157,6 +158,8 @@
 }
 
 #add_new_product_dialog {
+    display: none;
+
     @add-new-product-dialog-width: 666;
     @add-new-product-dialog-height: 222;
     .dialog_box_base( @add-new-product-dialog-width , @add-new-product-dialog-height );

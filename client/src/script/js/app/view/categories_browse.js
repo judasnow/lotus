@@ -7,8 +7,6 @@ define([
 ], function( _ , Backbone , ClassAListView ) {
     "use strict";
 
-    var $box = $( "#wrapper .box" );
-
     var CategoriesBrowse = Backbone.View.extend({
 
         id: "categories_browse",
@@ -28,7 +26,7 @@ define([
         },
 
         render: function() {
-            $box.append( this.$el );
+            $( '#wrapper > .box' ).append( this.$el );
         }
     });
 

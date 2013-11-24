@@ -6,8 +6,6 @@ define([
 ], function( $ , async ) {
     "use strict";
 
-    var page = {};
-
     var $wrapper = $( "#wrapper" );
 
     var fadeOutPage = function( cb ) {
@@ -31,7 +29,7 @@ define([
     };//}}}
 
     // 需要注意的地方就是 page 变换 替换的是 box 部分的内容
-    page.loadPage = function( $el ) {
+    var loadPage = function( $el ) {
     //{{{
         async.series([
             function( cb ) {
@@ -48,6 +46,10 @@ define([
             //@TODO
         });
     };//}}}
+
+    var page = {
+        loadPage: loadPage
+    };
 
     return page;
 });

@@ -58,6 +58,7 @@ define([
             this._baseInit();
 
             this.events = _.extend({
+
                 'change .class_a_option': '_trySetClassBOptions',
                 'change .image_input': '_changeImageInput',
                 'change .detail_image_input': '_changeImageInput',
@@ -65,6 +66,7 @@ define([
                 'mouseout .preview-img-box': '_hideFuncBtns',
                 'click .preview-img-func-remove': '_removeThisImage',
                 'click .submit': 'doSubmit'
+
             } , this._baseEvents );
 
             _.bindAll(

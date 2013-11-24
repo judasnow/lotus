@@ -18,17 +18,17 @@ define([
             _.bindAll( this , "closeDialog" , "showDialog" );
         },
 
+        //@XXX parent() 元素要是 dialog_wrapper 才能使用 unwrap
         closeDialog: function() {
-            this.$el.hide();
+            this.$el.unwrap().hide();
         },
 
         showDialog: function() {
-            this.$el.show();
+            this.$el.wrap( '<div class="dialog_wrapper" />' ).show();
         },
 
         toggle: function() {
-            //warpper
-            this.$el.toggle();
+            this.$el.wrap( '<div class="dialog_wrapper" />' ).toggle();
         },
 
         baseRender: function() {
