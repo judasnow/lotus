@@ -17,12 +17,17 @@ class Home_api extends REST_Controller {
      */
     public function search_get() {
         $this->load->library('home_lib');
-        
         $search_string = $this->input->get('search_string', TRUE);
-        if ($res = $this->home_lib->search($search_string)) {
-            $this->response($res, 200);
+        $page_num = $this->input->get('page_num', TRUE);
+        $res = $this->home_lib->search($search_string, $page_num);
+        if ($res['res']) {
+            $this->response($res['data'], 200);
         } else {
-            $this->response("fail", 500);
+            $msg = 'Get products failed';
+            if (count($res['msg']) > 0) {
+                $msg = implode("; ", $res['msg']);
+            }
+            $this->response($msg, 500);
         }
     }
     

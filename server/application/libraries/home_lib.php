@@ -13,13 +13,13 @@ class Home_lib {
     public function __construct() {
         $this->_CI =& get_instance();
         $this->_redis = new \Predis\Client([
-            'scheme' => 'tcp',
-            'host'   => '127.0.0.1',
-            'port'   => 6379
+            'scheme' => $this->_CI->config->item('scheme'),
+            'host'   => $this->_CI->config->item('host'),
+            'port'   => $this->_CI->config->item('port')
         ]);
     }
 
-    public function search_id($search_string) {
+    public function search_id($search_string, $page) {
         //查询缓存，根据查询字符串进行 hash
         $replies = $this->_redis->pipeline(function ($pipe) use ($search_string){
             $pipe->select(3);
@@ -27,7 +27,15 @@ class Home_lib {
         });
         if ($replies[0] && $replies[1]) {
             //根据指定搜索条件查询成功，此处应检验返回结果是否为需要的格式
-            return $replies[1];
+            $start = ($page - 1) * $this->_page_count;
+            $list  = array_slice($replies[1], $start, $this->_page_count);
+            return array(
+                'res' => TRUE,
+                'data' => array(
+                    'total_page' => (int)((count($replies[1]) + $this->_page_count - 1) / $this->_page_count),
+                    'content'    => $list
+                )
+            );
         } else {
             //缓存中不存在该条记录，则写入缓存并且返回数据
             $this->_CI->load->model('product_model', 'product_m');
@@ -38,24 +46,119 @@ class Home_lib {
                     $pipe->sadd('search_' . md5($search_string), $value['id']);
                 }
             });
+            $result = [];
             foreach ($res as $key => $value) {
                 $result[$key] = $value['id'];
             }
-            return $result;
+            $start = ($page - 1) * $this->_page_count;
+            $list  = array_slice($result, $start, $this->_page_count);
+            return array(
+                'res' => TRUE,
+                'data' => array(
+                    'total_page' =>  (int)((count($replies[1]) + $this->_page_count - 1) / $this->_page_count),
+                    'content'    => $list
+                )
+            );
         }
     }
 
-    public function search($search_string) {
+    public function search($search_string, $page) {
+        //Todo 加入规则验证
+        if (empty($search_string) || empty($page)) {
+            $this->err_msg[] = 'Search string or page num is empty.';
+            return array(
+                'res' => FALSE,
+                'msg' => $this->err_msg
+            );
+        }
+        
         $this->_CI->load->library('product_lib');
-        $res = $this->search_id($search_string);
+        //需要获取的商品编号列表
+        $result = $this->search_id($search_string, $page);
+        $res = $result['data']['content'];
+        $res_not_cache = [];
+
         $products_info = [];
-        foreach ($res as $key => $product_id) {
-            $product_info = $this->_CI->product_lib->product_info($product_id);
-            if ($product_info['res']) {
-                $products_info[] = $product_info['data'];
+
+        //先查询缓存池中是否有该商品信息
+        $k = 0;
+        foreach ($res as $key => $value) {
+            $reply = $this->_redis->pipeline(function ($pipe) use ($value) {
+                $pipe->select(2);
+                $pipe->hmget('product' . $value . 'info', 
+                             array(
+                                 'product_id',
+                                 'product_class_a',
+                                 'product_class_b',
+                                 'product_name',
+                                 'product_describe',
+                                 'product_image_url',
+                                 'product_original_price',
+                                 'product_discount',
+                                 'product_now_price',
+                                 'product_quantity'
+                             ));
+                $pipe->smembers('product' . $value . 'detail_image');
+            });
+            if ($reply[0] && $reply[1] && $reply[2]) {
+                $products_info[$k]['product_id']             = $reply[1][0];
+                $products_info[$k]['product_class_a']        = $reply[1][1];
+                $products_info[$k]['product_class_b']        = $reply[1][2];
+                $products_info[$k]['product_name']           = $reply[1][3];
+                $products_info[$k]['product_describe']       = $reply[1][4];
+                $products_info[$k]['product_image_url']      = $reply[1][5];
+                $products_info[$k]['product_original_price'] = $reply[1][6];
+                $products_info[$k]['product_discount']       = $reply[1][7];
+                $products_info[$k]['product_now_price']      = $reply[1][8];
+                $products_info[$k]['product_quantity']       = $reply[1][9];
+                $products_info[$k]['product_detail_image']   = $reply[2];
+                $k++;
+            } else {
+                $res_not_cache[] = $value;
             }
         }
-        return $products_info;
+        $k = count($products_info);
+        foreach ($res_not_cache as $key => $product_id) {
+            $product_info = $this->_CI->product_lib->product_info($product_id);
+            if ($product_info['res']) {
+                
+                $products_info[$k] = $product_info['data'];
+                
+                //echo '<pre>';var_dump($products_info);die;
+                $reply = $this->_redis->pipeline(function ($pipe) use ($product_info) {
+                    $pipe->select(2);
+                    $pipe->hmset('product' . substr($product_info['data']['product_id'], 10) . 'info',
+                                 array(
+                                     'product_id' => $product_info['data']['product_id'],
+                                     'product_class_a' => $product_info['data']['product_class_a'],
+                                     'product_class_b'=> $product_info['data']['product_class_b'],
+                                     'product_name' => $product_info['data']['product_name'],
+                                     'product_describe' => $product_info['data']['product_describe'],
+                                     'product_image_url' => $product_info['data']['product_image_url'],
+                                     'product_original_price' => $product_info['data']['product_original_price'],
+                                     'product_discount' => $product_info['data']['product_discount'],
+                                     'product_now_price' => $product_info['data']['product_now_price'],
+                                     'product_quantity' => $product_info['data']['product_quantity']
+                                 )
+                                 
+                    );
+                    $pipe->expire('product' . substr($product_info['data']['product_id'], 10) . 'info', $this->_CI->config->item('cache_time'));
+                    foreach ($product_info['data']['product_detail_image_url'] as $key => $value) {
+                        $pipe->sadd('product' . substr($product_info['data']['product_id'], 10) . 'detail_image', $value);
+                    }
+                    $pipe->expire('product' . substr($product_info['data']['product_id'], 10) . 'detail_image', $this->_CI->config->item('cache_time'));
+                });
+            }
+            $k++;
+        }
+        //var_dump($products_info);die;
+        return array(
+            'res' => TRUE,
+            'data' => array(
+                'total_page' => $result['data']['total_page'],
+                'products_info' => $products_info
+            )
+        );
     }
 
     public function class_a() {
