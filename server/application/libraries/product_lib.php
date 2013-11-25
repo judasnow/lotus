@@ -78,6 +78,55 @@ class Product_lib {
             );
         }
     }
+    
+    //该函数与上面的区别是传入的product_id方式不一致，使用数据库中的product_id
+    public function product_info($product_id) {
+        $this->_CI->load->library('qiniuyun_lib');
+        $this->_CI->load->model('product_model', 'product_m');
+        
+        //统计页面访问两
+        $this->_CI->load->library('view_lib');
+        $this->_CI->view_lib->add_view('product', $product_id);
+        
+        if($product_info = $this->_CI->product_m->product_info($product_id)) {
+            //format product_info
+            $product_info_format = array();
+            $product_info_format['product_id'] = $product_info['class_a'] . $product_info['class_b'] . $product_id;
+            $product_info_format['product_class_a'] = $product_info['class_a'];
+            $product_info_format['product_class_b'] = $product_info['class_b'];
+            $product_info_format['product_name']    = $product_info['name'];
+            $product_info_format['product_describe']= $product_info['describe'];
+            
+            $product_info_format['product_image_url'] = $this->_CI->qiniuyun_lib->thumbnail_private_url($product_info['image'] . '.jpg', 'middle', 'product');
+            if ($product_info['detail_image'] == '') {
+                $product_info_format['product_detail_image_url'] = array();
+            } else {
+                $product_info_format['product_detail_image'] = array();
+                $product_info_format['product_detail_image'] = explode(',', $product_info['detail_image']);
+                foreach ($product_info_format['product_detail_image']  as $key => $value) {
+                    $product_info_format['product_detail_image_url'][$key] = $this->_CI->qiniuyun_lib->thumbnail_private_url($value . '.jpg', 'small', 'product');
+                }
+                unset($product_info_format['product_detail_image']);
+            }
+            
+            $product_info_format['product_original_price'] = $product_info['original_price'];
+            $product_info_format['product_discount'] = $product_info['discount'];
+            $product_info_format['product_now_price'] = number_format($product_info['original_price'] * $product_info['discount'], 1);
+            
+            $product_info_format['product_quantity'] = $product_info['quantity'];
+            return array(
+                'res' => TRUE,
+                'data' => $product_info_format
+            );
+        } else {
+            $this->err_msg[] = 'Get product info failed';
+            return array(
+                'res' => FALSE,
+                'msg' => $this->err_msg
+            );
+        }
+
+    }
 
     //@todo 处理折扣信息
     public function new_product($product_info) {

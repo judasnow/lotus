@@ -16,6 +16,12 @@ class Base_model {
         return $this->_CI->db->get($this->_table);
     }
 
+    public function base_search($select_string, $key, $search_string, $qualifier) {
+        $this->_CI->db->select($select_string)
+                      ->like($key, $search_string, $qualifier);
+        return $this->_CI->db->get($this->_table);
+    }
+
     public function sort_query(array $cond, $select_string, $sort_key, $flag) {
         switch($flag) {
         case 1:

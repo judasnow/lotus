@@ -13,6 +13,20 @@ class Home_api extends REST_Controller {
     }
 
     /**
+     * 根据搜索字符串获取返回内容
+     */
+    public function search_get() {
+        $this->load->library('home_lib');
+        
+        $search_string = $this->input->get('search_string', TRUE);
+        if ($res = $this->home_lib->search($search_string)) {
+            $this->response($res, 200);
+        } else {
+            $this->response("fail", 500);
+        }
+    }
+    
+    /**
      * 获取 class_a 目录
      */
     public function class_a_get() {

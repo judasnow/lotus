@@ -5,12 +5,57 @@
 class Home_lib {
 
     private $_CI;
+    private $_redis;
     private $_page_num = 5;//首页显示的热门店铺数量
     private $_page_count = 12;//首页按分类显示的每页商品数量
     public  $err_msg = array();
     
     public function __construct() {
         $this->_CI =& get_instance();
+        $this->_redis = new \Predis\Client([
+            'scheme' => 'tcp',
+            'host'   => '127.0.0.1',
+            'port'   => 6379
+        ]);
+    }
+
+    public function search_id($search_string) {
+        //查询缓存，根据查询字符串进行 hash
+        $replies = $this->_redis->pipeline(function ($pipe) use ($search_string){
+            $pipe->select(3);
+            $pipe->smembers('search_' . md5($search_string));
+        });
+        if ($replies[0] && $replies[1]) {
+            //根据指定搜索条件查询成功，此处应检验返回结果是否为需要的格式
+            return $replies[1];
+        } else {
+            //缓存中不存在该条记录，则写入缓存并且返回数据
+            $this->_CI->load->model('product_model', 'product_m');
+            $res = $this->_CI->product_m->search($search_string);
+            $replies = $this->_redis->pipeline(function ($pipe) use ($search_string, $res){
+                $pipe->select(3);
+                foreach ($res as $key => $value) {
+                    $pipe->sadd('search_' . md5($search_string), $value['id']);
+                }
+            });
+            foreach ($res as $key => $value) {
+                $result[$key] = $value['id'];
+            }
+            return $result;
+        }
+    }
+
+    public function search($search_string) {
+        $this->_CI->load->library('product_lib');
+        $res = $this->search_id($search_string);
+        $products_info = [];
+        foreach ($res as $key => $product_id) {
+            $product_info = $this->_CI->product_lib->product_info($product_id);
+            if ($product_info['res']) {
+                $products_info[] = $product_info['data'];
+            }
+        }
+        return $products_info;
     }
 
     public function class_a() {

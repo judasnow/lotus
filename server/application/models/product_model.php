@@ -15,6 +15,12 @@ class Product_model extends Base_model {
         parent::__construct($this->_table);
         $this->_CI =& get_instance();
     }
+    
+    public function search($search_string) {
+        $res_object = $this->base_search('id', 'name', $search_string, 'both');
+        $res_array  = $res_object->result_array();
+        return $res_array;
+    }
 
     public function product($product) {
         $res_object = $this->base_query(array('id' => $product['id'], 'class_a' => $product['class_a'], 'class_b' => $product['class_b']), '');
