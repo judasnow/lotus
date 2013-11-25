@@ -14,7 +14,7 @@ class Home_lib {
         $this->_CI =& get_instance();
         $this->_redis = new \Predis\Client([
             'scheme' => 'tcp',
-            'host'   => '127.0.0.1',
+            'host'   => '172.17.0.202',
             'port'   => 6379
         ]);
     }
