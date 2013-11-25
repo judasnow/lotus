@@ -1,5 +1,5 @@
 .items_list {
-    @item_height: 256px;
+    @items_height: 256px;
 
     .title {
         color: #999;
@@ -10,27 +10,32 @@
         display: inline-block;
 
         .page_box {
-            @width: 512px;
-            @height: 48px;
+            .page_box_var {
+                @page_box_width: 512px;
+                @page_box_height: 48px;
+            }
+            .page_box_var;
 
-            width: @width;
-            height: @height;
+            width: @page_box_width;
+            height: @page_box_height;
 
             position: absolute;
             left: 50%;
-            //top: 60%;
-            margin-top: @item_height - @height - 12px;
+            margin-top: @items_height - @page_box_height - 12px;
 
-            margin-left: -(@width / 2);
+            margin-left: -(@page_box_width / 2);
 
             border-radius: 5px;
-            border: 1px dashed #999;
+            border: 1px dashed #777;
             background: rgba(0,0,0,0.1);
             text-align: center;
 
             .page {
                 display: inline-block;
                 padding: 0;
+                width: 100%;
+                height: @page_box_height;
+                line-height: @page_box_height;
 
                 .text {
                     display: inline-block;

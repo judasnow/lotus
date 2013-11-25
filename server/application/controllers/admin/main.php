@@ -53,10 +53,11 @@ class Main extends CI_Controller {
     }//}}}
 
     public function do_logout() {
+    //{{{
         $this->admin_auth_lib->do_logout();
         header( 'Location: /admin/main/auth/' );
         exit;
-    }
+    }//}}}
 
     public function applied( $page_no = 0 ) {
     //{{{
@@ -99,6 +100,7 @@ class Main extends CI_Controller {
     }//}}}
 
     public function failed_message() {
+    //{{{
         $id = $this->input->post( 'id' , -1 );
         $msg = $this->input->post( 'msg' , '' );
 
@@ -111,7 +113,7 @@ class Main extends CI_Controller {
         }
 
         http_response_code( 500 );
-    }
+    }//}}}
 
     public function pass( $id = -1 ) {
     //{{{
