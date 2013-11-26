@@ -24,6 +24,7 @@ class Home_lib {
         $replies = $this->_redis->pipeline(function ($pipe) use ($search_string){
             $pipe->select(3);
             $pipe->smembers('search_' . md5($search_string));
+            $pipe->expire('search_' . md5($search_string), $this->_CI->config->item('cache_time'));
         });
         if ($replies[0] && $replies[1]) {
             //根据指定搜索条件查询成功，此处应检验返回结果是否为需要的格式
