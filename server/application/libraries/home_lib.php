@@ -55,7 +55,7 @@ class Home_lib {
             return array(
                 'res' => TRUE,
                 'data' => array(
-                    'total_page' =>  (int)((count($replies[1]) + $this->_page_count - 1) / $this->_page_count),
+                    'total_page' =>  (int)((count($result) + $this->_page_count - 1) / $this->_page_count),
                     'content'    => $list
                 )
             );
