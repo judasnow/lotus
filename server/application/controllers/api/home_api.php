@@ -84,17 +84,15 @@ class Home_api extends REST_Controller {
      */
     public function popular_products_get() {
         $this->load->library('home_lib');
-        if ($res = $this->home_lib->popular_product()) {
-            $this->response($res, 200);
-            /**
-            $this->response(
-                array(
-                    'result' => 'ok',
-                    'msg'    => 'Get popular products success',
-                    'data'   => $res
-                )
-            );
-            */
+        $res = $this->home_lib->popular_product();
+        if ($res['res']) {
+            $this->response($res['data'], 200);
+        } else {
+            $msg = 'Get products failed';
+            if (count($res['msg']) > 0) {
+                $msg = implode("; ", $res['msg']);
+            }
+            $this->response($msg, 500);
         }
     }
 

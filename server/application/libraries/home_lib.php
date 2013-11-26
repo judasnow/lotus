@@ -206,20 +206,36 @@ class Home_lib {
         $this->_CI->load->model('view_model', 'view_m');
         $this->_CI->load->model('product_model', 'product_m');
         $this->_CI->load->library('product_lib');
+        $this->_CI->load->library('cache_lib');
         $products_info = array();
         $i = 0;
         if ($products = $this->_CI->view_m->count_view_rank('product', $this->_page_num)) {
             foreach ($products as $key => $value) {
-                if ($res = $this->_CI->product_m->product_info($value['id'])) {
-                    $products_info[$i] = $this->_CI->product_lib->product($res['class_a'] . $res['class_b'] . $res['id']);
-                    $i++;
-                } 
+                //先从缓存中获取数据信息
+                $cache = $this->_CI->cache_lib->get_cache_product_info($value['id']);
+                if ($cache['res']) {
+                    $products_info[$i] = $cache['data'];
+                } else {
+                    //从数据库中读取数据信息
+                    $res = $this->_CI->product_m->product_info($value['id']);
+                    $result = $this->_CI->product_lib->product($res['class_a'] . $res['class_b'] . $res['id']);
+                    $products_info[$i] = $result['data'];
+                    //向redis中写入缓存信息
+                    $this->_CI->cache_lib->set_cache_product_info($value['id']);
+                }
+                $i++;
             }
-            return $products_info;
+            return array(
+                'res' => TRUE,
+                'data' => $products_info
+            );
         } else {
-            return FALSE;
+            $this->err_msg[] = 'Error: get data from view.';
+            return array(
+                'res' => TRUE,
+                'msg' => $this->err_msg
+            );
         }
-        
     }
 
     public function product($class_a, $class_b, $page) {
@@ -311,4 +327,33 @@ class Home_lib {
         );
     }
 
+    private function cache_product_info ($product_id) {
+        $this->_CI->load->library('product_lib');
+        $product_info = $this->_CI->product_lib->product_info($product_id);
+        if ($product_info['res']) {
+            $reply = $this->_redis->pipeline(function ($pipe) use ($product_info) {
+                $pipe->select(2);
+                $pipe->hmset('product' . substr($product_info['data']['product_id'], 10) . 'info',
+                             array(
+                                 'product_id' => $product_info['data']['product_id'],
+                                 'product_class_a' => $product_info['data']['product_class_a'],
+                                 'product_class_b'=> $product_info['data']['product_class_b'],
+                                 'product_name' => $product_info['data']['product_name'],
+                                 'product_describe' => $product_info['data']['product_describe'],
+                                 'product_image_url' => $product_info['data']['product_image_url'],
+                                 'product_original_price' => $product_info['data']['product_original_price'],
+                                 'product_discount' => $product_info['data']['product_discount'],
+                                 'product_now_price' => $product_info['data']['product_now_price'],
+                                 'product_quantity' => $product_info['data']['product_quantity']
+                             )
+                             
+                );
+                $pipe->expire('product' . substr($product_info['data']['product_id'], 10) . 'info', $this->_CI->config->item('cache_time'));
+                foreach ($product_info['data']['product_detail_image_url'] as $key => $value) {
+                    $pipe->sadd('product' . substr($product_info['data']['product_id'], 10) . 'detail_image', $value);
+                }
+                $pipe->expire('product' . substr($product_info['data']['product_id'], 10) . 'detail_image', $this->_CI->config->item('cache_time'));
+            });
+        }
+    }
 }
