@@ -66,15 +66,6 @@ class Home_api extends REST_Controller {
         $this->load->library('home_lib');
         if ($res = $this->home_lib->products_class()) {
             $this->response($res, 200);
-            /**
-            $this->response(
-                array(
-                    'result' => 'ok',
-                    'msg'    => 'Get product class success',
-                    'data'   => $res
-                )
-            );
-            */
         }
     }
 
@@ -114,49 +105,7 @@ class Home_api extends REST_Controller {
             */
         }
     }
-
-    /**
-     * 根据分类获取商品的分页数
-     */
-    public function products_page_get() {
-        $class_a = $this->input->get('class_a', TRUE);
-        $class_b = $this->input->get('class_b', TRUE);
-        $this->load->library('home_lib');
-        $res = $this->home_lib->products_page($class_a, $class_b);
-        if ($res['res']) {
-            $this->response(array('pages' => $res['data']), 200);
-            /**
-            $this->response(
-                array(
-                    'result' => 'ok',
-                    'msg'    => 'Get products page success',
-                    'data'   => array(
-                        'pages' => $res['data']
-                    )
-                )
-            );
-            */
-        } else {
-            //默认获取失败时返回的消息
-            $msg = 'Get products page failed';
-            //获取上一层返回消息，并且格式化为字符串形式
-            if (count($res['msg'] > 0)) {
-                $msg = implode("; ", $res['msg']);
-            }
-            $this->response($msg, 500);
-            /**
-            $this->response(
-                array(
-                    'result' => 'fail',
-                    'msg'    => $msg,
-                    'data'   => NULL
-                )
-            );
-            */
-        }
-    }
-
-
+    
     /**
      * 根据分类获取商品信息
      */
@@ -168,30 +117,12 @@ class Home_api extends REST_Controller {
         $res = $this->home_lib->product($class_a, $class_b, $page);
         if ($res['res']) {
             $this->response($res['data'], 200);
-            /**
-            $this->response(
-                array(
-                    'result' => 'ok',
-                    'msg'    => 'Get products success',
-                    'data'   => $res['data']
-                )
-            );
-            */
         } else {
             $msg = 'Get products failed';
             if (count($res['msg']) > 0) {
                 $msg = implode("; ", $res['msg']);
             }
             $this->response($msg, 500);
-            /**
-            $this->response(
-                array(
-                    'result' => 'fail',
-                    'msg'    => $msg,
-                    'data'   => NULL
-                )
-            );
-            */
         }
     }
   

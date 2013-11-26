@@ -3,9 +3,17 @@
 class Cache_lib {
 
     private $_CI;
-
+    private $_popular_shop_page_num;
+    private $_popular_product_page_num;
+    private $_search_result_product_page_num;
+    
     public function __construct() {
         $this->_CI =& get_instance();
+        $this->_CI->load->config('variable');
+        $this->_CI->load->model('product_model', 'product_m');
+        $this->_popular_shop_num = $this->_CI->config->item('popular_shop_num');
+        $this->_popular_product_num = $this->_CI->config->item('popular_product_num');
+        $this->_search_result_product_page_num = $this->_CI->config->item('search_result_product_page_num');
         $this->_redis = new \Predis\Client([
             'scheme' => $this->_CI->config->item('scheme'),
             'host'   => $this->_CI->config->item('host'),
@@ -103,6 +111,60 @@ class Cache_lib {
             return array(
                 'res' => FALSE,
                 'msg' => "No product $product_id info cache in redis."
+            );
+        }
+    }
+
+    /**
+     * 缓存搜索商品结果
+     */
+    public function set_cache_search_product($search_string) {
+        $res = $this->_CI->product_m->search($search_string);
+        $reply = $this->_redis->pipeline(function ($pipe) use ($search_string, $res){
+            $pipe->select(3);
+            foreach ($res as $key => $value) {
+                $pipe->sadd('search_' . md5($search_string), $value['id']);
+            }
+        });
+        if ($reply[0]) {
+            return array(
+                'res' => TRUE,
+                'data' => NULL
+            );
+        } else {
+            return array(
+                'res' => FALSE,
+                'msg' => 'No product search cache in redis.'
+            );
+        }
+    }
+
+
+    /**
+     * 获取缓存搜索商品结果
+     */
+    public function get_cache_search_product($search_string, $page) {
+        $replies = $this->_redis->pipeline(function ($pipe) use ($search_string){
+            $pipe->select(3);
+            $pipe->smembers('search_' . md5($search_string));
+            $pipe->expire('search_' . md5($search_string), $this->_CI->config->item('cache_time'));
+        });
+        if ($replies[0] && $replies[1]) {
+            //根据指定搜索条件查询成功，此处应检验返回结果是否为需要的格式
+            
+            $start = ($page - 1) * $this->_search_result_product_page_num;
+            $list  = array_slice($replies[1], $start, $this->_search_result_product_page_num);
+            return array(
+                'res' => TRUE,
+                'data' => array(
+                    'total_page' => (int)((count($replies[1]) + $this->_search_result_product_page_num - 1) / $this->_search_result_product_page_num),
+                    'content'    => $list
+                )
+            );
+        } else {
+            return array(
+                'res' => FALSE,
+                'msg' => 'No product search cache in redis.'
             );
         }
     }

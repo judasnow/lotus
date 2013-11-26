@@ -63,7 +63,7 @@ class Product_lib {
             
             $product_info_format['product_original_price'] = $product_info['original_price'];
             $product_info_format['product_discount'] = $product_info['discount'];
-            $product_info_format['product_now_price'] = number_format($product_info['original_price'] * $product_info['discount'], 1);
+            $product_info_format['product_now_price'] = number_format($product_info['original_price'] * $product_info['discount'] * 0.1, 1);
             
             $product_info_format['product_quantity'] = $product_info['quantity'];
             return array(
