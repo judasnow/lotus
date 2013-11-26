@@ -1,45 +1,52 @@
 define([
-    "underscore",
-    "backbone",
+    'underscore',
+    'backbone',
 
-    "utilities/auth",
+    'utilities/auth',
+    'utilities/common',
 
-    "v/page/seller_signup",
-    "v/page/seller_login"
+    'v/page/seller_signup',
+    'v/page/seller_login',
+    'v/hot_shop_list'
 
 ] , function(
     _,
     Backbone,
 
     auth,
+    common,
 
     SellerSignupView,
-    SellerLoginView
+    SellerLoginView,
+    HotShopListView
 ) {
-    "use strict";
+    'use strict';
 
     var Routes = Backbone.Router.extend({
 
         routes: {
-            "main": "_showMainPage",
-            "seller_signup": "_showSellerSignupPage",
-            "seller_login": "_showSellerLoginPage",
-            "seller_logout": "_sellerLogout"
+            '': '_showMainPage',
+            'main': '_showMainPage',
+            'seller_signup': '_showSellerSignupPage',
+            'seller_login': '_showSellerLoginPage',
+            'seller_logout': '_sellerLogout'
         },
 
         initialize: function() {
             _.bindAll(
                 this ,
 
-                "_showMainPage",
-                "_showSellerSignupPage",
-                "_showSellerLoginPage",
-                "_sellerLogout"
+                '_showMainPage',
+                '_showSellerSignupPage',
+                '_showSellerLoginPage',
+                '_sellerLogout'
             );
         },
 
         _showMainPage: function() {
-            console.log( "main page" );
+            common.log( 'now in main page' );
+
+            var hotShopListView = new HotShopListView();
         },
 
         _showSellerSignupPage: function() {
@@ -52,7 +59,7 @@ define([
 
         _sellerLogout: function() {
             auth.doLogout( function() {
-                window.routes.navigate( "main" , {trigger: true} );
+                window.routes.navigate( 'main' , {trigger: true} );
             });
         }
     });

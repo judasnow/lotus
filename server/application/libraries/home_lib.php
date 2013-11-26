@@ -6,10 +6,10 @@ class Home_lib {
 
     private $_CI;
     private $_redis;
-    private $_page_num = 5;//首页显示的热门店铺数量
+    private $_page_num = 4;//首页显示的热门店铺和商品的数量
     private $_page_count = 12;//首页按分类显示的每页商品数量
     public  $err_msg = array();
-    
+
     public function __construct() {
         $this->_CI =& get_instance();
         $this->_redis = new \Predis\Client([

@@ -41,7 +41,9 @@ define([
                 success: function( coll ) {
                     coll.trigger( "fetch_ok" );
                 }
-            })
+            });
+
+            this.render();
         },
 
         //进行一些显示之前列表的准备工作
@@ -57,7 +59,6 @@ define([
 
         _addAll: function() {
             this._classBColl.each( this._addOne );
-            this.render();
         },
 
         _addOne: function( item ) {

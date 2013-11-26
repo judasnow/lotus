@@ -1,19 +1,19 @@
 define([
-    "underscore",
-    "backbone",
+    'underscore',
+    'backbone',
 
-    "v/class_a_list"
+    'v/class_a_list'
 
 ], function( _ , Backbone , ClassAListView ) {
-    "use strict";
+    'use strict';
 
     var CategoriesBrowse = Backbone.View.extend({
 
-        id: "categories_browse",
-        tagName: "div",
+        id: 'categories_browse',
+        tagName: 'div',
 
         initialize: function() {
-            _.bindAll( this , "render" );
+            _.bindAll( this , 'render' );
 
             //初始化主分类列表
             this._classAListView = new ClassAListView( this.$el );

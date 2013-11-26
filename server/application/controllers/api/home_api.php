@@ -7,7 +7,7 @@
 require_once(APPPATH . '/libraries/REST_Controller.php');
 
 class Home_api extends REST_Controller {
-  
+
     public function __construct() {
         parent::__construct();
     }
@@ -30,7 +30,7 @@ class Home_api extends REST_Controller {
             $this->response($msg, 500);
         }
     }
-    
+
     /**
      * 获取 class_a 目录
      */
@@ -77,7 +77,6 @@ class Home_api extends REST_Controller {
             */
         }
     }
-
 
     /**
      * 热门商品推荐

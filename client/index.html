@@ -11,14 +11,12 @@ Y88888P  `Y88P'     YP    ~Y8888P' `8888Y'
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 
-<script src="https://togetherjs.com/togetherjs-min.js"></script>
 
-<!-- @if ENV='dev' -->
-<link rel="stylesheet" href="/src/style/third_party/fontawesome/css/font-awesome.css">
+<link rel="stylesheet" href="/src/style/third_party/fontawesome/css/font-awesome.css" />
 <!--script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script-->
-<link rel="stylesheet/less" type="text/css" href="/src/style/less/main.less">
+<link rel="stylesheet/less" type="text/css" href="/src/style/less/main.less" />
 <script src="/src/script/third_party/less.js"></script>
-<!-- @endif -->
+
 
 <title> Lotus dev </title>
 </head>
@@ -27,7 +25,6 @@ Y88888P  `Y88P'     YP    ~Y8888P' `8888Y'
 
     <!--{{{ header-->
     <div id="header">
-http://172.17.0.204:8080/#main&togetherjs=cFvjjQOFPK
         <div class="logo_box">
             <span class="logo">
                 lotus
@@ -51,7 +48,6 @@ http://172.17.0.204:8080/#main&togetherjs=cFvjjQOFPK
 
     <div id="wrapper">
         <div class="box">
-            <button onclick="TogetherJS(this); return false;">Start TogetherJS</button>
 
             <!--{{{ search-->
             <div id="search_box" class="box_row"> 
@@ -63,65 +59,18 @@ http://172.17.0.204:8080/#main&togetherjs=cFvjjQOFPK
             <!--}}}-->
 
             <!--{{{ hot_items_recommend-->
-            <div id="hot_items_recommend" class="box_row">
-                <div class="items_list">
-                    <span class="title">热门商品推荐</span>
-                    <div class="row">
-                        <div class="page_box">
-                            <ul class="page">
-                                <li class="page_no current_page">1</li>
-                                <li class="page_no">2</li>
-                                <li class="page_no">3</li>
-                                <li class="text">...</li>
-                                <li class="page_no">5</li>
-                            </ul>
-                        </div>
-                        <div class="item_box">
-                            <div class="pic_box">
-                                <img class="pic" src="/picture/item/p841234.jpg">
-                            </div>
-
-                            <div class="text_box">
-                                <div class="title">
-                                    <a href="#">ratechi SCH-121 Cup Hol...</a>
-                                </div>
-                                <div class="describe">
-                                    可开车用
-                                </div>
-                            </div>
-                        </div>
-                        <div class="item_box"></div>
-                        <div class="item_box"></div>
-                        <div class="item_box"></div>
-                    </div>
-                </div>
+            <div id="hot_shop_recommend" class="box_row box-placeholder">
+                <span>读取中...</span>
             </div>
             <!--}}}-->
 
             <!--{{{ hot_shop_recommend-->
-            <div id="hot_shop_recommend" class="box_row">
-                <div class="items_list">
-                    <span class="title">热门店铺推荐</span>
-                    <div class="row">
-
-                        <div class="page_box">
-                            <ul class="page">
-                                <li class="page_no current_page">1</li>
-                                <li class="page_no">2</li>
-                                <li class="page_no">3</li>
-                                <li class="text">...</li>
-                                <li class="page_no">5</li>
-                            </ul>
-                        </div>
-
-                        <div class="item_box"></div>
-                        <div class="item_box"></div>
-                        <div class="item_box"></div>
-                        <div class="item_box"></div>
-                    </div>
-                </div>
+            <div id="hot_items_recommend" class="box_row box-placeholder">
             </div>
             <!--}}}-->
+
+        </div>
+        </div>
 
     <!--{{{ footer-->
     <div id="footer">
@@ -134,10 +83,9 @@ http://172.17.0.204:8080/#main&togetherjs=cFvjjQOFPK
 
 </body>
 
-<!-- @if ENV='dev' -->
+
 <script data-main="/src/script/js/main" src="/src/script/third_party/require.js"></script>
-<!-- @endif -->
+
 
 </html>
-
 

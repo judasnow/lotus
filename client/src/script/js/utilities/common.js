@@ -64,7 +64,16 @@ define([
         }
     };//}}}
 
-    var common = { 
+    var log = function( text , color ) {
+        if( typeof color === 'undefined' ) {
+            color = 'green';
+        }
+
+        console.log( '%c ' + text , 'color:' + color );
+    }
+
+    var common = {
+        log: log,
         getSessionId: getSessionId,
         getObjectUserInfo: getObjectUserInfo,
         uploadFile: uploadFile

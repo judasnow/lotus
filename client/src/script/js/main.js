@@ -1,55 +1,56 @@
 require.config({
 
-    baseUrl: "./src/script/" ,
+    baseUrl: './src/script/' ,
 
     paths: {
-        text: "third_party/text",
+        text: 'third_party/text',
 
-        zepto: "third_party/zepto" ,
-        underscore: "third_party/underscore" ,
-        backbone: "third_party/backbone",
-        mustache: "third_party/mustache",
-        async: "third_party/async",
-        q: "third_party/q",
+        zepto: 'third_party/zepto' ,
+        underscore: 'third_party/underscore' ,
+        backbone: 'third_party/backbone',
+        mustache: 'third_party/mustache',
+        async: 'third_party/async',
+        q: 'third_party/q',
 
-        m: "js/app/model",
-        v: "js/app/view",
-        c: "js/app/collection",
-        tpl: "js/app/tpl",
+        m: 'js/app/model',
+        v: 'js/app/view',
+        c: 'js/app/collection',
+        tpl: 'js/app/tpl',
 
-        utilities: "js/utilities",
-        routes: "js/routes",
-        config: "js/config",
-        global_events: "js/global_events"
+        utilities: 'js/utilities',
+        routes: 'js/routes',
+        config: 'js/config',
+        global_events: 'js/global_events'
     },
 
     shim: {
         zepto: {
-            exports: "$"
+            exports: '$'
         } ,
         underscore: {
-            exports: "_"
+            exports: '_'
         } ,
         backbone: {
-            deps: ["underscore", "zepto"],
-            exports: "Backbone"
+            deps: ['underscore', 'zepto'],
+            exports: 'Backbone'
         }
     }
 });
 
+//main
 require(
 [
-    "zepto",
-    "underscore",
+    'zepto',
+    'underscore',
 
-    "v/nav",
-    "v/footer",
+    'v/nav',
+    'v/footer',
 
-    "routes",
+    'routes',
 
-    "utilities/common",
+    'utilities/common',
 
-    "global_events"
+    'global_events'
 ],
 function(
     $,
@@ -64,10 +65,11 @@ function(
 
     GlobalEvents
 ) {
-    "use strict";
+    'use strict';
 
     var navView = new NavView();
     var footerView = new FooterView();
+
 
     window.e = new GlobalEvents({ nav_view: navView }).e;
 
@@ -75,7 +77,7 @@ function(
     //is login ?
     if( common.getSessionId() !== null ) {
         // has logged in
-        window.e.trigger( "login_ok" );
+        window.e.trigger( 'login_ok' );
     }
 
     var routes = new Routes();

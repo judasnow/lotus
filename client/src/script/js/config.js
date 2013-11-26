@@ -3,9 +3,10 @@ define([
 ] , function() {
     "use strict";
 
-    var config = {};
+    var serverAddress = "http://127.0.0.1:82/api/";
 
-    config.serverAddress = "http://127.0.0.1:82/api/";
-
-    return config;
+    return {
+        'serverAddress': serverAddress
+    };
 });
+
