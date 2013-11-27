@@ -179,7 +179,7 @@ class Home_lib {
         } else {
             return array(
                 'res' => FALSE,
-                'msg' => 'Get rank shops fail.'
+                'msg' => $this->err_msg
             );
         }
     }
@@ -222,8 +222,13 @@ class Home_lib {
             'product_class_b' => $class_b,
             'page_num'    => $page
         );
+        $cond = array(
+            'class_a' => $class_a,
+            'class_b' => $class_b
+        );
         if (empty($params['product_class_b'])) {
             unset($params['product_class_b']);
+            unset($cond['class_b']);
         }
         $this->_CI->load->library('regulation');
         foreach ($params as $key => $value) {
@@ -238,33 +243,45 @@ class Home_lib {
             );
         }
 
-        
-        $this->_CI->load->library('product_lib');
         $start = ($page - 1) * $this->_search_result_product_page_num;
-        $end   = $start + $this->_search_result_product_page_num - 1;
-        if (!$class_b) {
-            $sql = "SELECT id, class_a, class_b FROM product WHERE class_a = $class_a LIMIT $start, $end";
-        } else {
-            $sql = "SELECT id, class_a, class_b FROM product WHERE class_a = $class_a AND class_b = $class_b LIMIT $start, $end";
-        }       
         
-        $res_object = $this->_CI->db->query($sql);
-        $res_array  = $res_object->result_array();
+        $id_cache = $this->_CI->cache_lib->get_cache_class_search_product($cond);
+        if ($id_cache['res']) {
+            $res_array = $id_cache['data'];
+        } else {
+            $res_array = $this->_CI->product_m->class_product($cond);
+            //设置缓存
+            $this->_CI->cache_lib->set_cache_class_search_product($cond);
+            if ($res_array['res']) {
+                $res_array = $res_array['data'];
+            } else {
+                return array(
+                    'res' => FALSE,
+                    'msg' => $this->err_msg
+                );
+            }
+        }
+        $res_array = array_slice($res_array, $start, $this->_search_result_product_page_num);
+
         $res = array();
-        echo '<pre>';var_dump($res_array);die;
         foreach ($res_array as $key => $value) {
             $res[$key]['id'] = $value['id'];
-            $res[$key]['class_a'] = $value['class_a'];
-            $res[$key]['class_b'] = $value['class_b'];
         }
+        
         $products_info = array();
         $page_res = $this->products_page($class_a, $class_b);
         $i = 0;
         foreach ($res as $key => $value) {
-            if ($product = $this->_CI->product_lib->product($value['class_a'] . $value['class_b'] . $value['id'])) {
+            $product_cache = $this->_CI->cache_lib->get_cache_product_info($value['id']);
+            if ($product_cache['res']) {
+                $products_info[$i] = $product_cache['data'];
+            } else {
+                $product = $this->_CI->product_lib->product_info($value['id']);
                 $products_info[$i] = $product['data'];
-                $i++;
+                //设置缓存
+                $this->_CI->cache_lib->set_cache_product_info($value['id']);
             }
+            $i++;
         }
         return array(
             'res' => TRUE,

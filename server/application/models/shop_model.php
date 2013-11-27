@@ -62,6 +62,7 @@ class Shop_model extends Base_model {
         $res_object = $this->base_query(array('id' => $shop_id), '');
         $res_array  = $res_object-> result_array();
         if ($this->result_rows($res_array) == 1) {
+            $res_array[0]['register_time'] = date('Y-m-d', strtotime($res_array[0]['register_time']));
             return $res_array[0];
         } else {
             return FALSE;

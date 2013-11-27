@@ -152,19 +152,88 @@ class Cache_lib {
     public function set_cache_class_search_product(array $search) {
         if (count($search) == 1 && $search['class_a']) {
             //设置一级分类标识
-            
+            $search_string = 'search_' . md5($search['class_a']);
+            $res = $this->_CI->product_m->class_product(array('class_a' => $search['class_a']));
+            if (!$res['res']) {
+                return array(
+                    'res' => FALSE,
+                    'msg' => 'Query error'
+                );
+            }
         } elseif(count($search) == 2) {
             //设置二级分类标识
-            
+            $search_string = 'serach_' . md5($search['class_a'] . $search['class_b']);
+            $res = $this->_CI->product_m->class_product(array(
+                'class_a' => $search['class_a'],
+                'class_b' => $search['class_b']));
+            if (!$res['res']) {
+                return array(
+                    'res' => FALSE,
+                    'msg' => 'Query error'
+                );
+            }
         } else {
             //参数不正确
             return array(
                 'res' => FALSE,
-                'msg' => 'No class search cache in redis.'
+                'msg' => 'Parameter error'
+            );
+        }
+        $reply = $this->_redis->pipeline(function ($pipe) use ($search_string, $res) {
+            $pipe->select(5);
+            foreach ($res['data'] as $key => $value) {
+                $pipe->sadd($search_string, $value['id']);
+            }
+        });
+        if ($reply[0]) {
+            return array(
+                'res' => TRUE,
+                'data' => NULL
+            );
+        } else {
+            return array(
+                'res' => TRUE,
+                'data' => NULL
             );
         }
         
         
+    }
+
+    
+    /**
+     * 获取缓存的商品分类搜索结果
+     */
+    public function get_cache_class_search_product(array $search) {
+        if (count($search) == 1 && $search['class_a']) {
+            //设置一级分类标识
+            $search_string = 'search_' . md5($search['class_a']);
+        } elseif(count($search) == 2) {
+            //设置二级分类标识
+            $search_string = 'serach_' . md5($search['class_a'] . $search['class_b']);
+        } else {
+            //参数不正确
+            return array(
+                'res' => FALSE,
+                'msg' => 'Parameter error'
+            );
+        }
+        
+        $replies = $this->_redis->pipeline(function ($pipe) use ($search_string){
+            $pipe->select(5);
+            $pipe->smembers($search_string);
+        });
+        $result = [];
+        if ($replies[0] && $replies[1]) {
+            foreach($replies[1] as $key => $value) {
+                $result[$key]['id'] = $value;
+            }
+        } else {
+            return array(
+                'res' => FALSE,
+                'msg' => 'No class product cache in redis'
+            );
+        }
     }
 
     /**

@@ -19,8 +19,9 @@ class Welcome extends CI_Controller {
         //$res = $this->cache_lib->set_cache_class_b_detail(10000);
         //$res = $this->cache_lib->get_cache_class_b_detail(10000);
         
-        $res = $this->product_m->class_product(array('class_a' => '10000'));
-        
+        //$res = $this->product_m->class_product(array('class_a' => '10000'));
+        $res = $this->cache_lib->set_cache_class_search_product(array('class_a' => 50000, 'class_b' => 50001));
+        $res = $this->cache_lib->get_cache_class_search_product(array('class_a' => 50000, 'class_b' => 50001));
         echo '<pre>';var_dump($res['data']);die;
         echo 'It works!';
     }

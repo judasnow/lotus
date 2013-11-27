@@ -96,12 +96,12 @@ class Product_model extends Base_model {
         if (count($cond) == 1 && !empty($cond['class_a'])) {
             //根据一级标识符进行查找
             $class_a = $cond['class_a'];
-            $sql = "SELECT id, class_a, class_b FROM product WHERE class_a = $class_a";
+            $sql = "SELECT id FROM product WHERE class_a = $class_a";
         } elseif (count($cond) == 2) {
             //根据二级标识符进行查找
             $class_a = $cond['class_a'];
             $class_b = $cond['class_b'];
-            $sql = "SELECT id, class_a, class_b FROM product WHERE class_a = $class_a AND class_b = $class_b";
+            $sql = "SELECT id FROM product WHERE class_a = $class_a AND class_b = $class_b";
         } else {
             //超找资源出错
             return array(
@@ -114,8 +114,6 @@ class Product_model extends Base_model {
         $res = array();
         foreach ($res_array as $key => $value) {
             $res[$key]['id'] = $value['id'];
-            $res[$key]['class_a'] = $value['class_a'];
-            $res[$key]['class_b'] = $value['class_b'];
         }
         return array(
             'res' => TRUE,
