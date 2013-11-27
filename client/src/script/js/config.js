@@ -1,9 +1,9 @@
 define([
 
 ] , function() {
-    "use strict";
+    'use strict';
 
-    var serverAddress = "http://127.0.0.1:82/api/";
+    var serverAddress = 'http://127.0.0.1:82/api/';
 
     return {
         'serverAddress': serverAddress

@@ -1,12 +1,12 @@
 define([
 
-    "zepto",
-    "underscore",
-    "backbone",
+    'zepto',
+    'underscore',
+    'backbone',
 
-    "utilities/common",
+    'utilities/common',
 
-    "v/nav"
+    'v/nav'
 
 ], function(
     $ ,
@@ -15,17 +15,17 @@ define([
 
     common
 ) {
-    "use strict";
+    'use strict';
 
     var GlobleEvents = function( views ) {
         var navView = views.nav_view;
         var e = {};
         _.extend( e , Backbone.Events );
 
-        e.on( "show_loading" , navView.showLoading );
-        e.on( "hide_loading" , navView.hideLoading );
+        e.on( 'show_loading' , navView.showLoading );
+        e.on( 'hide_loading' , navView.hideLoading );
 
-        e.on( "login_ok" , function() {
+        e.on( 'login_ok' , function() {
             common.getObjectUserInfo( function() {
                 navView.showObjectUserInfo();
             });

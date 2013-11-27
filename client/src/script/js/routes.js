@@ -7,7 +7,9 @@ define([
 
     'v/page/seller_signup',
     'v/page/seller_login',
-    'v/hot_shop_list'
+    'v/hot_shop_list',
+    'v/hot_product_list',
+    'v/page/product_detail'
 
 ] , function(
     _,
@@ -18,7 +20,9 @@ define([
 
     SellerSignupView,
     SellerLoginView,
-    HotShopListView
+    HotShopListView,
+    HotProductListView,
+    ProductDetailPageView
 ) {
     'use strict';
 
@@ -29,17 +33,19 @@ define([
             'main': '_showMainPage',
             'seller_signup': '_showSellerSignupPage',
             'seller_login': '_showSellerLoginPage',
-            'seller_logout': '_sellerLogout'
+            'seller_logout': '_sellerLogout',
+            'product_detail/:productId': '_showProductDetailPage'
         },
 
         initialize: function() {
             _.bindAll(
-                this ,
+                this,
 
                 '_showMainPage',
                 '_showSellerSignupPage',
                 '_showSellerLoginPage',
-                '_sellerLogout'
+                '_sellerLogout',
+                '_showProductDetailPage'
             );
         },
 
@@ -47,6 +53,7 @@ define([
             common.log( 'now in main page' );
 
             var hotShopListView = new HotShopListView();
+            var hotProductListView = new HotProductListView();
         },
 
         _showSellerSignupPage: function() {
@@ -61,6 +68,11 @@ define([
             auth.doLogout( function() {
                 window.routes.navigate( 'main' , {trigger: true} );
             });
+        },
+
+        _showProductDetailPage: function( productId ) {
+            console.dir( productId );
+            new ProductDetailPageView({ product_id: productId });
         }
     });
 

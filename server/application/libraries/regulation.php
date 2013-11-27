@@ -20,6 +20,16 @@ class Regulation {
     }
 
     //验证登录用户名
+    private function validate_username($content) {
+        if (is_string($content) && !empty($content)) {
+            return TRUE;
+        } else {
+            $this->err_msg[] = 'Username is illegal';
+            return FALSE;
+        }
+    }
+
+    //验证用户邮箱
     private function validate_email($content) {
         if (is_string($content) && !empty($content)) {
             return TRUE;
@@ -208,7 +218,7 @@ class Regulation {
     }
 
     //验证店铺图片名称
-    private function validate_shop_iamge_name($content) {
+    private function validate_shop_image_name($content) {
         if (is_string($content) && strlen($content) == 20) {
             return TRUE;
         } else {

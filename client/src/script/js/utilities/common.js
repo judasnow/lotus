@@ -1,8 +1,8 @@
 define([
-    "zepto",
-    "async",
+    'zepto',
+    'async',
 
-    "m/user",
+    'm/user',
 
     'config'
 
@@ -15,13 +15,13 @@ define([
 
     config
 ) {
-    "use strict";
+    'use strict';
 
     //独立出来是为了方便之后的处理
     //(void) => number | null
     var getSessionId = function() {
     //{{{
-        var sessionId = window.sessionStorage.getItem( "session_id" );
+        var sessionId = window.sessionStorage.getItem( 'session_id' );
         return sessionId;
     };//}}}
 
@@ -59,7 +59,7 @@ define([
                 success( this.responseText );
             };
 
-            xhr.open( "POST" , config.serverAddress + targetUrl );
+            xhr.open( 'POST' , config.serverAddress + targetUrl );
             xhr.send( formData );
         }
     };//}}}
