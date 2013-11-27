@@ -36,6 +36,7 @@ define([
 
             _.bindAll(
                 this ,
+
                 '_addAll' ,
                 '_addOne' ,
                 '_show_class_b' ,

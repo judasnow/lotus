@@ -6,14 +6,21 @@ class Cache_lib {
     private $_popular_shop_page_num;
     private $_popular_product_page_num;
     private $_search_result_product_page_num;
+    private $_cache_time;
+    private $_class_cache_time;
     
     public function __construct() {
         $this->_CI =& get_instance();
         $this->_CI->load->config('variable');
         $this->_CI->load->model('product_model', 'product_m');
+        $this->_CI->load->model('shop_model', 'shop_m');
+        $this->_CI->load->model('class_model', 'class_m');
+        $this->_CI->load->library('qiniuyun_lib');
         $this->_popular_shop_num = $this->_CI->config->item('popular_shop_num');
         $this->_popular_product_num = $this->_CI->config->item('popular_product_num');
         $this->_search_result_product_page_num = $this->_CI->config->item('search_result_product_page_num');
+        $this->_cache_time = $this->_CI->config->item('cache_time');
+        $this->_class_cache_time = $this->_CI->config->item('class_cache_time');
         $this->_redis = new \Predis\Client([
             'scheme' => $this->_CI->config->item('scheme'),
             'host'   => $this->_CI->config->item('host'),
@@ -167,6 +174,163 @@ class Cache_lib {
                 'msg' => 'No product search cache in redis.'
             );
         }
+    }
+
+    /**
+     * 缓存热门店铺信息
+     */
+    public function set_cache_shop_info($shop_id) {
+        $res = $this->_CI->shop_m->shop_info_detail($shop_id);
+        if ($res) {
+            $reply = $this->_redis->pipeline(function($pipe) use ($res) {
+                $pipe->select(4);
+                $pipe->hmset('shop' . $res['id'] . 'info', array(
+                    'shop_id' => $res['id'],
+                    'shop_name' => $res['shop_name'],
+                    'shop_tel' => $res['shop_tel'],
+                    'shop_address' => $res['shop_address'],
+                    'shop_image_url' => $this->_CI->qiniuyun_lib->thumbnail_private_url($res['shop_image'] . '.jpg', 'small', 'shop'),
+                    'shop_register_time' => $res['register_time'],
+                    'shop_product_count' => $this->_CI->shop_m->product_count($res['id']),
+                    'show_shop_tel' => $res['show_shop_tel'],
+                    'show_shop_address' => $res['show_shop_address'],
+                ));
+                $pipe->expire('shop' . $res['id'] . 'info', $this->_cache_time);
+            });
+            return array(
+                'res' => TRUE,
+                'data' => NULL
+            );
+        } else {
+            return array(
+                'res' => FALSE,
+                'msg' => 'Cache shop info fail.'
+            );
+        }
+    }
+
+    /**
+     * 获取缓存店铺信息，注意 select 的可选字段，参照上面的函数
+     */
+    public function get_cache_shop_info($shop_id, array $select) {
+        $reply = $this->_redis->pipeline(function ($pipe) use ($shop_id, $select) {
+            $pipe->select(4);
+            $pipe->hmget('shop' . $shop_id . 'info', $select);
+        });
+        $shop_info = array();
+        if ($reply[0] && $reply[1][0]) {
+            foreach ($select as $key => $field) {
+                $shop_info[$field] = $reply[1][$key];
+            }
+            return array(
+                'res' => TRUE,
+                'data' => $shop_info
+            );
+        } else {
+            return array(
+                'res' => FALSE,
+                'msg' => 'Get shop_info cache fail'
+            );
+        }
+    }
+
+    /**
+     * 缓存首页一级目录
+     */
+    public function set_cache_class_a_detail() {
+        $class_a = $this->_CI->class_m->class_a();
+        $reply = $this->_redis->pipeline(function ($pipe) use ($class_a) {
+            $pipe->select(2);
+            foreach ($class_a as $key => $value) {
+                $pipe->hmset('firstclassinfo', array(
+                    $value['class_a'] => $value['content']
+                ));
+            }
+        });
+        return array(
+            'res' => TRUE,
+            'data' => NULL
+        );
+    }
+
+    /**
+     * 获取首页一级目录缓存
+     */
+    public function get_cache_class_a_detail() {
+        $reply = $this->_redis->pipeline(function ($pipe) {
+            $pipe->select(2);
+            $pipe->hgetall('firstclassinfo');
+        });
+        if ($reply[0] && $reply[1]) {
+            $class_a_detail = $reply[1];
+            $i = 0;
+            $class_a = [];
+            foreach ($class_a_detail as $key => $value) {
+                $class_a[$i]['class_a'] = (string) $key;
+                $class_a[$i]['content'] = $value;
+                $i++;
+            }
+            return array(
+                'res' => TRUE,
+                'data' => $class_a
+            );
+        }
+        return array(
+            'res' => FALSE,
+            'msg' => 'No class cache in redis.'
+        );
+    }
+
+    /**
+     * 缓存首页二级目录
+     */
+    public function set_cache_class_b_detail($class_a_id) {
+        $class_b = $this->_CI->class_m->class_b($class_a_id);
+        $reply = $this->_redis->pipeline(function ($pipe) use ($class_b, $class_a_id) {
+            $pipe->select(2);
+            $i = 0;
+            foreach ($class_b as $key => $value) {
+                $pipe->hmset('firstclass' . $class_a_id . 'secondclassinfo', array(
+                    'class_b_' . $i => $value['class_b'],
+                    'content_' . $i => $value['content']
+                ));
+                $i++;
+            }
+        });
+        return array(
+            'res' => TRUE,
+            'data' => NULL
+        );
+    }
+
+    /**
+     * 获取首页二级目录缓存
+     */
+    public function get_cache_class_b_detail($class_a_id) {
+        $reply = $this->_redis->pipeline(function ($pipe) use ($class_a_id) {
+            $pipe->select(2);
+            $pipe->hgetall('firstclass' . $class_a_id . 'secondclassinfo');
+        });
+        $class_b = [];
+        if ($reply[0] && $reply[1]) {
+            $i = 0;
+            for (; $i < (count($reply[1]) / 2); $i++) {
+                $key_str = 'class_b_' . $i;
+                $value_str = 'content_' . $i;
+                $class_b[$i]['class_b'] = $reply[1][$key_str];
+                $class_b[$i]['content'] = $reply[1][$value_str];
+            }
+            return array(
+                'res' => TRUE,
+                'data' => $class_b
+            );
+        } else {
+            return array(
+                'res' => FALSE,
+                'msg' => 'No class b cache in redis.'
+            );
+        }
+        
     }
 }
 ?>

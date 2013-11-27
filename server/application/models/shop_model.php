@@ -54,6 +54,19 @@ class Shop_model extends Base_model {
             return FALSE;
         }
     }
+
+    /**
+     * 获取店铺基本信息 （内部调用）
+     */
+    public function shop_info_detail($shop_id) {
+        $res_object = $this->base_query(array('id' => $shop_id), '');
+        $res_array  = $res_object-> result_array();
+        if ($this->result_rows($res_array) == 1) {
+            return $res_array[0];
+        } else {
+            return FALSE;
+        }
+    }
     
     /**
      * 更新店铺信息

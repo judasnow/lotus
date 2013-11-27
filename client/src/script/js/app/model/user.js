@@ -21,3 +21,4 @@ define([
 
     return User;
 });
+
