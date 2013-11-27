@@ -237,6 +237,8 @@ class Home_lib {
                 'msg' => $this->err_msg
             );
         }
+
+        
         $this->_CI->load->library('product_lib');
         $start = ($page - 1) * $this->_search_result_product_page_num;
         $end   = $start + $this->_search_result_product_page_num - 1;
@@ -249,6 +251,7 @@ class Home_lib {
         $res_object = $this->_CI->db->query($sql);
         $res_array  = $res_object->result_array();
         $res = array();
+        echo '<pre>';var_dump($res_array);die;
         foreach ($res_array as $key => $value) {
             $res[$key]['id'] = $value['id'];
             $res[$key]['class_a'] = $value['class_a'];

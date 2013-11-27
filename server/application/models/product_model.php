@@ -58,7 +58,6 @@ class Product_model extends Base_model {
         $this->base_write($product_info);
         if ($this->affected_rows() == 1) {
             return $this->_CI->db->insert_id();
-            //return TRUE;
         } else {
             return FALSE;
         }
@@ -90,6 +89,38 @@ class Product_model extends Base_model {
         } else {
             return FALSE;
         }
+    }
+
+    //根据分类标识符查询商品数据库索引
+    public function class_product(array $cond) {
+        if (count($cond) == 1 && !empty($cond['class_a'])) {
+            //根据一级标识符进行查找
+            $class_a = $cond['class_a'];
+            $sql = "SELECT id, class_a, class_b FROM product WHERE class_a = $class_a";
+        } elseif (count($cond) == 2) {
+            //根据二级标识符进行查找
+            $class_a = $cond['class_a'];
+            $class_b = $cond['class_b'];
+            $sql = "SELECT id, class_a, class_b FROM product WHERE class_a = $class_a AND class_b = $class_b";
+        } else {
+            //超找资源出错
+            return array(
+                'res' => FALSE,
+                'msg' => NULL
+            );
+        }
+        $res_object = $this->_CI->db->query($sql);
+        $res_array  = $res_object->result_array();
+        $res = array();
+        foreach ($res_array as $key => $value) {
+            $res[$key]['id'] = $value['id'];
+            $res[$key]['class_a'] = $value['class_a'];
+            $res[$key]['class_b'] = $value['class_b'];
+        }
+        return array(
+            'res' => TRUE,
+            'data' => $res
+        );
     }
 
 }
