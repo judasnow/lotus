@@ -96,7 +96,7 @@ class Shop_lib {
                 $shop['shop_tel'] = $res['shop_tel'];
             }
             $shop['shop_address'] = $res['shop_address'];
-            $shop['shop_image_url'] = $this->_CI->qiniuyun_lib->thumbnail_private_url($res['shop_image'] . '.jpg', 'small', 'shop');
+            $shop['shop_image_url'] = $this->_CI->qiniuyun_lib->thumbnail_private_url($res['shop_image'] . '.jpg', 'large', 'shop');
             $shop['shop_register_time'] = date('Y-m-d', strtotime($res['register_time']));
             return array(
                 'res' => TRUE,

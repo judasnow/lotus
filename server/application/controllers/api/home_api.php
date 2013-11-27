@@ -36,9 +36,9 @@ class Home_api extends REST_Controller {
      */
     public function class_a_get() {
         $this->load->library('home_lib');
-
-        if($res = $this->home_lib->class_a()) {
-            $this->response($res, 200);
+        $res = $this->home_lib->class_a();
+        if($res['res']) {
+            $this->response($res['data'], 200);
         } else {
             $this->response("fail", 500);
         }
@@ -49,11 +49,10 @@ class Home_api extends REST_Controller {
      */
     public function class_b_get() {
         $this->load->library('home_lib');
-
         $class_a_id = $this->input->get('class_a_id', TRUE);
-
-        if($res = $this->home_lib->class_b( $class_a_id )) {
-            $this->response($res, 200);
+        $res = $this->home_lib->class_b( $class_a_id );
+        if($res['res']) {
+            $this->response($res['data'], 200);
         } else {
             $this->response("fail", 500);
         }
@@ -92,17 +91,15 @@ class Home_api extends REST_Controller {
      */
     public function popular_shop_get() {
         $this->load->library('home_lib');
-        if ($res = $this->home_lib->popular_shop()) {
-            $this->response($res, 200);
-            /**
-            $this->response(
-                array(
-                    'result' => 'ok',
-                    'msg'    => 'Get popular product success',
-                    'data'   => $res
-                )
-            );
-            */
+        $res = $this->home_lib->popular_shop();
+        if ($res['res']) {
+            $this->response($res['data'], 200);
+        } else {
+            $msg = 'Get popular shop failed';
+            if (count($res['msg']) > 0) {
+                $msg = implode("; ", $res['msg']);
+            }
+            $this->response($msg, 500);
         }
     }
     

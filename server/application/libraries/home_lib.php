@@ -6,6 +6,7 @@ class Home_lib {
 
     private $_CI;
     private $_redis;
+    private $_popular_shop_num;
     private $_popular_shop_page_num;
     private $_popular_product_page_num;
     private $_search_reuslt_product_page_num;
@@ -16,6 +17,7 @@ class Home_lib {
         $this->_CI->load->model('view_model', 'view_m');
         $this->_CI->load->model('product_model', 'product_m');
         $this->_CI->load->model('view_model', 'view_m');
+        $this->_CI->load->model('class_model', 'class_m');
         $this->_CI->load->library('shop_lib');
         $this->_CI->load->library('product_lib');
         $this->_CI->load->library('cache_lib');
@@ -109,13 +111,33 @@ class Home_lib {
     }
 
     public function class_a() {
-        $this->_CI->load->model('class_model', 'class_m');
-        return $this->_CI->class_m->class_a();
+        $cache = $this->_CI->cache_lib->get_cache_class_a_detail();
+        if ($cache['res']) {
+            $class_a = $cache['data'];
+        } else {
+            $class_a = $this->_CI->class_m->class_a();
+            //写入缓存数据
+            $this->_CI->cache_lib->set_cache_class_a_detail();
+        }
+        return array(
+            'res' => TRUE,
+            'data' => $class_a
+        );
     }
 
     public function class_b( $class_a_id ) {
-        $this->_CI->load->model('class_model', 'class_m');
-        return $this->_CI->class_m->class_b( $class_a_id );
+        $cache = $this->_CI->cache_lib->get_cache_class_b_detail($class_a_id);
+        if ($cache['res']) {
+            $class_b = $cache['data'];
+        } else {
+            $class_b = $this->_CI->class_m->class_b($class_a_id);
+            //设置缓存
+            $this->_CI->cache_lib->set_cache_class_b_detail($class_a_id);
+        }
+        return array(
+            'res' => TRUE,
+            'data' => $class_b
+        );
     }
 
     public function products_class() {
@@ -133,14 +155,32 @@ class Home_lib {
         $i = 0;
         if ($shops = $this->_CI->view_m->count_view_rank('shop', $this->_popular_shop_num)) {
             foreach ($shops as $key => $value) {
-                if ($res = $this->_CI->shop_lib->shop_info($value['id'])) {
+                $cache = $this->_CI->cache_lib->get_cache_shop_info($value['id'], array(
+                    'shop_name',
+                    'shop_tel',
+                    'shop_address',
+                    'shop_image_url',
+                    'shop_register_time'
+                ));
+                if ($cache['res']) {
+                    $shops_info[$i] = $cache['data'];
+                } else {
+                    $res = $this->_CI->shop_lib->shop_info($value['id']);
                     $shops_info[$i] = $res['data'];
-                    $i++;
+                    //添加缓存信息
+                    $this->_CI->cache_lib->set_cache_shop_info($value['id']);
                 }
+                $i++;
             }
-            return $shops_info;
+            return array(
+                'res' => TRUE,
+                'data' => $shops_info
+            );
         } else {
-            return FALSE;
+            return array(
+                'res' => FALSE,
+                'msg' => 'Get rank shops fail.'
+            );
         }
     }
 
