@@ -234,7 +234,8 @@ class Product_lib {
         $info['image'] = $product_info['product_image'];
         $info['detail_image'] = $product_info['product_detail_image'];
         $this->_CI->load->model('product_model', 'product_m');
-        if ($this->_CI->product_m->product_update($info)) {
+        $res = $this->_CI->product_m->product_update($info);
+        if ($res) {
             return array(
                 'res' => TRUE,
                 'data' => NULL

@@ -208,11 +208,21 @@ class Shop_lib {
         $this->_CI->load->library('product_lib');
         $products =array();
         foreach ($product_id as $key => $value) {
-            $products[$key] = $this->_CI->product_lib->product($value);
+            $res = $this->_CI->product_lib->product($value);
+            if ($res['res']) {
+                $products[$key] = $res['data'];
+            } else {
+                break;
+            }
         }
+        $page_num_res = $this->product_page_count($shop_id);
+        $page_num = $page_num_res['data'];
         return array(
             'res' => TRUE,
-            'data' => $products
+            'data' => array(
+                'total_page' => $page_num,
+                'products_info' => $products
+            )
         );
     }
 

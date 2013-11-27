@@ -16,9 +16,9 @@ Class User_model extends Base_model {
         $this->_CI =& get_instance();
     }
 
-    public function get_user_id($email) {
+    public function get_user_id($username) {
         $res_object = $this->base_query(
-            array('email' => $email), 'id'
+            array('username' => $username), 'id'
         );
         $res_array = $res_object->result_array();
         if($this->result_rows($res_array) == 1) {
@@ -29,7 +29,7 @@ Class User_model extends Base_model {
     }
 
     public function get_user_info($user_id) {
-        $res_object = $this->base_query(array('id' => $user_id), 'id, email, role');
+        $res_object = $this->base_query(array('id' => $user_id), 'id, username, role');
         $res_array  = $res_object->result_array();
         if ($this->result_rows($res_array) == 1) {
             return $res_array[0];
@@ -41,9 +41,9 @@ Class User_model extends Base_model {
     /**
      * 根据用户名查询密码
      */
-    public function get_hash_password($email) {
+    public function get_hash_password($username) {
         $res_object = $this->base_query(
-            array('email' => $email),'password'
+            array('username' => $username),'password'
         );
         $res_array = $res_object->result_array();
         if($this->result_rows($res_array) == 1) {
@@ -71,9 +71,9 @@ Class User_model extends Base_model {
     /**
      * 验证用户名是否可用
      */
-    public function email_is_available($email) {
+    public function username_is_available($username) {
         $res_object = $this->base_query(
-            array('email' => $email), 'id'
+            array('username' => $username), 'id'
         );
         $res_array = $res_object->result_array();
         if($this->result_rows($res_array) == 0) {
@@ -87,7 +87,7 @@ Class User_model extends Base_model {
         $info['password'] = md5($info['password']);
         $this->base_write($info);
         if($this->affected_rows() == 1) {
-            return $this->get_user_id($info['email']);
+            return $this->get_user_id($info['username']);
         } else {
             return FALSE;
         }

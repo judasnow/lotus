@@ -16,7 +16,7 @@ class Auth_api extends REST_Controller {
     /**
      * 登录系统
      *
-     * @param string   email
+     * @param string   username
      * @param string   password
      * @param string   remember
      * 
@@ -26,12 +26,12 @@ class Auth_api extends REST_Controller {
         //@TODO remember ? on : off
         $this->load->library('auth_lib');
 
-        $email = $this->input->post('email');
+        $username = $this->input->post('username');
         $password = $this->input->post('password');
         $remember = $this->input->post('remember');
 
         //[boolean, [string]]
-        $res = $this->auth_lib->do_login($email, $password, $remember);
+        $res = $this->auth_lib->do_login($username, $password, $remember);
 
         if($res['res']) {
             //登录成功返回 session_id 
@@ -39,7 +39,7 @@ class Auth_api extends REST_Controller {
                 'session_id' => session_id()
             ], 200);
         } else {
-            $msg = 'Email or password wrong';
+            $msg = 'Username or password wrong';
 
             if (count($res['msg']) > 0) {
                 $msg = implode('; ', $res['msg']);
@@ -68,7 +68,11 @@ class Auth_api extends REST_Controller {
      * @param void
      */
     public function user_info_get() {
-        if ($user_info = $this->auth_lib->user_info()) {
+        if (! $this->auth_lib->user_is_login()) {
+            $this->response('User did not login', 500);
+        }
+        $user_info = $this->auth_lib->user_info();
+        if ($user_info) {
             $this->response($user_info, 200);
         } else {
             $this->response('Get user info failed', 400);
@@ -113,17 +117,17 @@ class Auth_api extends REST_Controller {
     /**
      * 验证用户名是否可用，是否已经被注册，格式是否正确
      *
-     * @param string   email
+     * @param string   username
      * 
      * @return restful
      */
-    public function email_is_available_post() {
-        $email = $this->input->post('email', TRUE);
-        $res = $this->auth_lib->verify_email($email);
+    public function username_is_available_post() {
+        $username = $this->input->post('username', TRUE);
+        $res = $this->auth_lib->verify_username($username);
         if($res['res']) {
             $this->response('ok', 200);
         } else {
-            $msg = 'Email is not available';
+            $msg = 'Usernameis not available';
             if (count($res['msg']) > 0) {
                 $msg = implode('; ', $res['msg']);
             }
@@ -134,7 +138,7 @@ class Auth_api extends REST_Controller {
     /**
      * 注册新用户接口
      *
-     * @param string   email
+     * @param string   username
      * @param string   password
      * @param string   role
      * @param string   regisger_code
@@ -142,13 +146,13 @@ class Auth_api extends REST_Controller {
      * @return restful
      */
     public function do_register_post() {
-        $email         = $this->input->post('email');
+        $username      = $this->input->post('username');
         $password      = $this->input->post('password');
         $role          = $this->input->post('user_role');
         $register_code = $this->input->post('register_code');
  
         $res = $this->auth_lib->do_register(array(
-            'email'         => $email,
+            'username'      => $username,
             'password'      => $password,
             'role'          => $role,
             'register_code' => $register_code
@@ -174,6 +178,9 @@ class Auth_api extends REST_Controller {
      * @return restful
      */
     public function change_password_post() {
+        if (! $this->auth_lib->user_is_login()) {
+            $this->response('User did not login', 500);
+        }
         //验证用户是否登录
         $old_password = $this->input->post('old_password');
         $new_password = $this->input->post('new_password');

@@ -66,7 +66,8 @@ class Product_model extends Base_model {
     public function product_update($product) {
         $product_id = $product['id'];
         unset($product['id']);
-        $res_object = $this->base_update(array('id' => $product_id, 'class_a' => $product['class_a'], 'class_b' => $product['class_b']), $product);
+        //允许用户更改商品的分类
+        $res_object = $this->base_update(array('id' => $product_id), $product);
         if ($this->affected_rows() == 1) {
             return TRUE;
         } else {
