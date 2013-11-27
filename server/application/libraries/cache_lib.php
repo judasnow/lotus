@@ -108,7 +108,7 @@ class Cache_lib {
             $product_info['product_discount']       = $reply[1][7];
             $product_info['product_now_price']      = $reply[1][8];
             $product_info['product_quantity']       = $reply[1][9];
-            $product_info['product_detail_image']   = $reply[2];
+            $product_info['product_detail_image_url']   = $reply[2];
             
             return array(
                 'res' => TRUE,
@@ -146,6 +146,26 @@ class Cache_lib {
         }
     }
 
+    /**
+     * 缓存分类商品搜索结果
+     */
+    public function set_cache_class_search_product(array $search) {
+        if (count($search) == 1 && $search['class_a']) {
+            //设置一级分类标识
+            
+        } elseif(count($search) == 2) {
+            //设置二级分类标识
+            
+        } else {
+            //参数不正确
+            return array(
+                'res' => FALSE,
+                'msg' => 'No class search cache in redis.'
+            );
+        }
+        
+        
+    }
 
     /**
      * 获取缓存搜索商品结果
@@ -189,7 +209,7 @@ class Cache_lib {
                     'shop_name' => $res['shop_name'],
                     'shop_tel' => $res['shop_tel'],
                     'shop_address' => $res['shop_address'],
-                    'shop_image_url' => $this->_CI->qiniuyun_lib->thumbnail_private_url($res['shop_image'] . '.jpg', 'small', 'shop'),
+                    'shop_image_url' => $this->_CI->qiniuyun_lib->thumbnail_private_url($res['shop_image'] . '.jpg', 'large', 'shop'),
                     'shop_register_time' => $res['register_time'],
                     'shop_product_count' => $this->_CI->shop_m->product_count($res['id']),
                     'show_shop_tel' => $res['show_shop_tel'],

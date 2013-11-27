@@ -59,6 +59,7 @@ class Home_api extends REST_Controller {
     }
 
     /**
+<<<<<<< HEAD
      * 获取商品目录
      */
     public function products_class_get() {
@@ -69,6 +70,8 @@ class Home_api extends REST_Controller {
     }
 
     /**
+=======
+>>>>>>> cdaedfce906f5782d7691eb2eaac691b789c774a
      * 热门商品推荐
      */
     public function popular_products_get() {
