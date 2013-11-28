@@ -49,14 +49,14 @@ class Product_lib {
             $product_info_format['product_name']    = $product_info['name'];
             $product_info_format['product_describe']= $product_info['describe'];
          
-            $product_info_format['product_image_url'] = $this->_CI->qiniuyun_lib->thumbnail_private_url($product_info['image'] . '.jpg', 'middle', 'product');
+            $product_info_format['product_image_url'] = $this->_CI->qiniuyun_lib->thumbnail_private_url($product_info['image'] . '.jpg', 'large', 'product');
             if ($product_info['detail_image'] == '') {
                 $product_info_format['product_detail_image_url'] = array();
             } else {
                 $product_info_format['product_detail_image'] = array();
                 $product_info_format['product_detail_image'] = explode(',', $product_info['detail_image']);
                 foreach ($product_info_format['product_detail_image']  as $key => $value) {
-                    $product_info_format['product_detail_image_url'][$key] = $this->_CI->qiniuyun_lib->thumbnail_private_url($value . '.jpg', 'small', 'product');
+                    $product_info_format['product_detail_image_url'][$key] = $this->_CI->qiniuyun_lib->thumbnail_private_url($value . '.jpg', 'large', 'product');
                 }
                 unset($product_info_format['product_detail_image']);
             }
@@ -97,14 +97,14 @@ class Product_lib {
             $product_info_format['product_name']    = $product_info['name'];
             $product_info_format['product_describe']= $product_info['describe'];
             
-            $product_info_format['product_image_url'] = $this->_CI->qiniuyun_lib->thumbnail_private_url($product_info['image'] . '.jpg', 'middle', 'product');
+            $product_info_format['product_image_url'] = $this->_CI->qiniuyun_lib->thumbnail_private_url($product_info['image'] . '.jpg', 'large', 'product');
             if ($product_info['detail_image'] == '') {
                 $product_info_format['product_detail_image_url'] = array();
             } else {
                 $product_info_format['product_detail_image'] = array();
                 $product_info_format['product_detail_image'] = explode(',', $product_info['detail_image']);
                 foreach ($product_info_format['product_detail_image']  as $key => $value) {
-                    $product_info_format['product_detail_image_url'][$key] = $this->_CI->qiniuyun_lib->thumbnail_private_url($value . '.jpg', 'small', 'product');
+                    $product_info_format['product_detail_image_url'][$key] = $this->_CI->qiniuyun_lib->thumbnail_private_url($value . '.jpg', 'large', 'product');
                 }
                 unset($product_info_format['product_detail_image']);
             }
