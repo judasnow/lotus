@@ -53,7 +53,7 @@ define ([
         },
 
         _getUserInput: function() {
-            this._email = this._$email.val();
+            this._username = this._$username.val();
             this._password = this._$password.val();
         },
 
@@ -64,7 +64,7 @@ define ([
         _getEls: function() {
             var _$el = this.$el;
 
-            this._$email = _$el.find( "input[name='email']" );
+            this._$username = _$el.find( "input[name='username']" );
             this._$password = _$el.find( "input[name='password']" );
         },
 
@@ -78,7 +78,7 @@ define ([
 
             auth.doLogin({
 
-                email: this._email,
+                username: this._username,
                 password: this._password
 
             }, function() {

@@ -10,7 +10,7 @@ define([
 
         defaults: {
             user_id: "",
-            email: "",
+            username: "",
             user_role: ""
         },
 

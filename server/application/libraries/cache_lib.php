@@ -44,6 +44,8 @@ class Cache_lib {
                                  'product_id' => $product_info['data']['product_id'],
                                  'product_class_a' => $product_info['data']['product_class_a'],
                                  'product_class_b'=> $product_info['data']['product_class_b'],
+                                 'product_class_a_name' => $product_info['data']['product_class_a_name'],
+                                 'product_class_b_name' => $product_info['data']['product_class_b_name'],
                                  'product_name' => $product_info['data']['product_name'],
                                  'product_describe' => $product_info['data']['product_describe'],
                                  'product_image_url' => $product_info['data']['product_image_url'],
@@ -87,6 +89,8 @@ class Cache_lib {
                              'product_id',
                              'product_class_a',
                              'product_class_b',
+                             'product_class_a_name',
+                             'product_class_b_name',
                              'product_name',
                              'product_describe',
                              'product_image_url',
@@ -101,13 +105,15 @@ class Cache_lib {
             $product_info['product_id']             = $reply[1][0];
             $product_info['product_class_a']        = $reply[1][1];
             $product_info['product_class_b']        = $reply[1][2];
-            $product_info['product_name']           = $reply[1][3];
-            $product_info['product_describe']       = $reply[1][4];
-            $product_info['product_image_url']      = $reply[1][5];
-            $product_info['product_original_price'] = $reply[1][6];
-            $product_info['product_discount']       = $reply[1][7];
-            $product_info['product_now_price']      = $reply[1][8];
-            $product_info['product_quantity']       = $reply[1][9];
+            $product_info['product_class_a_name']   = $reply[1][3];
+            $product_info['product_class_b_name']   = $reply[1][4];
+            $product_info['product_name']           = $reply[1][5];
+            $product_info['product_describe']       = $reply[1][6];
+            $product_info['product_image_url']      = $reply[1][7];
+            $product_info['product_original_price'] = $reply[1][8];
+            $product_info['product_discount']       = $reply[1][9];
+            $product_info['product_now_price']      = $reply[1][10];
+            $product_info['product_quantity']       = $reply[1][11];
             $product_info['product_detail_image_url']   = $reply[2];
             
             return array(
@@ -329,7 +335,7 @@ class Cache_lib {
     public function set_cache_class_a_detail() {
         $class_a = $this->_CI->class_m->class_a();
         $reply = $this->_redis->pipeline(function ($pipe) use ($class_a) {
-            $pipe->select(2);
+            $pipe->select(1);
             foreach ($class_a as $key => $value) {
                 $pipe->hmset('firstclassinfo', array(
                     $value['class_a'] => $value['content']
@@ -347,7 +353,7 @@ class Cache_lib {
      */
     public function get_cache_class_a_detail() {
         $reply = $this->_redis->pipeline(function ($pipe) {
-            $pipe->select(2);
+            $pipe->select(1);
             $pipe->hgetall('firstclassinfo');
         });
         if ($reply[0] && $reply[1]) {

@@ -5,12 +5,16 @@
 </div>
 
 <div class="product-detail-row">
-    <div class="product-detail-product-image">
-        <img src="{{product_image_url}}" alt="封面图片">
+    <span class="product-detail-row-title">封面图片</span> <br />
+    <div class="product-detail-product-image-box">
+        <div class="product-detail-product-image">
+            <img src="{{product_image_url}}" alt="封面图片">
+        </div>
     </div>
 </div>
 
 <div class="product-detail-product-detail-image-list">
+    <span class="product-detail-row-title">细节图片</span> <br />
     {{> detail_image_list}}
 </div>
 

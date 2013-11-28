@@ -9,18 +9,18 @@ define([
     var doLogin = function( info , success , fail ) {
     //{{{
         if( arguments.length !== 3 ||
-            typeof info.email === 'undefined' ||
+            typeof info.username === 'undefined' ||
             typeof info.password === 'undefined' ||
             typeof success !== 'function' ||
             typeof fail !== 'function'
         ) {
             throw new Error( 'params invalid' + arguments );
         } else {
-            var email = info.email;
+            var username = info.username;
             var password = info.password;
 
             var data = {
-                email: email,
+                username: username,
                 password: password
             };
 

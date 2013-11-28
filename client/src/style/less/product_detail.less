@@ -22,19 +22,37 @@
         overflow: hidden;
     }
 
-    .product-detail-product-image {
-        min-height: 256px;
-        min-width: 512px;
-        border: 1px solid #ddd;
-        border-radius: 3px;
+    .product-detail-product-image-box {
+        width: @box_width / 3;
+        height: @box_width / 3;
         display: inline-block;
+        overflow: hidden;
+        background: #eee;
+    }
+    .product-detail-product-image {
+        max-height: 256px;
+        max-width: 256px;
     }
 
     .product-detail-product-detail-image-list {
-        
+        display: inline-block;
     }
 
     .product-detail-product-detail-image-list-item {
         
+    }
+
+    .product-detail-product-detail-image-list-item-image-box {
+        width: @box_width / 4;
+        height: @box_width / 4;
+        background: #eee;
+        float: left;
+        display: inline-block;
+        overflow: hidden;
+    }
+
+    .product-detail-product-detail-image-list-item-image {
+        max-height: 128px;
+        max-width: 128px;
     }
 }

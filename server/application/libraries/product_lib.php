@@ -14,6 +14,7 @@ class Product_lib {
         $this->_CI->load->library('regulation');
         $this->_CI->load->model('product_model', 'product_m');
         $this->_CI->load->model('view_model', 'view_m');
+        $this->_CI->load->model('class_model', 'class_m');
     }
 
     public function product($product_id) {
@@ -46,6 +47,10 @@ class Product_lib {
             $product_info_format['product_id'] = $product_id_string;
             $product_info_format['product_class_a'] = $product_info['class_a'];
             $product_info_format['product_class_b'] = $product_info['class_b'];
+            
+            $product_info_format['product_class_a_name'] = $this->_CI->class_m->class_a_name($product_info['class_a']);
+            $product_info_format['product_class_b_name'] = $this->_CI->class_m->class_b_name($product_info['class_b']);
+
             $product_info_format['product_name']    = $product_info['name'];
             $product_info_format['product_describe']= $product_info['describe'];
          
@@ -94,6 +99,10 @@ class Product_lib {
             $product_info_format['product_id'] = $product_info['class_a'] . $product_info['class_b'] . $product_id;
             $product_info_format['product_class_a'] = $product_info['class_a'];
             $product_info_format['product_class_b'] = $product_info['class_b'];
+
+            $product_info_format['product_class_a_name'] = $this->_CI->class_m->class_a_name($product_info['class_a']);
+            $product_info_format['product_class_b_name'] = $this->_CI->class_m->class_b_name($product_info['class_b']);
+
             $product_info_format['product_name']    = $product_info['name'];
             $product_info_format['product_describe']= $product_info['describe'];
             
