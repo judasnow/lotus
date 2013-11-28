@@ -1,9 +1,9 @@
 define([
 
-    "zepto",
-    "backbone",
+    'zepto',
+    'backbone',
 
-    "text!tpl/dialog/seller_login.mustache"
+    'text!tpl/dialog/seller_login.mustache'
 
 ] , function(
 
@@ -12,25 +12,25 @@ define([
 
     sellerLoginDialogTpl
 ) {
-    "use strict";
+    'use strict';
 
     var SellerLoginDialogView = Backbone.View.extend({
 
         tpl: sellerLoginDialogTpl,
 
         events: {
-            "click .close": "_closeDialog",
-            "click .submit": "_doLogin"
+            'click .close': '_closeDialog',
+            'click .submit': '_doLogin'
         },
 
         initialize: function() {
-            _.bindAll( this , "_closeDialog" , "showDialog" , "render" );
+            _.bindAll( this , '_closeDialog' , 'showDialog' , 'render' );
 
             this.render();
         },
 
         _doLogin: function() {
-            alert( "login now" )
+            alert( 'login now' )
         },
 
         _closeDialog: function() {
@@ -44,7 +44,7 @@ define([
         render: function() {
             this.$el.html( this.tpl );
 
-            $( "body" ).append( this.$el );
+            $( 'body' ).append( this.$el );
         }
     });
 

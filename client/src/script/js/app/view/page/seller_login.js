@@ -32,7 +32,6 @@ define ([
 
         id: "seller_login",
         className: "box",
-        tagName: "div",
 
         template: sellerLoginPageTpl,
 

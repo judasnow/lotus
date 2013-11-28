@@ -125,5 +125,6 @@ class Main extends CI_Controller {
             die( '输入的 apply_id 非法' );
         }
     }//}}}
+
 }
 

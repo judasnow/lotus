@@ -1,12 +1,12 @@
 define([
 
-    "zepto",
-    "async"
+    'zepto',
+    'async'
 
 ], function( $ , async ) {
-    "use strict";
+    'use strict';
 
-    var $wrapper = $( "#wrapper" );
+    var $wrapper = $( '#wrapper' );
 
     var fadeOutPage = function( cb ) {
     //{{{

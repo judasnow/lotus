@@ -1,78 +1,91 @@
 define([
 
-    "backbone",
-    "mustache",
+    'backbone',
+    'mustache',
 
-    "c/class_a",
+    'c/class_a',
 
-    "v/class_b_list",
+    'v/class_b_list',
 
-    "text!tpl/class_a_list_item.mustache"
+    'text!tpl/class_a_list_item.mustache'
 
 ] , function(
-    Backbone ,
-    Mustache ,
+    Backbone,
+    Mustache,
 
-    ClassAColl ,
+    ClassAColl,
     ClassBListView,
 
     classAListItemTpl
 ) {
-    "use strict";
+    'use strict';
 
     var ClassAListView = Backbone.View.extend({
 
-        className: "categories_list",
-        tagName: "div",
+        className: 'categories_list',
+        tagName: 'div',
 
         events: {
-            "mouseover .row": "_show_class_b",
-            "mouseleave .row": "_mouseleave_row" 
+            'mouseover .row': '_show_class_b',
+            'mouseleave .row': '_mouseleave_row' 
         },
 
         initialize: function( $categoriesBrowse ) {
         //{{{
             this._$categoriesBrowse = $categoriesBrowse;
 
-            _.bindAll( this , "_addAll" , "_addOne" , "_show_class_b" , "_mouseleave_row" , "render" );
+            _.bindAll(
+                this ,
+
+                '_addAll' ,
+                '_addOne' ,
+                '_show_class_b' ,
+                '_mouseleave_row' ,
+                'render'
+            );
 
             this._coll = new ClassAColl();
-            this._coll.on( "fetch_ok" , this._addAll );
+            this._coll.on( 'fetch_ok' , this._addAll );
 
             this._coll.fetch({
                 success: function( coll ) {
-                    coll.trigger( "fetch_ok" );
+                    coll.trigger( 'fetch_ok' );
                 }
             });
 
+            this.render();
         },//}}}
 
         //在 bubbling 阶段捕获该事件 获取当前元素
-        _show_class_b: function( event ) {
-            var $target = $( event.currentTarget );
-            $target.find( ".icon" ).show();
-            var class_a_id = $target.attr( "data-id" );
+        _show_class_b: function( e ) {
+        //{{{
+            var $target = $( e.currentTarget );
+            $target.find( '.icon' ).show();
+            var class_a_id = $target.attr( 'data-id' );
 
             this._classBListView = new ClassBListView( this._$categoriesBrowse , class_a_id );
-        },
+        },//}}}
 
-        _mouseleave_row: function( event ) {
-            var $target = $( event.currentTarget );
-            $target.find( ".icon" ).hide();
-        },
+        _mouseleave_row: function( e ) {
+        //{{{
+            var $target = $( e.currentTarget );
+            $target.find( '.icon' ).hide();
+        },//}}}
 
         _addAll: function() {
+        //{{{
             this._coll.each( this._addOne );
-            this.render();
-        },
+        },//}}}
 
         _addOne: function( item ) {
+        //{{{
             this.$el.append( Mustache.to_html( classAListItemTpl , item.toJSON() ) );
-        },
+        },//}}}
 
         render: function() {
+        //{{{
             this._$categoriesBrowse.append( this.$el );
-        }
+        }//}}}
 
     });
 

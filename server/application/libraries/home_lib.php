@@ -11,7 +11,7 @@ class Home_lib {
     private $_popular_product_page_num;
     private $_search_reuslt_product_page_num;
     public  $err_msg = array();
-    
+
     public function __construct() {
         $this->_CI =& get_instance();
         $this->_CI->load->model('view_model', 'view_m');

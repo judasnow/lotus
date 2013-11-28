@@ -1,45 +1,59 @@
 define([
-    "underscore",
-    "backbone",
+    'underscore',
+    'backbone',
 
-    "utilities/auth",
+    'utilities/auth',
+    'utilities/common',
 
-    "v/page/seller_signup",
-    "v/page/seller_login"
+    'v/page/seller_signup',
+    'v/page/seller_login',
+    'v/hot_shop_list',
+    'v/hot_product_list',
+    'v/page/product_detail'
 
 ] , function(
     _,
     Backbone,
 
     auth,
+    common,
 
     SellerSignupView,
-    SellerLoginView
+    SellerLoginView,
+    HotShopListView,
+    HotProductListView,
+    ProductDetailPageView
 ) {
-    "use strict";
+    'use strict';
 
     var Routes = Backbone.Router.extend({
 
         routes: {
-            "main": "_showMainPage",
-            "seller_signup": "_showSellerSignupPage",
-            "seller_login": "_showSellerLoginPage",
-            "seller_logout": "_sellerLogout"
+            '': '_showMainPage',
+            'main': '_showMainPage',
+            'seller_signup': '_showSellerSignupPage',
+            'seller_login': '_showSellerLoginPage',
+            'seller_logout': '_sellerLogout',
+            'product_detail/:productId': '_showProductDetailPage'
         },
 
         initialize: function() {
             _.bindAll(
-                this ,
+                this,
 
-                "_showMainPage",
-                "_showSellerSignupPage",
-                "_showSellerLoginPage",
-                "_sellerLogout"
+                '_showMainPage',
+                '_showSellerSignupPage',
+                '_showSellerLoginPage',
+                '_sellerLogout',
+                '_showProductDetailPage'
             );
         },
 
         _showMainPage: function() {
-            console.log( "main page" );
+            common.log( 'now in main page' );
+
+            var hotShopListView = new HotShopListView();
+            var hotProductListView = new HotProductListView();
         },
 
         _showSellerSignupPage: function() {
@@ -52,8 +66,13 @@ define([
 
         _sellerLogout: function() {
             auth.doLogout( function() {
-                window.routes.navigate( "main" , {trigger: true} );
+                window.routes.navigate( 'main' , {trigger: true} );
             });
+        },
+
+        _showProductDetailPage: function( productId ) {
+            console.dir( productId );
+            new ProductDetailPageView({ product_id: productId });
         }
     });
 

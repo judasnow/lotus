@@ -7,7 +7,7 @@
 require_once(APPPATH . '/libraries/REST_Controller.php');
 
 class Home_api extends REST_Controller {
-  
+
     public function __construct() {
         parent::__construct();
     }
@@ -30,7 +30,7 @@ class Home_api extends REST_Controller {
             $this->response($msg, 500);
         }
     }
-    
+
     /**
      * 获取 class_a 目录
      */
@@ -59,6 +59,19 @@ class Home_api extends REST_Controller {
     }
 
     /**
+<<<<<<< HEAD
+     * 获取商品目录
+     */
+    public function products_class_get() {
+        $this->load->library('home_lib');
+        if ($res = $this->home_lib->products_class()) {
+            $this->response($res, 200);
+        }
+    }
+
+    /**
+=======
+>>>>>>> cdaedfce906f5782d7691eb2eaac691b789c774a
      * 热门商品推荐
      */
     public function popular_products_get() {
