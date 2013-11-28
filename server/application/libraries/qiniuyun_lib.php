@@ -69,14 +69,17 @@ class Qiniuyun_lib {
             break;
         case 'middle':
             $imgView->Mode = 2;
-            $imgView->Width = 360;
-            $imgView->Height = 720;
+            $imgView->Width = 180;
+            $imgView->Height = 360;
             break;
         case 'large':
             $imgView->Mode = 2;
-            $imgView->Width = 1440;
-            $imgView->Height = 1440;
+            $imgView->Width = 360;
+            $imgView->Height = 720;
             break;
+        case 'product':
+            $imgView->Mode = 2;
+            $imgView->Height = 512;
         default:
             $imgView->Mode = 2;
             $imgView->Width = 180;
