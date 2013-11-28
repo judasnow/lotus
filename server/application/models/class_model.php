@@ -31,4 +31,28 @@ class Class_model extends Base_model {
         $res_array  = $res_object->result_array();
         return $res_array;
     }
+
+    //获取一级目录名称
+    public function class_a_name($class_a_id) {
+        $sql = "SELECT content FROM class WHERE class_a = $class_a_id AND class_b = 0";
+        $res_object = $this->_CI->db->query($sql);
+        $res_array = $res_object->result_array();
+        if (count($res_array) == 1) {
+            return $res_array[0]['content'];
+        } else {
+            return '默认分类';
+        }
+    }
+
+    //获取二级目录名称
+    public function class_b_name($class_b_id) {
+        $sql = "SELECT content FROM class WHERE class_b = $class_b_id";
+        $res_object = $this->_CI->db->query($sql);
+        $res_array = $res_object->result_array();
+        if (count($res_array) == 1) {
+            return $res_array[0]['content'];
+        } else {
+            return '默认分类';
+        }
+    }
 }
