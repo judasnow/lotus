@@ -116,6 +116,12 @@ class Cache_lib {
             $product_info['product_quantity']       = $reply[1][11];
             $product_info['product_detail_image_url']   = $reply[2];
             
+            //关闭商品缓存
+            return array(
+                'res' => FALSE,
+                'msg' => 'Has closed product cache'
+            );
+            
             return array(
                 'res' => TRUE,
                 'data' => $product_info

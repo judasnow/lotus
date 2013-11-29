@@ -156,6 +156,7 @@ class Home_lib {
         if ($shops = $this->_CI->view_m->count_view_rank('shop', $this->_popular_shop_num)) {
             foreach ($shops as $key => $value) {
                 $cache = $this->_CI->cache_lib->get_cache_shop_info($value['id'], array(
+                    'shop_id',
                     'shop_name',
                     'shop_tel',
                     'shop_address',
@@ -164,7 +165,7 @@ class Home_lib {
                 ));
                 
                 //关闭缓存
-                $cache['res'] = FALSE;
+                //$cache['res'] = FALSE;
                 
                 if ($cache['res']) {
                     $shops_info[$i] = $cache['data'];

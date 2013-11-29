@@ -14,3 +14,10 @@ $config['search_result_product_page_num'] = 12;
 
 //店铺展示每页商品数量
 $config['shop_show_product_page_num'] = 12;
+
+
+
+
+
+//Qiniuyun设置
+$config['qiniuyun_image_expire_time'] = 6 * 60 * 60;//过期时间为 6 小时

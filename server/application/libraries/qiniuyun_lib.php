@@ -53,6 +53,11 @@ class Qiniuyun_lib {
      * @param $type            图片类型，shop，product
      */
     public function thumbnail_private_url($image_full_name, $size, $type) {
+
+        //如果前端传输存在w参数，则返回相应的宽度
+        if (isset($_GET['w']) && is_numeric($_GET['w'])) {
+            $size = 'custom';
+        }
         Qiniu_SetKeys($this->_accessKey, $this->_secretKey);
         $domain = 'maoejie.u.qiniudn.com';
         if (strlen($image_full_name) < 5) {
@@ -80,6 +85,11 @@ class Qiniuyun_lib {
         case 'product':
             $imgView->Mode = 2;
             $imgView->Height = 512;
+            break;
+        case 'custom':
+            $imgView->Mode = 2;
+            $imgView->Width = $_GET['w'];
+            break;
         default:
             $imgView->Mode = 2;
             $imgView->Width = 180;
