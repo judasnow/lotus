@@ -15,7 +15,9 @@
 @import "dropdown";
 @import "dialog";
 @import "footer";
+@import "product_list";
 @import "product_detail";
+@import "shop_page";
 
 input, textarea {
     outline: none;
@@ -61,6 +63,20 @@ a {
 }
 
 .box {
+    .box-vars {
+        @box-left-padding: 12px;
+        @box-right-padding: 12px;
+
+        @box-left-width-origin: 300px;
+
+        @box-left-border-radius: 5px;
+        @box-left-width: @box-left-width-origin - (@box-left-padding * 2) - 2;
+        @box-left-mairgin-right: 12px;
+        @box-right-width: @box_width - @box-left-width-origin - @box-left-mairgin-right - (@box-right-padding * 2) - 2;
+        @bg-color: #f9f9f9;
+    }
+    .box-vars;
+
     width: @box_width;
     margin: 0 auto;
 
@@ -72,6 +88,31 @@ a {
         //@SEE items_list.less
         width: 100%;
         min-height: 256px;
+    }
+
+    .box-left {
+        width: @box-left-width;
+        margin-right: @box-left-mairgin-right;
+        padding: @box-left-padding;
+
+        border-radius: @box-left-border-radius;
+        border: 1px solid rgba(0,0,0,.1);
+        float: left;
+        background: @bg-color;
+    }
+
+    .box-left-item {
+        margin-bottom: 12px;
+    }
+
+    .box-right {
+        width: @box-right-width;
+        padding: @box-right-padding;
+
+        border-radius: @box-left-border-radius;
+        border: 1px solid rgba(0,0,0,.1);
+        float: right;
+        background: @bg-color;
     }
 }
 

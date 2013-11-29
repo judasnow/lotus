@@ -80,8 +80,8 @@ define([
         },
 
         _showShop: function( shopId ) {
-            common.log( 'show detail' , 'yellow' );
-            new ShopPageView({ shopId: shopId });
+            common.log( 'show' );
+            new ShopPageView({ shop_id: shopId });
         },
 
         _showSearchResult: function() {
