@@ -17,6 +17,9 @@ class Product_lib {
         $this->_CI->load->model('class_model', 'class_m');
     }
 
+    /**
+     * 该函数使用经过处理后的商品编号
+     */
     public function product($product_id) {
         $product_id_string = (string) $product_id;
         $this->_CI->regulation->validate('product_id', $product_id_string);
@@ -84,7 +87,9 @@ class Product_lib {
         }
     }
     
-    //该函数与上面的区别是传入的product_id方式不一致，使用数据库中的product_id
+    /**
+     * 该函数使用数据库中的商品编号
+     */
     public function product_info($product_id) {
         $this->_CI->load->library('qiniuyun_lib');
         $this->_CI->load->model('product_model', 'product_m');
@@ -137,7 +142,6 @@ class Product_lib {
 
     }
 
-    //@todo 处理折扣信息
     public function new_product($product_info) {
         $product_info_validate = $product_info;
         $product_info_validate['product_price'] = $product_info_validate['product_original_price'];
