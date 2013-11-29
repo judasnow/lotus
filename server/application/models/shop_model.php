@@ -46,7 +46,7 @@ class Shop_model extends Base_model {
      * 游客获取店铺基本信息
      */
     public function shop_info($shop_id) {
-        $res_object = $this->base_query(array('id' => $shop_id), 'register_time, shop_name, shop_tel, shop_image, shop_address, show_shop_tel');
+        $res_object = $this->base_query(array('id' => $shop_id), 'id, register_time, shop_name, shop_tel, shop_image, shop_address, show_shop_tel');
         $res_array  = $res_object-> result_array();
         if ($this->result_rows($res_array) == 1) {
             return $res_array[0];

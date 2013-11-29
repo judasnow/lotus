@@ -162,6 +162,10 @@ class Home_lib {
                     'shop_image_url',
                     'shop_register_time'
                 ));
+                
+                //关闭缓存
+                $cache['res'] = FALSE;
+                
                 if ($cache['res']) {
                     $shops_info[$i] = $cache['data'];
                 } else {

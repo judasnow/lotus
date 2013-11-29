@@ -91,6 +91,7 @@ class Shop_lib {
         $this->_CI->view_lib->add_view('shop', $shop_id);
         
         if ($res = $this->_CI->shop_m->shop_info($shop_id)) {
+            $shop['shop_id'] = $res['id'];
             $shop['shop_name'] = $res['shop_name'];
             if ($res['show_shop_tel']) {
                 $shop['shop_tel'] = $res['shop_tel'];
