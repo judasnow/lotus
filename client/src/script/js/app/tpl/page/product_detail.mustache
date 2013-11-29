@@ -5,53 +5,44 @@
 </div>
 
 <div class="product-detail-row">
-    <span class="product-detail-row-title">封面图片</span> <br />
-    <div class="product-detail-product-image-box">
-        <div class="product-detail-product-image">
-            <img src="{{product_image_url}}" alt="封面图片">
+    <div class="product-detail-row-left">
+        <div class="product-detail-product-image-box">
+            <div class="product-detail-product-image">
+                <img src="{{product_image_url}}" alt="封面图片">
+            </div>
+        </div>
+    </div>
+    <div class="product-detail-row-right">
+        <div class="product-detail-product-describe">
+            {{product_describe}}
+        </div>
+
+        <br />
+
+        <div class="product-detail-product-class-content">
+            <span class="product-detail-row-title">分类</span> {{product_class_a_name}} / {{product_class_b_name}} 
+        </div>
+
+        <div class="product-detail-product-price">
+            <span class="product-detail-row-title">现价</span> <i class="fa fa-jpy"></i> {{product_now_price}}
+        </div>
+
+        <div class="product-detail-product-original-price">
+            <span class="product-detail-row-title">原价</span> <i class="fa fa-jpy"></i>  {{product_original_price}}
+        </div>
+
+        <div class="product-detail-product-discount">
+            <span class="product-detail-row-title">折扣</span> {{product_discount}}
+        </div>
+
+        <div class="product-detail-product-quantity">
+            <span class="product-detail-row-title">数量</span> {{product_quantity}}
         </div>
     </div>
 </div>
 
-<div class="product-detail-product-detail-image-list">
-    <span class="product-detail-row-title">细节图片</span> <br />
-    {{> detail_image_list}}
-</div>
-
 <div class="product-detail-row">
-    <div class="product-detail-product-describe">
-        {{product_describe}}
+    <div class="product-detail-product-detail-image-list">
+        {{> detail_image_list}}
     </div>
 </div>
-
-<div class="product-detail-row">
-    <div class="product-detail-product-class-content">
-        <span class="product-detail-row-title">分类</span> {{product_class_a}} / {{product_class_b}} 
-    </div>
-</div>
-
-<div class="product-detail-row">
-    <div class="product-detail-product-price">
-        <span class="product-detail-row-title">现价</span> <i class="fa fa-jpy"></i> {{product_price}}
-    </div>
-</div>
-
-<div class="product-detail-row">
-    <div class="product-detail-product-original-price">
-        <span class="product-detail-row-title">原价</span> <i class="fa fa-jpy"></i>  {{product_original_price}}
-    </div>
-</div>
-
-<div class="product-detail-row">
-    <div class="product-detail-product-discount">
-        <span class="product-detail-row-title">折扣</span> {{product_discount}}
-    </div>
-</div>
-
-<div class="product-detail-row">
-    <div class="product-detail-product-quantity">
-        <span class="product-detail-row-title">数量</span> {{product_quantity}}
-    </div>
-</div>
-
-

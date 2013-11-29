@@ -1,21 +1,21 @@
 define([
 
-    "backbone",
-    "config"
+    'backbone',
+    'config'
 
 ] , function( Backbone , config ) {
-    "use strict";
+    'use strict';
 
     var User = Backbone.Model.extend({
 
         defaults: {
-            user_id: "",
-            username: "",
-            user_role: ""
+            user_id: '',
+            username: '',
+            user_role: ''
         },
 
         initialize: function() {
-            this.url = config.serverAddress + "auth_api/user_info/";
+            this.url = config.serverAddress + 'auth_api/user_info/';
         }
     });
 

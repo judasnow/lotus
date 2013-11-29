@@ -1,14 +1,14 @@
 define([
 
-    "backbone"
+    'backbone'
 
 ] , function ( Backbone ) {
-    "use strict";
+    'use strict';
 
     var ClassA = Backbone.Model.extend( {
         defaults: {
-            class_a: "0",
-            content: "null"
+            class_a: '0',
+            content: 'null'
         }
     });
 

@@ -226,7 +226,7 @@ define([
                         } else {
 
                             if( type === 'image' ) {
-                                that.model.set( 'image' , that._imageName );
+                                that.model.set( 'image' , that._imagezmName );
                             } else {
                                 that.model.set( 'detail_image' , that._detailNames.join( ',' ) );
                             }

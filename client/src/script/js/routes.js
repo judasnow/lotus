@@ -7,6 +7,8 @@ define([
 
     'v/page/seller_signup',
     'v/page/seller_login',
+    'v/page/shop',
+
     'v/hot_shop_list',
     'v/hot_product_list',
     'v/page/product_detail'
@@ -18,8 +20,11 @@ define([
     auth,
     common,
 
+    //pages
     SellerSignupView,
     SellerLoginView,
+    ShopPageView,
+
     HotShopListView,
     HotProductListView,
     ProductDetailPageView
@@ -34,7 +39,9 @@ define([
             'seller_signup': '_showSellerSignupPage',
             'seller_login': '_showSellerLoginPage',
             'seller_logout': '_sellerLogout',
-            'product_detail/:productId': '_showProductDetailPage'
+            'product_detail/:productId': '_showProductDetailPage',
+            'shop/:shopId': '_showShop',
+            'search_result': '_showSearchResult'
         },
 
         initialize: function() {
@@ -45,7 +52,9 @@ define([
                 '_showSellerSignupPage',
                 '_showSellerLoginPage',
                 '_sellerLogout',
-                '_showProductDetailPage'
+                '_showProductDetailPage',
+                '_showShop',
+                '_showSearchResult'
             );
         },
 
@@ -68,6 +77,15 @@ define([
             auth.doLogout( function() {
                 window.routes.navigate( 'main' , {trigger: true} );
             });
+        },
+
+        _showShop: function( shopId ) {
+            common.log( 'show detail' , 'yellow' );
+            new ShopPageView({ shopId: shopId });
+        },
+
+        _showSearchResult: function() {
+            common.log( 'search result' );
         },
 
         _showProductDetailPage: function( productId ) {

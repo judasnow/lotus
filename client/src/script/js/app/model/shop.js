@@ -1,10 +1,10 @@
 define([
 
-    "zepto",
-    "backbone"
+    'zepto',
+    'backbone'
 
 ] , function( $ , Backbone ) {
-    "use strict";
+    'use strict';
 
     var Shop = Backbone.Model.extend({
         
