@@ -5,14 +5,18 @@
  * @Author odirus@163.com
  */
 require_once(APPPATH . '/libraries/REST_Controller.php');
+require_once('response_api.php');
 
 class Product_api extends REST_Controller {
  
+    public $response_api;
+
     public function __construct() {
         parent::__construct();
         $this->load->library('auth_lib');
         $this->load->library('product_lib');
         $this->load->library('access_lib');
+        $this->response_api = new Response_api;
     }
 
     /**
@@ -21,16 +25,7 @@ class Product_api extends REST_Controller {
     public function product_get() {
         $product_id = $this->input->get('product_id', TRUE);
         $res = $this->product_lib->product($product_id);
-
-        if($res['res']) {
-            $this->response($res['data'], 200);
-        } else {
-            $msg = 'Get product info failed';
-            if (count($res['msg'])) {
-                $msg = implode('; ', $res['msg']);
-            }
-            $this->response($msg, 500);
-        }
+        $this->response_api->api_response($this->product_lib->product($product_id));
     }
 
     /**
@@ -38,7 +33,7 @@ class Product_api extends REST_Controller {
      */
     public function new_product_post() {
         if (! $this->auth_lib->user_is_login()) {
-            $this->response('User did not login', 500);
+            $this->response('User did not login', 401);
         } else {
             $product_info = [
                 'product_class_a' => $this->post('class_a'),
@@ -51,16 +46,7 @@ class Product_api extends REST_Controller {
                 'product_discount' => $this->post('discount'),
                 'product_quantity' => $this->post('quantity'),
             ];
-            $res = $this->product_lib->new_product($product_info);
-            if ($res['res']) {
-                $this->response("ok", 200);
-            } else {
-                $msg = 'New product releases failed';
-                if (count($res['msg']) > 0) {
-                    $msg = implode('; ', $res['msg']);
-                }
-                $this->response($msg, 500);
-            }
+            $this->response_api->api_response($this->product_lib->new_product($product_info));
         }
     }
 
@@ -69,7 +55,7 @@ class Product_api extends REST_Controller {
      */
     public function product_update_post() {
         if (! $this->auth_lib->user_is_login()) {
-            $this->response('User did not login', 500);
+            $this->response('User did not login', 401);
         } else {
             $product_info = array(
                 'product_id'      => $this->input->post('id', TRUE),
@@ -86,18 +72,10 @@ class Product_api extends REST_Controller {
 
             //检查用户是否具有操作权限
             $this->access_lib->validate_privilege('product', $product_info['product_id']);
-            $res = $this->product_lib->product_update($product_info);
             if (!empty($this->access_lib->error)) {
-                $this->response("fail", 500);
-            } elseif ($res['res']) {
-                $this->response("ok", 200);
-            } else {
-                $msg = 'Update product info failed';
-                if (count($res['msg']) > 0) {
-                    $msg = implode('; ', $res['msg']);
-                }
-                $this->response($msg, 500);
+                $this->response("User has no privilege", 401);
             }
+            $this->response_api->api_response($this->product_lib->product_update($product_info));
         }
     }
 }

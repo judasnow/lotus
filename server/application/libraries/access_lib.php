@@ -9,6 +9,7 @@ class Access_lib {
 
     public function __construct() {
         $this->_CI =& get_instance();
+        $this->_CI->load->library('privilege_lib');
         $this->error = '';
     }
     
@@ -18,7 +19,7 @@ class Access_lib {
      * @param string $type 需要验证的权限。可选值'shop', 'product'
      */
     public function validate_privilege($type, $id) {
-        $this->_CI->load->library('privilege_lib');
+        
         switch ($type) {
         case 'shop':
             if (!$this->_CI->privilege_lib->shop_privilege_user_id($id)) {

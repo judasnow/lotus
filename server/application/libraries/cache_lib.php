@@ -36,7 +36,7 @@ class Cache_lib {
     public function set_cache_product_info ($product_id) {
         $this->_CI->load->library('product_lib');
         $product_info = $this->_CI->product_lib->product_info($product_id);
-        if ($product_info['res']) {
+        if ($product_info['code'] == 200) {
             $reply = $this->_redis->pipeline(function ($pipe) use ($product_info) {
                 $pipe->select(2);
                 $pipe->hmset('product' . substr($product_info['data']['product_id'], 10) . 'info',

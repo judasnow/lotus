@@ -103,12 +103,6 @@ class Product_model extends Base_model {
             $class_a = $cond['class_a'];
             $class_b = $cond['class_b'];
             $sql = "SELECT id FROM product WHERE class_a = $class_a AND class_b = $class_b";
-        } else {
-            //超找资源出错
-            return array(
-                'res' => FALSE,
-                'msg' => NULL
-            );
         }
         $res_object = $this->_CI->db->query($sql);
         $res_array  = $res_object->result_array();

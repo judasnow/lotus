@@ -12,9 +12,12 @@ class Product_lib {
     public function __construct() {
         $this->_CI =& get_instance();
         $this->_CI->load->library('regulation');
+        $this->_CI->load->model('shop_model', 'shop_m');
         $this->_CI->load->model('product_model', 'product_m');
         $this->_CI->load->model('view_model', 'view_m');
         $this->_CI->load->model('class_model', 'class_m');
+        $this->_CI->load->library('view_lib');
+        $this->_CI->load->library('qiniuyun_lib');
     }
 
     /**
@@ -27,8 +30,9 @@ class Product_lib {
             $this->err_msg = $this->_CI->regulation->err_msg;
             $this->_CI->regulation->err_msg = array();
             return array(
-                'res' => FALSE,
-                'msg' => $this->err_msg
+                'code' => 400,
+                'msg'  => $this->err_msg,
+                'data' => NULL
             );
         }
         $product = array(
@@ -75,14 +79,16 @@ class Product_lib {
             
             $product_info_format['product_quantity'] = $product_info['quantity'];
             return array(
-                'res' => TRUE,
+                'code' => 200,
+                'msg'  => [],
                 'data' => $product_info_format
             );
         } else {
             $this->err_msg[] = 'Get product info failed';
             return array(
-                'res' => FALSE,
-                'msg' => $this->err_msg
+                'code' => 404,
+                'msg'  => [],
+                'data' => NULL
             );
         }
     }
@@ -91,13 +97,8 @@ class Product_lib {
      * 该函数使用数据库中的商品编号
      */
     public function product_info($product_id) {
-        $this->_CI->load->library('qiniuyun_lib');
-        $this->_CI->load->model('product_model', 'product_m');
-        
         //统计页面访问两
-        $this->_CI->load->library('view_lib');
         $this->_CI->view_lib->add_view('product', $product_id);
-        
         if($product_info = $this->_CI->product_m->product_info($product_id)) {
             //format product_info
             $product_info_format = array();
@@ -129,17 +130,17 @@ class Product_lib {
             
             $product_info_format['product_quantity'] = $product_info['quantity'];
             return array(
-                'res' => TRUE,
+                'code' => 200,
+                'msg'  => [],
                 'data' => $product_info_format
             );
         } else {
-            $this->err_msg[] = 'Get product info failed';
             return array(
-                'res' => FALSE,
-                'msg' => $this->err_msg
+                'code' => 404,
+                'msg'  => [],
+                'data' => NULL
             );
         }
-
     }
 
     public function new_product($product_info) {
@@ -167,13 +168,11 @@ class Product_lib {
             $this->err_msg = $this->_CI->regulation->err_msg;
             $this->_CI->regulation->err_msg = array();
             return array(
-                'res' => FALSE,
-                'msg' => $this->err_msg
+                'code' => 400,
+                'msg'  => $this->err_msg,
+                'data' => []
             );
         }
-
-        $this->_CI->load->model('shop_model', 'shop_m');
-
         //格式化产品信息
         $info = array();
         $info['shop_id'] = $this->_CI->shop_m->get_shop_id($_SESSION['object_user_id']);
@@ -191,15 +190,17 @@ class Product_lib {
         if ($product_sn = $this->_CI->product_m->new_product($info)) {
             if ($this->_CI->view_m->add_product($product_sn)) {
                 return array(
-                    'res' => TRUE,
-                    'data' => NULL
+                    'code' => 200,
+                    'msg'  => [],
+                    'data' => []
                 );
             }
         }
         $this->err_msg[] = 'Release new product failed';
         return array(
-            'res' => FALSE,
-            'msg' => $this->err_msg
+            'code' => 404,
+            'msg'  => $this->err_msg,
+            'data' => []
         );
     }
 
@@ -229,8 +230,9 @@ class Product_lib {
             $this->err_msg = $this->_CI->regulation->err_msg;
             $this->_CI->regulation->err_msg = array();
             return array(
-                'res' => FALSE,
-                'msg' => $this->err_msg
+                'code' => 400,
+                'msg'  => $this->err_msg,
+                'data' => []
             );
         }
 
@@ -250,14 +252,16 @@ class Product_lib {
         $res = $this->_CI->product_m->product_update($info);
         if ($res) {
             return array(
-                'res' => TRUE,
-                'data' => NULL
+                'code' => 200,
+                'msg'  => [],
+                'data' => []
             );
         } else {
-            $this->err_msg[] = 'Update product info failed';
+            $this->err_msg[] = 'Nothing has been change';
             return array(
-                'res' => FALSE,
-                'msg' => $this->err_msg
+                'code' => 404,
+                'msg'  => $this->err_msg,
+                'data' => []
             );
         }
     }
