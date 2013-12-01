@@ -220,10 +220,7 @@ class Shop_lib {
         $page_num = $page_num_res['data'];
         return array(
             'res' => TRUE,
-            'data' => array(
-                'total_page' => $page_num,
-                'products_info' => $products
-            )
+            'data' => $products
         );
     }
 
