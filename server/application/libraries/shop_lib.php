@@ -241,6 +241,7 @@ class Shop_lib {
         $page_num_res = $this->product_page_count($shop_id);
         $page_num = $page_num_res['data'];
         return array(
+            'code' => 200,
             'data' => $products
         );
     }

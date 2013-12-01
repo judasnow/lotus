@@ -50,17 +50,17 @@
         },
         {
             "name": "illuminate/support",
-            "version": "v4.0.10",
+            "version": "v4.0.9",
             "target-dir": "Illuminate/Support",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/support.git",
-                "reference": "24ac5601b3f6781c8b54a12ed5e4ddb7f34d7953"
+                "reference": "bec895ef2331ff2f4afbbe48d1ea3d48c3bd8a9f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/support/zipball/24ac5601b3f6781c8b54a12ed5e4ddb7f34d7953",
-                "reference": "24ac5601b3f6781c8b54a12ed5e4ddb7f34d7953",
+                "url": "https://api.github.com/repos/illuminate/support/zipball/bec895ef2331ff2f4afbbe48d1ea3d48c3bd8a9f",
+                "reference": "bec895ef2331ff2f4afbbe48d1ea3d48c3bd8a9f",
                 "shasum": ""
             },
             "require": {
@@ -97,7 +97,7 @@
                     "role": "Developer"
                 }
             ],
-            "time": "2013-11-20 14:44:26"
+            "time": "2013-10-03 18:37:29"
         },
         {
             "name": "mustache/mustache",
@@ -146,16 +146,16 @@
         },
         {
             "name": "patchwork/utf8",
-            "version": "v1.1.15",
+            "version": "v1.1.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nicolas-grekas/Patchwork-UTF8.git",
-                "reference": "2b13126f572501ce9806846349344f1c6b20b545"
+                "reference": "af1d74b154bc62fab79b428877a9b5ab15f9418a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nicolas-grekas/Patchwork-UTF8/zipball/2b13126f572501ce9806846349344f1c6b20b545",
-                "reference": "2b13126f572501ce9806846349344f1c6b20b545",
+                "url": "https://api.github.com/repos/nicolas-grekas/Patchwork-UTF8/zipball/af1d74b154bc62fab79b428877a9b5ab15f9418a",
+                "reference": "af1d74b154bc62fab79b428877a9b5ab15f9418a",
                 "shasum": ""
             },
             "require": {
@@ -193,7 +193,7 @@
                 "utf-8",
                 "utf8"
             ],
-            "time": "2013-11-23 12:47:40"
+            "time": "2013-11-04 16:58:59"
         },
         {
             "name": "predis/predis",
@@ -201,12 +201,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/nrk/predis.git",
-                "reference": "b2e0dc62fe4b1162567741fad64bd040df9df292"
+                "reference": "0a60a156f0a125124a1ddcc1fe812b83ff8c2813"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nrk/predis/zipball/b2e0dc62fe4b1162567741fad64bd040df9df292",
-                "reference": "b2e0dc62fe4b1162567741fad64bd040df9df292",
+                "url": "https://api.github.com/repos/nrk/predis/zipball/0a60a156f0a125124a1ddcc1fe812b83ff8c2813",
+                "reference": "0a60a156f0a125124a1ddcc1fe812b83ff8c2813",
                 "shasum": ""
             },
             "require": {
@@ -240,7 +240,7 @@
                 "predis",
                 "redis"
             ],
-            "time": "2013-11-30 19:06:37"
+            "time": "2013-11-17 15:20:29"
         }
     ],
     "packages-dev": [

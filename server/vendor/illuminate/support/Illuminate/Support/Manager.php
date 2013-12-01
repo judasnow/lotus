@@ -98,13 +98,11 @@ abstract class Manager {
 	 *
 	 * @param  string   $driver
 	 * @param  Closure  $callback
-	 * @return \Illuminate\Support\Manager|static
+	 * @return void
 	 */
 	public function extend($driver, Closure $callback)
 	{
 		$this->customCreators[$driver] = $callback;
-		
-		return $this;
 	}
 
 	/**
