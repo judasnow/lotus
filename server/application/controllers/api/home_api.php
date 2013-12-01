@@ -5,43 +5,40 @@
  * @Author: odirus@163.com
  */
 require_once(APPPATH . '/libraries/REST_Controller.php');
+require_once('response_api.php');
 
 class Home_api extends REST_Controller {
 
+    public $response_api;
+
     public function __construct() {
         parent::__construct();
+        $this->load->library('home_lib');
+        $this->response_api = new Response_api;
     }
-
+    
     /**
      * 根据搜索字符串获取返回内容
      */
     public function search_get() {
-        $this->load->library('home_lib');
         $search_string = $this->input->get('search_string', TRUE);
         $page_num = $this->input->get('page_num', TRUE);
-        $res = $this->home_lib->search($search_string, $page_num);
-        if ($res['res']) {
-            $this->response($res['data'], 200);
-        } else {
-            $msg = 'Get products failed';
-            if (count($res['msg']) > 0) {
-                $msg = implode("; ", $res['msg']);
-            }
-            $this->response($msg, 500);
-        }
+        $this->response_api->api_response($this->home_lib->search($search_string, $page_num));
+    }
+
+    /**
+     * 根据搜索字符串返回相应的页数
+     */
+    public function search_result_page_get() {
+        $search_string = $this->input->get('search_string', TRUE);
+        $this->response_api->api_response($this->home_lib->search_result_page($search_string));
     }
 
     /**
      * 获取 class_a 目录
      */
     public function class_a_get() {
-        $this->load->library('home_lib');
-        $res = $this->home_lib->class_a();
-        if($res['res']) {
-            $this->response($res['data'], 200);
-        } else {
-            $this->response("fail", 500);
-        }
+        $this->response_api->api_response($this->home_lib->class_a());
     }
 
     /**
@@ -50,12 +47,7 @@ class Home_api extends REST_Controller {
     public function class_b_get() {
         $this->load->library('home_lib');
         $class_a_id = $this->input->get('class_a_id', TRUE);
-        $res = $this->home_lib->class_b( $class_a_id );
-        if($res['res']) {
-            $this->response($res['data'], 200);
-        } else {
-            $this->response("fail", 500);
-        }
+        $this->response_api->api_response($this->home_lib->class_b($class_a_id));
     }
 
     /*
@@ -63,16 +55,7 @@ class Home_api extends REST_Controller {
      */
     public function popular_products_get() {
         $this->load->library('home_lib');
-        $res = $this->home_lib->popular_product();
-        if ($res['res']) {
-            $this->response($res['data'], 200);
-        } else {
-            $msg = 'Get products failed';
-            if (count($res['msg']) > 0) {
-                $msg = implode("; ", $res['msg']);
-            }
-            $this->response($msg, 500);
-        }
+        $this->response_api->api_response($this->home_lib->popular_product());
     }
 
     /**
@@ -81,35 +64,26 @@ class Home_api extends REST_Controller {
     public function popular_shop_get() {
         $this->load->library('home_lib');
         $res = $this->home_lib->popular_shop();
-        if ($res['res']) {
-            $this->response($res['data'], 200);
-        } else {
-            $msg = 'Get popular shop failed';
-            if (count($res['msg']) > 0) {
-                $msg = implode("; ", $res['msg']);
-            }
-            $this->response($msg, 500);
-        }
+        $this->response_api->api_response($this->home_lib->popular_shop());
     }
     
     /**
      * 根据分类获取商品信息
      */
-    public function products_get() {
+    public function category_products_get() {
         $class_a = $this->input->get('class_a', TRUE);
         $class_b = $this->input->get('class_b', TRUE);
         $page    = (int) ($this->input->get('page', TRUE));
-        $this->load->library('home_lib');
-        $res = $this->home_lib->product($class_a, $class_b, $page);
-        if ($res['res']) {
-            $this->response($res['data'], 200);
-        } else {
-            $msg = 'Get products failed';
-            if (count($res['msg']) > 0) {
-                $msg = implode("; ", $res['msg']);
-            }
-            $this->response($msg, 500);
-        }
+        $this->response_api->api_response($this->home_lib->category_products($class_a, $class_b, $page));
+    }
+
+    /**
+     * 根据分类获取商品分页数
+     */
+    public function category_products_page_get() {
+        $class_a = $this->input->get('class_a', TRUE);
+        $class_b = $this->input->get('class_b', TRUE);
+        $this->response_api->api_response($this->home_lib->category_products_page($class_a, $class_b));
     }
   
 }

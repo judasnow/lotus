@@ -5,7 +5,6 @@
 class Home_lib {
 
     private $_CI;
-    private $_redis;
     private $_popular_shop_num;
     private $_popular_shop_page_num;
     private $_popular_product_page_num;
@@ -18,6 +17,7 @@ class Home_lib {
         $this->_CI->load->model('product_model', 'product_m');
         $this->_CI->load->model('view_model', 'view_m');
         $this->_CI->load->model('class_model', 'class_m');
+        $this->_CI->load->library('regulation');
         $this->_CI->load->library('shop_lib');
         $this->_CI->load->library('product_lib');
         $this->_CI->load->library('cache_lib');
@@ -25,23 +25,42 @@ class Home_lib {
         $this->_popular_shop_num = $this->_CI->config->item('popular_shop_num');
         $this->_popular_product_num = $this->_CI->config->item('popular_product_num');
         $this->_search_result_product_page_num = $this->_CI->config->item('search_result_product_page_num');
-        $this->_redis = new \Predis\Client([
-            'scheme' => $this->_CI->config->item('scheme'),
-            'host'   => $this->_CI->config->item('host'),
-            'port'   => $this->_CI->config->item('port')
-        ]);
     }
 
-    public function search_id($search_string, $page) {
+    //根据指定搜索条件返回页数
+    public function search_result_page($search_string) {
+        if (empty($search_string)) {
+            $this->err_msg[] = 'Search string or page num is empty';
+            return array(
+                'code' => 400,
+                'msg'  => $this->err_msg,
+                'data' => NULL
+            );
+        }
+        $res = $this->_CI->product_m->search($search_string);
+        $result = [];
+        foreach ($res as $key => $value) {
+            $result[$key] = $value['id'];
+        }
+        return array(
+            'code' => 200,
+            'msg'  => [],
+            'data' => array((int)((count($result) + $this->_search_result_product_page_num - 1) / $this->_search_result_product_page_num))
+        );
+    }
+
+    //根据指定的搜索字符和相应的页数返回内容
+    //被函数 search 调用
+    private function search_id($search_string, $page) {
+        //Cache 需要重新设计数据结构
         $cache = $this->_CI->cache_lib->get_cache_search_product($search_string, $page);
-        if ($cache['res']) {
+        if ($cache['res'] =  FALSE) {
             return array(
                 'res' => TRUE,
                 'data' => $cache['data']
             );
         } else {
             //缓存中不存在该条记录，则写入缓存并且返回数据
-            $this->_CI->load->model('product_model', 'product_m');
             $res = $this->_CI->product_m->search($search_string);
             
             $cache = $this->_CI->cache_lib->set_cache_search_product($search_string);
@@ -54,32 +73,34 @@ class Home_lib {
             $list  = array_slice($result, $start, $this->_search_result_product_page_num);
             return array(
                 'res' => TRUE,
-                'data' => array(
-                    'total_page' =>  (int)((count($result) + $this->_search_result_product_page_num - 1) / $this->_search_result_product_page_num),
-                    'content'    => $list
-                )
+                'data' => $list
             );
         }
     }
 
+    //根据制定搜索记录返回结果
     public function search($search_string, $page) {
-        //Todo 加入规则验证
+        $result_page_res = $this->search_result_page($search_string);
+        $result_page     = $result_page_res['data'][0];
         if (empty($search_string) || empty($page)) {
-            $this->err_msg[] = 'Search string or page num is empty.';
+            $this->err_msg[] = 'Search string or page num is empty';
             return array(
-                'res' => FALSE,
-                'msg' => $this->err_msg
+                'code' => 400,
+                'msg' => $this->err_msg,
+                'data' => []
+            );
+        } elseif ($page > $result_page) {
+            return array(
+                'code' => 404,
+                'msg'  => [],
+                'data' => []
             );
         }
-        
-        $this->_CI->load->library('product_lib');
         //需要获取的商品编号列表
         $result = $this->search_id($search_string, $page);
-        $res = $result['data']['content'];
+        $res = $result['data'];
         $res_not_cache = [];
-
         $products_info = [];
-
         //先查询缓存池中是否有该商品信息
         $k = 0;
         foreach ($res as $key => $value) {
@@ -95,24 +116,32 @@ class Home_lib {
         $k = count($products_info);
         foreach ($res_not_cache as $key => $product_id) {
             $product_info = $this->_CI->product_lib->product_info($product_id);
-            if ($product_info['res']) {
+            if ($product_info['code'] == 200) {
                 $products_info[$k] = $product_info['data'];
                 $this->_CI->cache_lib->set_cache_product_info($product_id);
             }
             $k++;
         }
-        return array(
-            'res' => TRUE,
-            'data' => array(
-                'total_page' => $result['data']['total_page'],
-                'products_info' => $products_info
-            )
-        );
+        if (count($products_info) > 1) {
+            return array(
+                'code' => 200,
+                'msg'  => [],
+                'data' => $products_info
+            );
+        } else {
+            return array(
+                'code' => 404,
+                'msg'  => [],
+                'data' => []
+            );
+        }
     }
-
+    
+    //获取商品一级目录
     public function class_a() {
+        //关闭缓存
         $cache = $this->_CI->cache_lib->get_cache_class_a_detail();
-        if ($cache['res']) {
+        if ($cache['res'] = FALSE) {
             $class_a = $cache['data'];
         } else {
             $class_a = $this->_CI->class_m->class_a();
@@ -120,36 +149,39 @@ class Home_lib {
             $this->_CI->cache_lib->set_cache_class_a_detail();
         }
         return array(
-            'res' => TRUE,
+            'code' => 200,
+            'msg'  => [],
             'data' => $class_a
         );
     }
 
-    public function class_b( $class_a_id ) {
+    //获取商品二级目录
+    public function class_b($class_a_id) {
+        //Cache 需要重新设计
         $cache = $this->_CI->cache_lib->get_cache_class_b_detail($class_a_id);
-        if ($cache['res']) {
+        if ($cache['res'] = FALSE) {
             $class_b = $cache['data'];
         } else {
             $class_b = $this->_CI->class_m->class_b($class_a_id);
             //设置缓存
-            $this->_CI->cache_lib->set_cache_class_b_detail($class_a_id);
+            //$this->_CI->cache_lib->set_cache_class_b_detail($class_a_id);
         }
-        return array(
-            'res' => TRUE,
-            'data' => $class_b
-        );
+        if (count($class_b) > 0) {
+            return array(
+                'code' => 200,
+                'msg'  => [],
+                'data' => $class_b
+            );
+        } else {
+            return array(
+                'code' => 404,
+                'msg'  => [],
+                'data' => NULL
+            );
+        }
     }
 
-    public function products_class() {
-        $this->_CI->load->model('class_model', 'class_m');
-        $class_a = array();
-        $class_a_array = $this->_CI->class_m->class_a();
-        foreach ($class_a_array as $key => $value) {
-            $class_a_array[$key]['class_b_content'] = $this->_CI->class_m->class_b($value['class_a']);
-        }
-        return $class_a_array;
-    }
-
+    //热门店铺信息
     public function popular_shop() {
         $shops_info = array();
         $i = 0;
@@ -178,17 +210,21 @@ class Home_lib {
                 $i++;
             }
             return array(
-                'res' => TRUE,
+                'code' => 200,
+                'msg'  => [],
                 'data' => $shops_info
             );
         } else {
+            $this->err_msg[] = 'Error when get hot shop info';
             return array(
-                'res' => FALSE,
-                'msg' => $this->err_msg
+                'code' => 404,
+                'msg'  => $this->err_msg,
+                'data' => []
             );
         }
     }
 
+    //热门商品信息
     public function popular_product() {
         $products_info = array();
         $i = 0;
@@ -209,19 +245,70 @@ class Home_lib {
                 $i++;
             }
             return array(
-                'res' => TRUE,
+                'code' => 200,
+                'msg'  => [],
                 'data' => $products_info
             );
         } else {
-            $this->err_msg[] = 'Error: get data from view.';
+            $this->err_msg[] = 'Error: get data from view failed';
             return array(
-                'res' => TRUE,
-                'msg' => $this->err_msg
+                'code' => 404,
+                'msg'  => $this->err_msg,
+                'data' => []
             );
         }
     }
 
-    public function product($class_a, $class_b, $page) {
+    //根据指定分类获取商品分页数
+    public function category_products_page($class_a, $class_b) {
+        //检查传入参数
+        $params = array(
+            'product_class_a' => $class_a,
+            'product_class_b' => $class_b
+        );
+        if (empty($class_b)) {
+            unset($params['product_class_b']);
+        }
+        foreach ($params as $key => $value) {
+            $this->_CI->regulation->validate($key, $value);
+        }
+        if (count($this->_CI->regulation->err_msg) > 0) {
+            $this->err_msg = $this->_CI->regulation->err_msg;
+            $this->_CI->regulation->err_msg = array();
+            return array(
+                'code' => 400,
+                'msg'  => $this->err_msg,
+                'data' => []
+            );
+        }
+        if (!$class_b) {
+            $sql = "SELECT id, class_a, class_b FROM product WHERE class_a = $class_a";
+        } else {
+            $sql = "SELECT id, class_a, class_b FROM product WHERE class_a = $class_a AND class_b = $class_b";
+        }
+        $res_object = $this->_CI->db->query($sql);
+        $res_array = $res_object->result_array();
+        return array(
+            'code' => 200,
+            'msg'  => [],
+            'data' => array((int) ((count($res_array) + $this->_search_result_product_page_num -1) / $this->_search_result_product_page_num)));
+    }
+    
+    //根据指定分类获取商品信息
+    public function category_products($class_a, $class_b, $page) {
+        $category_products_page_res = $this->category_products_page($class_a, $class_b);
+        if ($category_products_page_res['code'] == 200) {
+            $category_products_page = $category_products_page_res['data'][0];
+        } else {
+            return $category_products_page_res;
+        }
+        if ($page > $category_products_page) {
+            return array(
+                'code' => 404,
+                'msg'  => [],
+                'data' => NULL
+            );
+        }
         $params = array(
             'product_class_a' => $class_a,
             'product_class_b' => $class_b,
@@ -235,7 +322,7 @@ class Home_lib {
             unset($params['product_class_b']);
             unset($cond['class_b']);
         }
-        $this->_CI->load->library('regulation');
+
         foreach ($params as $key => $value) {
             $this->_CI->regulation->validate($key, $value);
         }
@@ -243,27 +330,24 @@ class Home_lib {
             $this->err_msg = $this->_CI->regulation->err_msg;
             $this->_CI->regulation->err_msg = array();
             return array(
-                'res' => FALSE,
-                'msg' => $this->err_msg
+                'code' => 400,
+                'msg'  => $this->err_msg,
+                'data' => NULL
             );
         }
 
         $start = ($page - 1) * $this->_search_result_product_page_num;
         
+        //关闭缓存
         $id_cache = $this->_CI->cache_lib->get_cache_class_search_product($cond);
-        if ($id_cache['res']) {
+        if ($id_cache['res'] = FALSE) {
             $res_array = $id_cache['data'];
         } else {
             $res_array = $this->_CI->product_m->class_product($cond);
             //设置缓存
-            $this->_CI->cache_lib->set_cache_class_search_product($cond);
+            //$this->_CI->cache_lib->set_cache_class_search_product($cond);
             if ($res_array['res']) {
                 $res_array = $res_array['data'];
-            } else {
-                return array(
-                    'res' => FALSE,
-                    'msg' => $this->err_msg
-                );
             }
         }
         $res_array = array_slice($res_array, $start, $this->_search_result_product_page_num);
@@ -274,11 +358,11 @@ class Home_lib {
         }
         
         $products_info = array();
-        $page_res = $this->products_page($class_a, $class_b);
         $i = 0;
         foreach ($res as $key => $value) {
+            //关闭缓存
             $product_cache = $this->_CI->cache_lib->get_cache_product_info($value['id']);
-            if ($product_cache['res']) {
+            if ($product_cache['res'] = FALSE) {
                 $products_info[$i] = $product_cache['data'];
             } else {
                 $product = $this->_CI->product_lib->product_info($value['id']);
@@ -289,49 +373,9 @@ class Home_lib {
             $i++;
         }
         return array(
-            'res' => TRUE,
-            'data' => array(
-                'total_page' => $page_res['data'],
-                'products_info' => $products_info
-            )
-        );
-    }
-
-    private function products_page($class_a, $class_b) {
-        //检查传入参数
-        $params = array(
-            'product_class_a' => $class_a,
-            'product_class_b' => $class_b
-        );
-        if (empty($class_b)) {
-            unset($params['product_class_b']);
-        }
-        $this->_CI->load->library('regulation');
-        foreach ($params as $key => $value) {
-            $this->_CI->regulation->validate($key, $value);
-        }
-        if (count($this->_CI->regulation->err_msg) > 0) {
-            $this->err_msg = $this->_CI->regulation->err_msg;
-            $this->_CI->regulation->err_msg = array();
-            return array(
-                'res' => FALSE,
-                'msg' => $this->err_msg
-            );
-        }
-
-        $this->_CI->load->library('product_lib');
-        if (!$class_b) {
-            $sql = "SELECT id, class_a, class_b FROM product WHERE class_a = $class_a";
-        } else {
-            $sql = "SELECT id, class_a, class_b FROM product WHERE class_a = $class_a AND class_b = $class_b";
-        }
-
-        $res_object = $this->_CI->db->query($sql);
-        $res_array = $res_object->result_array();
-        //改正变量信息
-        return array(
-            'res' => TRUE,
-            'data' => (int) ((count($res_array) + $this->_search_result_product_page_num -1) / $this->_search_result_product_page_num)
+            'code' => 200,
+            'msg'  => [],
+            'data' => $products_info
         );
     }
 
