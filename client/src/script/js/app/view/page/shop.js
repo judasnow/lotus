@@ -51,22 +51,17 @@ define([
             this.listenTo( this._model , 'change' , this.render );
 
             //这里的思路就是由 给 productListView 推送不同的 coll 以显示不同的结果
-            this._productColl = new ProductColl({
+            var productColl = new ProductColl({
                 url: config.serverAddress + 'shop_api/products/'
             });
-            this._productColl.fetch({
-                data: {
-                    shop_id: this._model.get( 'shop_id' ),
-                    page: 1
-                }
-            });
+            this._productListView = new ProductListView({ coll: productColl });
+            this._productListView._coll.fetch({data:{page:1,shop_id:this._model.get( 'shop_id')}});
 
             this._model.fetch({
                 data: {
                     shop_id: this._model.get( 'shop_id' )
                 }
             });
-
         },
 
         render: function() {
