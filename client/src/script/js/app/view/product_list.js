@@ -2,9 +2,19 @@ define([
 
     'zepto',
     'underscore',
-    'backbone'
+    'backbone',
+    'mustache',
 
-] , function( $ , _ , Backbone ) {
+    'text!tpl/page/shop_page_product_list_item.mustache'
+
+] , function(
+    $ ,
+    _ ,
+    Backbone,
+    Mustache,
+
+    shopPageProductListItemTpl
+) {
     'use strict';
 
     var ProductListView = Backbone.View.extend({
@@ -14,20 +24,28 @@ define([
                 throw new Error( 'param invalid' );
             }
 
-            _.bindAll( this , 'render' , '_addAll' , '_addOne' , 'getListByPage' );
+            this.$el = args.$el;
 
-            this._page = 1;
+            _.bindAll(
+                this ,
+
+                'render' ,
+                '_addAll' ,
+                '_addOne' ,
+                'getListByPage'
+            );
 
             this._coll = args.coll;
-            this._coll.on( 'reset' , this._addAll );
+            this._coll.on( 'fetch_ok' , this._addAll );
         },
 
+        //@TODO 延时效果
         _addOne: function( item ) {
-            
+            this.$el.append( Mustache.to_html( shopPageProductListItemTpl , item.toJSON() ) );
         },
 
-        _addAll: function( coll ) {
-            
+        _addAll: function() {
+            this._coll.each( this._addOne );
         },
 
         //( number , object ) -> void
@@ -37,17 +55,17 @@ define([
                 throw new Error( 'param invalid' );
             }
 
-            var fetchOptions;
+            var fetchOptions = {};
             if( typeof options === 'object' ) {
-                fetchOptions = _.extend( fetchOptions , {page: this._page} );
+                fetchOptions = _.extend( options , {page: page} );
+                console.dir( fetchOptions );
             }
 
             this._coll.fetch({
-                data: {
-                    page: this._page,
-                    shop_id: 1
-                },
-                reset: true
+                data: fetchOptions,
+                success: function( coll ) {
+                    coll.trigger( 'fetch_ok' );
+                }
             });
         }
     });
