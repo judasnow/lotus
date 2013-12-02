@@ -227,8 +227,7 @@ class Shop_lib {
             $flag = 'time';//默认采用时间排序
         }
         $start = ($page -1) * $this->_page_count;
-        $end   = $start + $this->_page_count - 1;
-        $product_id = $this->_CI->shop_m->product_id($shop_id, $start, $end, $flag);
+        $product_id = $this->_CI->shop_m->product_id($shop_id, $start, $this->_page_count, $flag);
         $products =array();
         foreach ($product_id as $key => $value) {
             $res = $this->_CI->product_lib->product($value);

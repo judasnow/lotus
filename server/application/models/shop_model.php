@@ -149,8 +149,8 @@ class Shop_model extends Base_model {
     }
 
     //返回指定页面的商品编号
-    public function product_id($shop_id, $start, $end, $flag) {
-        $sql = "SELECT id, class_a, class_b FROM product WHERE shop_id = $shop_id ORDER BY $flag DESC LIMIT $start, $end";
+    public function product_id($shop_id, $start, $length, $flag) {
+        $sql = "SELECT id, class_a, class_b FROM product WHERE shop_id = $shop_id ORDER BY $flag DESC LIMIT $start, $length";
         $res_object = $this->_CI->db->query($sql);
         $res_array  = $res_object->result_array();
         $product    = array();
