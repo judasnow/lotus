@@ -6,6 +6,7 @@ define([
     'm/shop',
     'v/product_list',
     'c/product',
+    'v/product_list_page',
 
     'utilities/page',
 
@@ -21,6 +22,7 @@ define([
     Shop,
     ProductListView,
     ProductColl,
+    ProductListPagerView,
 
     page,
 
@@ -74,7 +76,10 @@ define([
 
             //获取并显示分页信息
             this._pagerView = new ProductListPagerView({
-                shop_id: this._model.get( 'shop_id' )
+                getUrl: 'shop_api/product_page_count/',
+                options: {
+                    shop_id: this._model.get( 'shop_id' )
+                }
             });
 
             //获取第一页信息 如果存在的话
