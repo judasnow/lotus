@@ -1,5 +1,4 @@
 define([
-
     'zepto',
     'backbone',
     'mustache',
@@ -7,6 +6,7 @@ define([
     'm/shop',
     'v/product_list',
     'c/product',
+    'v/product_list_page',
 
     'utilities/page',
 
@@ -15,7 +15,6 @@ define([
     'text!tpl/page/shop.mustache'
 
 ] , function(
-
     $,
     Backbone,
     Mustache,
@@ -23,6 +22,7 @@ define([
     Shop,
     ProductListView,
     ProductColl,
+    ProductListPagerView,
 
     page,
 
@@ -32,12 +32,14 @@ define([
 ) {
     'use strict';
 
+    // shop model -> render page -> product_list
     var ShopPageView = Backbone.View.extend({
         id: 'shop-page',
         className: 'box',
 
         template: shopPageTpl,
 
+        // ({ shop_id::number  }) => void
         initialize: function( args ) {
             if( isNaN( args.shop_id ) ) {
                 throw new Error( 'param invalid' );
@@ -45,33 +47,52 @@ define([
 
             var shopId = args.shop_id;
 
-            _.bindAll( this , 'render' );
+            _.bindAll(
+                this ,
 
-            this._model = new Shop({shop_id: shopId});
+                '_renderProductList',
+                'render'
+            );
+
+            this._model = new Shop({
+                shop_id: shopId
+            });
             this.listenTo( this._model , 'change' , this.render );
-
-            //这里的思路就是由 给 productListView 推送不同的 coll 以显示不同的结果
-            this._productColl = new ProductColl({
-                url: config.serverAddress + 'shop_api/products/'
-            });
-            this._productColl.fetch({
-                data: {
-                    shop_id: this._model.get( 'shop_id' ),
-                    page: 1
-                }
-            });
-
             this._model.fetch({
                 data: {
                     shop_id: this._model.get( 'shop_id' )
                 }
             });
+        },
 
+        _renderProductList: function() {
+            this._productColl = new ProductColl({
+                url: config.serverAddress + 'shop_api/products/'
+            });
+            this._productListView = new ProductListView({
+                $el: this.$el.find( '.shop-page-product-list ul' ),
+                coll: this._productColl
+            });
+
+            //获取并显示分页信息
+            this._pagerView = new ProductListPagerView({
+                getUrl: 'shop_api/product_page_count/',
+                options: {
+                    shop_id: this._model.get( 'shop_id' )
+                }
+            });
+
+            //获取第一页信息 如果存在的话
+            this._productListView.getListByPage( 1 , {
+                shop_id: this._model.get( 'shop_id' )
+            });
         },
 
         render: function() {
             this.$el.html( Mustache.to_html( this.template , this._model.toJSON() ) );
             page.loadPage( this.$el );
+
+            this._renderProductList();
 
             return this;
         }

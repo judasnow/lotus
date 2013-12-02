@@ -201,7 +201,7 @@ class Shop_lib {
             'data' => [(int) (($count + $this->_page_count -1) / $this->_page_count)]
         );
     }
-        
+
     //获取店铺内商品信息,page >= 1, flag 可选值 time, price, disount
     public function products($shop_id, $page, $flag) {
         $arr = array(
