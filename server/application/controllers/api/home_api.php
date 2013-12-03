@@ -21,7 +21,7 @@ class Home_api extends REST_Controller {
      * 根据搜索字符串获取返回内容
      */
     public function search_get() {
-        $search_string = $this->input->get('search_string', TRUE);
+        $search_string = $this->input->get('q', TRUE);
         $page_num = $this->input->get('page', TRUE);
         $this->response_api->api_response($this->home_lib->search($search_string, $page_num));
     }
@@ -30,7 +30,7 @@ class Home_api extends REST_Controller {
      * 根据搜索字符串返回相应的页数
      */
     public function search_result_page_get() {
-        $search_string = $this->input->get('search_string', TRUE);
+        $search_string = $this->input->get('q', TRUE);
         $this->response_api->api_response($this->home_lib->search_result_page($search_string));
     }
 
