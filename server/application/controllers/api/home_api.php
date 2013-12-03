@@ -22,7 +22,7 @@ class Home_api extends REST_Controller {
      */
     public function search_get() {
         $search_string = $this->input->get('search_string', TRUE);
-        $page_num = $this->input->get('page_num', TRUE);
+        $page_num = $this->input->get('page', TRUE);
         $this->response_api->api_response($this->home_lib->search($search_string, $page_num));
     }
 
