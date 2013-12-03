@@ -116,13 +116,14 @@ class Home_lib {
         $k = count($products_info);
         foreach ($res_not_cache as $key => $product_id) {
             $product_info = $this->_CI->product_lib->product_info($product_id);
+            
             if ($product_info['code'] == 200) {
                 $products_info[$k] = $product_info['data'];
                 $this->_CI->cache_lib->set_cache_product_info($product_id);
             }
             $k++;
         }
-        if (count($products_info) > 1) {
+        if (count($products_info) > 0) {
             return array(
                 'code' => 200,
                 'msg'  => [],
