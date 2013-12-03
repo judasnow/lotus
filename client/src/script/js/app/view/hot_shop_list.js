@@ -24,7 +24,9 @@ define([
     'use strict';
 
     var HotShopList = HotListBase.extend({
+
         initialize: function() {
+        //{{{
             //base 里面没有 events 属性
             this.events = {
                 'click .item_box': '_goShopPage'
@@ -33,14 +35,15 @@ define([
             _.bindAll( this , '_goShopPage' );
 
             this._baseInit( 'hot_shop_recommend' , new HotShopColl() , HotShopListItemTpl );
-        },
+        },//}}}
 
         _goShopPage: function( e ) {
+        //{{{
             var $currEl = $( e.currentTarget );
             var showId = $currEl.attr( 'data-attr' );
 
             window.routes.navigate( 'shop/' + showId , {trigger: true} );
-        }
+        }//}}}
 
     });
 

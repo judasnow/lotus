@@ -2,8 +2,7 @@ define([
     'zepto',
     'backbone',
 
-    'm/product',
-
+    'm/product'
 ] , function( $ , Backbone , Product ) {
     'use strict';
 

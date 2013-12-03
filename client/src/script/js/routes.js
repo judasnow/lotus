@@ -11,7 +11,8 @@ define([
 
     'v/hot_shop_list',
     'v/hot_product_list',
-    'v/page/product_detail'
+    'v/page/product_detail',
+    'v/page/search_result'
 
 ] , function(
     _,
@@ -27,7 +28,8 @@ define([
 
     HotShopListView,
     HotProductListView,
-    ProductDetailPageView
+    ProductDetailPageView,
+    SearchResultPageView
 ) {
     'use strict';
 
@@ -40,11 +42,14 @@ define([
             'seller_login': '_showSellerLoginPage',
             'seller_logout': '_sellerLogout',
             'product_detail/:productId': '_showProductDetailPage',
-            'shop/:shopId': '_showShop',
-            'search_result': '_showSearchResult'
+
+            'shop/:shopId(/:currentPage)': '_showShop',
+
+            'search_result(/:q/:p)': '_showSearchResult'
         },
 
         initialize: function() {
+        //{{{
             _.bindAll(
                 this,
 
@@ -56,42 +61,48 @@ define([
                 '_showShop',
                 '_showSearchResult'
             );
-        },
+        },//}}}
 
         _showMainPage: function() {
+        //{{{
             common.log( 'now in main page' );
 
             var hotShopListView = new HotShopListView();
             var hotProductListView = new HotProductListView();
-        },
+        },//}}}
 
         _showSellerSignupPage: function() {
+        //{{{
             new SellerSignupView();
-        },
+        },//}}}
 
         _showSellerLoginPage: function() {
+        //{{{
             new SellerLoginView();
-        },
+        },//}}}
 
         _sellerLogout: function() {
+        //{{{
             auth.doLogout( function() {
                 window.routes.navigate( 'main' , {trigger: true} );
             });
-        },
+        },//}}}
 
-        _showShop: function( shopId ) {
-            common.log( 'show' );
-            new ShopPageView({ shop_id: shopId });
-        },
+        _showShop: function( shopId , currentPage ) {
+        //{{{
+            new ShopPageView({ shop_id: shopId , current_page: currentPage});
+        },//}}}
 
-        _showSearchResult: function() {
-            common.log( 'search result' );
-        },
+        _showSearchResult: function( q ) {
+        //{{{
+            new SearchResultPageView({q: q});
+        },//}}}
 
         _showProductDetailPage: function( productId ) {
-            console.dir( productId );
+        //{{{
             new ProductDetailPageView({ product_id: productId });
-        }
+        }//}}}
+
     });
 
     return Routes;

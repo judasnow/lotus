@@ -32,6 +32,7 @@ define([
         template: ProductDetailPageTpl,
 
         initialize: function( args ) {
+        //{{{
             if( isNaN( args.product_id ) ) {
                 throw new Error( 'param invalid' );
             }
@@ -44,11 +45,12 @@ define([
             this.listenTo( this._model , 'change' , this.render );
 
             this._model.fetch();
-        },
+        },//}}}
 
         //根据 model 中的 detail image 渲染相应的列表文档
         //( void ) => string
         _renderDetailImage: function() {
+        //{{{
             var detailImages = this._model.get( 'product_detail_image_url' );
             var html = '';
 
@@ -59,9 +61,10 @@ define([
             }
 
             return html;
-        },
+        },//}}}
 
         render: function() {
+        //{{{
             this.$el.html(
                 Mustache.to_html(
                     this.template , 
@@ -75,7 +78,7 @@ define([
             page.loadPage( this.$el );
 
             return this;
-        }
+        }//}}}
     });
 
     return ProductDetailPageView;
