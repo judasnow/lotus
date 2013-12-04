@@ -19,6 +19,7 @@ define([
 
     var GlobleEvents = function( views ) {
         var navView = views.nav_view;
+
         var e = {};
         _.extend( e , Backbone.Events );
 

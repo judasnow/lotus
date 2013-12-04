@@ -45,6 +45,7 @@ require(
 
     'v/nav',
     'v/footer',
+    'v/sys_notice',
 
     'routes',
 
@@ -58,6 +59,7 @@ function(
 
     NavView,
     FooterView,
+    SysNotice,
 
     Routes,
 
@@ -69,8 +71,11 @@ function(
 
     var navView = new NavView();
     var footerView = new FooterView();
+    window.sysNotice = new SysNotice();
 
-    window.e = new GlobalEvents({ nav_view: navView }).e;
+    window.e = new GlobalEvents({
+        nav_view: navView
+    }).e;
 
     //在用户刷新页面之后根据当前的状态初始化页面
     //is login ?

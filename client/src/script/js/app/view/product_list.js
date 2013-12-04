@@ -7,7 +7,7 @@ define([
 
     'text!tpl/page/shop_page_product_list_item.mustache'
 
-] , function(
+] , function (
     $ ,
     _ ,
     Backbone,

@@ -81,6 +81,7 @@ define([
             this._productColl = new ProductColl({
                 url: config.serverAddress + 'shop_api/products/'
             });
+
             this._productListView = new ProductListView({
                 $el: this.$el.find( '.shop-page-product-list ul' ),
                 coll: this._productColl

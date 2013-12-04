@@ -1,9 +1,10 @@
 define([
 
     'zepto',
+    'underscore',
     'async'
 
-], function( $ , async ) {
+], function( $ , _ , async ) {
     'use strict';
 
     var $wrapper = $( '#wrapper' );
@@ -29,7 +30,7 @@ define([
     };//}}}
 
     // 需要注意的地方就是 page 变换 替换的是 box 部分的内容
-    var loadPage = function( $el ) {
+    var loadPage = function( $el , loadOkCb ) {
     //{{{
         async.series([
             function( cb ) {
@@ -41,6 +42,10 @@ define([
             },
             function( cb ) {
                 fadeInPage( cb );
+
+                if( _.isFunction( loadOkCb ) ) {
+                    loadOkCb();
+                }
             }
         ], function( err , res ) {
             //@TODO

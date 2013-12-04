@@ -73,11 +73,17 @@ define([
         console.log( '%c ' + text , 'color:' + color );
     }//}}}
 
+    //显示系统默认样式的提示信息
+    var showNotice = function( msg ) {
+        
+    };
+
     var common = {
         log: log,
         getSessionId: getSessionId,
         getObjectUserInfo: getObjectUserInfo,
-        uploadFile: uploadFile
+        uploadFile: uploadFile,
+        showNotice: showNotice
     }
 
     return common;

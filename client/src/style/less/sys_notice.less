@@ -1,0 +1,27 @@
+#sys-notice {
+    .sys-notice-vars {
+        @sys-notice-width: 256px;
+        @sys-notice-height: 48px;
+    };
+    .sys-notice-vars;
+
+    width: @sys-notice-width;
+    min-height: @sys-notice-height;
+    line-height: @sys-notice-height;
+
+    position: fixed;
+    left: 50%;
+    bottom: 55%;
+    z-index: 1001;
+    margin-left: -(@sys-notice-width / 2);
+
+    display: inline-block;
+    background: rgba(0,0,0,0.6);
+    border: 1px solid rgba(0,0,0,0.9);
+    border-radius: 4px;
+    text-align: center;
+    color: #fff;
+    font-weight: 100;
+
+    display: none;
+}

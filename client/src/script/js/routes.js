@@ -1,35 +1,38 @@
 define([
     'underscore',
     'backbone',
+    'async',
 
     'utilities/auth',
     'utilities/common',
 
+    'v/page/home',
     'v/page/seller_signup',
     'v/page/seller_login',
     'v/page/shop',
+    'v/page/product_detail',
+    'v/page/search_result',
 
     'v/hot_shop_list',
-    'v/hot_product_list',
-    'v/page/product_detail',
-    'v/page/search_result'
+    'v/hot_product_list'
 
 ] , function(
     _,
     Backbone,
+    async,
 
     auth,
     common,
 
-    //pages
+    HomePageView,
     SellerSignupView,
     SellerLoginView,
     ShopPageView,
+    ProductDetailPageView,
+    SearchResultPageView,
 
     HotShopListView,
-    HotProductListView,
-    ProductDetailPageView,
-    SearchResultPageView
+    HotProductListView
 ) {
     'use strict';
 
@@ -65,10 +68,17 @@ define([
 
         _showMainPage: function() {
         //{{{
-            common.log( 'now in main page' );
+            async.series([
+                function( cb ){
+                    new HomePageView({ cb: cb });
+                },
+                function( cb ){ 
+                    new HotShopListView();
+                    new HotProductListView();
 
-            var hotShopListView = new HotShopListView();
-            var hotProductListView = new HotProductListView();
+                    cb();
+                }
+            ]);
         },//}}}
 
         _showSellerSignupPage: function() {

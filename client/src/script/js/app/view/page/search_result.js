@@ -72,13 +72,13 @@ define([
                 getUrl: 'home_api/search_result_page/',
                 currentPage: this._currentPage,
                 options: {
-                    search_string: this._q
+                    q: this._q
                 }
             });
 
             //获取第一页信息 如果存在的话
             this._productListView.getListByPage( this._currentPage , {
-                search_string: this._q
+                q: this._q
             });
 
         },

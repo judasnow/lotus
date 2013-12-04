@@ -60,6 +60,7 @@ define([
             }, 'json' );
         },//}}}
 
+        //@XXX 严重依赖 url 数据个数 第 3 个必须为页数
         _changeCurrentPage: function( e ) {
         //{{{
             var pageNo = $( e.currentTarget ).attr( 'data-attr' );
