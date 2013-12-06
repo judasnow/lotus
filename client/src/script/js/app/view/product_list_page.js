@@ -32,7 +32,8 @@ define([
         // getUrl::string,
         // fetchOptions::string,
         // $el::array,
-        // currentPage::number
+        // currentPage::number,
+        // pageNoIndex::number
         //}) => void
         initialize: function( args ) {
         //{{{
@@ -41,6 +42,12 @@ define([
             this._fetchOptions = args.options;
             this.$el = args.$el;
             this._currentPage = parseInt( args.currentPage );
+
+            if( _.isNumber( args.pageNoIndex ) ) {
+                this._pageNoIndex = args.pageNoIndex;
+            } else {
+                 this._pageNoIndex = 2;
+            }
 
             this._MAX_PAGE_ITEM_COUNT = 11;
 
@@ -59,6 +66,7 @@ define([
         },//}}}
 
         _fetchPage: function() {
+        //{{{
             var that = this;
 
             $.get( config.serverAddress + this._getUrl , this._fetchOptions , function( data ) {
@@ -67,9 +75,8 @@ define([
 
                 that.render();
             }, 'json' );
-        },
+        },//}}}
 
-        //@XXX 严重依赖 url 数据个数 第 3 个必须为页数
         _changeCurrentPage: function( e ) {
         //{{{
             var pageNo = $( e.currentTarget ).attr( 'data-attr' );
@@ -79,10 +86,10 @@ define([
 
             this._currentPage = parseInt( pageNo );
 
-            if( hashArray[2] === "" ) {
+            if( hashArray[ this._pageNoIndex ] === "" ) {
                 window.location.hash = hash + '/' + pageNo;
             } else {
-                hashArray[2] = pageNo;
+                hashArray[ this._pageNoIndex ] = pageNo;
                 window.location.hash = hashArray.join( '/' );
             }
 

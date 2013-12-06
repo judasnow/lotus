@@ -1,37 +1,28 @@
 define([
 
-    "backbone",
+    'zepto',
+    'underscore',
+    'backbone',
 
-    "v/seller_login_dialog"
+    'utilities/auth'
 
 ] , function(
 
+    $,
+    _,
     Backbone,
 
     SellerLoginDialogView
-
 ) {
-    "use strict";
+    'use strict';
 
     var FooterView = Backbone.View.extend({
 
-        el: "#footer .box",
-
-        events: {
-            "click .seller_login": "showSellerLoginDialog"
-        },
+        el: '#footer .box',
 
         initialize: function() {
             
-        },
-
-        showSellerLoginDialog: function() {
-            if( typeof this._sellerLoginDialogView === "undefined" ) {
-                this._sellerLoginDialogView = new SellerLoginDialogView();
-            } else {
-                this._sellerLoginDialogView.showDialog();
-            }
-        },
+        }
 
     });
 

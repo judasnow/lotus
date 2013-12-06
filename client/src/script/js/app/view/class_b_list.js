@@ -71,7 +71,7 @@ define([
 
             //@TODO url encode
             window.routes.navigate(
-                encodeURI( '/product_list_by_class/' + this._classAContent + '/' + classBContent ),
+                '/product_list_by_class/' + this._classAId + '/' + classBId,
                 {
                     trigger: true
                 }

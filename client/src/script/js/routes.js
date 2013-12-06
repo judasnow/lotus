@@ -48,7 +48,7 @@ define([
 
             'search_result(/:q/:p)(/)': '_showSearchResult',
 
-            'product_list_by_class/:classA/:classB(/)': '_showProductListByClass',
+            'product_list_by_class/:classA/:classB(/:p)(/)': '_showProductListByClass',
             'page_not_found': '_showNotFoundPage',
 
             //default page
@@ -107,11 +107,12 @@ define([
             new ProductDetailPageView({ product_id: productId });
         },//}}}
 
-        _showProductListByClass: function( classA , classB ) {
+        _showProductListByClass: function( classA , classB , currentPage ) {
         //{{{
             new ProductListByClassView({
                 class_a: classA,
-                class_b: classB
+                class_b: classB,
+                current_pagep: currentPage
             });
         },//}}}
 

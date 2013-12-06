@@ -9,6 +9,9 @@ define([
     'c/product',
     'v/product_list_page',
 
+    'utilities/page',
+    'config',
+
     'text!tpl/page/product_list_by_class.mustache'
 
 ] , function(
@@ -21,6 +24,9 @@ define([
     ProductColl,
     ProductListPageView,
 
+    page,
+    config,
+
     productListByClassPageTpl
 
 ) {
@@ -28,6 +34,10 @@ define([
 
     var ProductListByClass = Backbone.View.extend({
 
+        id: 'product-list-by-class-page',
+        className: 'box',
+
+        template: productListByClassPageTpl,
         //@TODO 應該在 url 中提供 class 的名字 而在
         //ajax 請求之中使用相應的 class id 
         //
@@ -47,11 +57,12 @@ define([
 
             _.bindAll( this , 'render' , '_renderProductList' );
 
+            this.render();
         },
 
         _renderProductList: function() {
-             this._productColl = new ProductColl({
-                url: config.serverAddress + 'shop_api/products/'
+            this._productColl = new ProductColl({
+                url: config.serverAddress + 'home_api/category_products/'
             });
 
             this._productListView = new ProductListView({
@@ -62,21 +73,27 @@ define([
             //获取并显示分页信息
             this._pageView = new ProductListPageView({
                 $el: this.$el.find( '.product-list-pager-list' ),
-                getUrl: 'shop_api/product_page_count/',
+                getUrl: 'home_api/category_products_page/',
                 currentPage: this._currentPage,
+                pageNoIndex: 3,
                 options: {
-                    shop_id: this._model.get( 'shop_id' )
+                    class_a: this._classA,
+                    class_b: this._classB
                 }
             });
 
             //获取第一页信息 如果存在的话
             this._productListView.getListByPage( 1 , {
-                shop_id: this._model.get( 'shop_id' )
+                class_a: this._classA,
+                class_b: this._classB
             });
         },
 
         render: function() {
-            
+            this.$el.html( Mustache.to_html( this.template ) );
+            page.loadPage( this.$el );
+
+            this._renderProductList();
         }
     });
 

@@ -120,8 +120,6 @@ define([
             page.loadPage( this.$el );
 
             this._renderProductList();
-
-            return this;
         }//}}}
     });
 
