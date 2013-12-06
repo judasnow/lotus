@@ -45,7 +45,34 @@ define([
                 this._currentPage = args.current_page;
             }
 
-            
+            _.bindAll( this , 'render' , '_renderProductList' );
+
+        },
+
+        _renderProductList: function() {
+             this._productColl = new ProductColl({
+                url: config.serverAddress + 'shop_api/products/'
+            });
+
+            this._productListView = new ProductListView({
+                $el: this.$el.find( '.shop-page-product-list ul' ),
+                coll: this._productColl
+            });
+
+            //获取并显示分页信息
+            this._pageView = new ProductListPageView({
+                $el: this.$el.find( '.product-list-pager-list' ),
+                getUrl: 'shop_api/product_page_count/',
+                currentPage: this._currentPage,
+                options: {
+                    shop_id: this._model.get( 'shop_id' )
+                }
+            });
+
+            //获取第一页信息 如果存在的话
+            this._productListView.getListByPage( 1 , {
+                shop_id: this._model.get( 'shop_id' )
+            });
         },
 
         render: function() {
