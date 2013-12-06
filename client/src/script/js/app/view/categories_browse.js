@@ -26,7 +26,7 @@ define([
         },
 
         render: function() {
-            $( '#wrapper > .box' ).append( this.$el );
+            $( '#categories-browse-box' ).append( this.$el );
         }
     });
 

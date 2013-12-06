@@ -37,28 +37,37 @@ define([
         initialize: function( args ) {
         //{{{
             //@TODO param valid
-            var getUrl = args.getUrl;
-            var fetchOptions = args.options;
+            this._getUrl = args.getUrl;
+            this._fetchOptions = args.options;
             this.$el = args.$el;
             this._currentPage = parseInt( args.currentPage );
 
             this._MAX_PAGE_ITEM_COUNT = 11;
-
-            var that = this;
 
             _.bindAll(
                 this ,
 
                 '_buildPageObj',
                 '_changeCurrentPage',
+                '_fetchPage',
                 'render'
             );
 
-            $.get( config.serverAddress + getUrl , fetchOptions , function( data ) {
+            //目的在于仅仅只是在初始化的时候 获取一次 page
+            //并在成功获取信息之后渲染出页面信息
+            this._fetchPage();
+        },//}}}
+
+        _fetchPage: function() {
+            var that = this;
+
+            $.get( config.serverAddress + this._getUrl , this._fetchOptions , function( data ) {
+                //如果 page === 0 已经没有继续下去的必要了
                 that._page = data[0];
+
                 that.render();
             }, 'json' );
-        },//}}}
+        },
 
         //@XXX 严重依赖 url 数据个数 第 3 个必须为页数
         _changeCurrentPage: function( e ) {
@@ -84,7 +93,8 @@ define([
         //{{{
             var page = this._page;
             if( page <= 0 ) {
-                throw new Error( 'page no error' );
+                //不应该为一个异常
+                return;
             }
 
             var i = 1;

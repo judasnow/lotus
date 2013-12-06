@@ -37,10 +37,10 @@ define([
         className: 'box',
         template: searchResultPageTpl,
 
-        // ({
-        //  q::string,
-        //  current_page::number
-        // })
+        //({
+        // q::string
+        // current_page::number
+        //})
         //@XXX 注意注入问题
         initialize: function( args ) {
             this._q = '';

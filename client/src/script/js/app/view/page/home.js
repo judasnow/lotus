@@ -4,8 +4,11 @@ define([
     'underscore',
     'backbone',
     'mustache',
+    'async',
 
     'v/search',
+    'v/hot_shop_list',
+    'v/hot_product_list',
 
     'utilities/page',
     'text!tpl/page/home.mustache'
@@ -16,8 +19,11 @@ define([
     _ ,
     Backbone,
     Mustache,
+    async,
 
     SearchView,
+    HotShopListView,
+    HotProductListView,
 
     page,
 
@@ -32,16 +38,25 @@ define([
         template: homePageTpl,
 
         initialize: function( args ) {
-            this._cb = args.cb;
-
             this.render();
         },
 
         render: function() {
+            var that = this;
             this.$el.html( Mustache.to_html( this.template ) );
-            page.loadPage( this.$el , this._cb );
 
-            new SearchView({ $el: this.$el.find( '#search_box' ) });
+            async.series([
+                function( cb ) {
+                    page.loadPage( that.$el , cb );
+                },
+                function( cb ) {
+                    new SearchView({ $el: that.$el.find( '#search_box' ) });
+                    new HotShopListView();
+                    new HotProductListView();
+
+                    cb();
+                }
+            ]);
         }
     });
 

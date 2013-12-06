@@ -59,11 +59,12 @@ define([
         //在 bubbling 阶段捕获该事件 获取当前元素
         _show_class_b: function( e ) {
         //{{{
-            var $target = $( e.currentTarget );
-            $target.find( '.icon' ).show();
-            var class_a_id = $target.attr( 'data-id' );
+            var $row = $( e.currentTarget );
+            $row.find( '.icon' ).show();
+            var classAId = $row.attr( 'data-id' );
+            var classAContent = $row.find( '.text' ).text();
 
-            this._classBListView = new ClassBListView( this._$categoriesBrowse , class_a_id );
+            this._classBListView = new ClassBListView( this._$categoriesBrowse , classAId , classAContent );
         },//}}}
 
         _mouseleave_row: function( e ) {

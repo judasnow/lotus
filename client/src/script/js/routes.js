@@ -12,9 +12,8 @@ define([
     'v/page/shop',
     'v/page/product_detail',
     'v/page/search_result',
-
-    'v/hot_shop_list',
-    'v/hot_product_list'
+    'v/page/product_list_by_class',
+    'v/page/not_found'
 
 ] , function(
     _,
@@ -30,9 +29,8 @@ define([
     ShopPageView,
     ProductDetailPageView,
     SearchResultPageView,
-
-    HotShopListView,
-    HotProductListView
+    ProductListByClassView,
+    NotFoundPageView
 ) {
     'use strict';
 
@@ -48,7 +46,13 @@ define([
 
             'shop/:shopId(/:currentPage)': '_showShop',
 
-            'search_result(/:q/:p)': '_showSearchResult'
+            'search_result(/:q/:p)(/)': '_showSearchResult',
+
+            'product_list_by_class/:classA/:classB(/)': '_showProductListByClass',
+            'page_not_found': '_showNotFoundPage',
+
+            //default page
+            '*path': '_showNotFoundPage'
         },
 
         initialize: function() {
@@ -68,17 +72,7 @@ define([
 
         _showMainPage: function() {
         //{{{
-            async.series([
-                function( cb ){
-                    new HomePageView({ cb: cb });
-                },
-                function( cb ){ 
-                    new HotShopListView();
-                    new HotProductListView();
-
-                    cb();
-                }
-            ]);
+            new HomePageView();
         },//}}}
 
         _showSellerSignupPage: function() {
@@ -111,8 +105,20 @@ define([
         _showProductDetailPage: function( productId ) {
         //{{{
             new ProductDetailPageView({ product_id: productId });
-        }//}}}
+        },//}}}
 
+        _showProductListByClass: function( classA , classB ) {
+        //{{{
+            new ProductListByClassView({
+                class_a: classA,
+                class_b: classB
+            });
+        },//}}}
+
+        _showNotFoundPage: function() {
+        //{{{
+            new NotFoundPageView();
+        }//}}}
     });
 
     return Routes;

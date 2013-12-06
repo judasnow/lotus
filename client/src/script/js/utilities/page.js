@@ -30,7 +30,7 @@ define([
     };//}}}
 
     // 需要注意的地方就是 page 变换 替换的是 box 部分的内容
-    var loadPage = function( $el , loadOkCb ) {
+    var loadPage = function( $el , success ) {
     //{{{
         async.series([
             function( cb ) {
@@ -43,8 +43,8 @@ define([
             function( cb ) {
                 fadeInPage( cb );
 
-                if( _.isFunction( loadOkCb ) ) {
-                    loadOkCb();
+                if( _.isFunction( success ) ) {
+                    success();
                 }
             }
         ], function( err , res ) {

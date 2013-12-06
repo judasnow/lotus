@@ -72,7 +72,14 @@ define([
             this._coll.fetch({
                 data: fetchOptions,
                 success: function( coll ) {
-                    coll.trigger( 'fetch_ok' );
+                    if( coll.length > 0 ) {
+                        coll.trigger( 'fetch_ok' );
+                    } else {
+                        window.sysNotice.setMsg( '没有商品了' );
+                    }
+                },
+                error: function( coll , rep ) {
+                    console.dir( rep );
                 }
             });
         },//}}}

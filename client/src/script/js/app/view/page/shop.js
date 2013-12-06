@@ -2,6 +2,7 @@ define([
     'zepto',
     'backbone',
     'mustache',
+    'q',
 
     'm/shop',
     'v/product_list',
@@ -18,6 +19,7 @@ define([
     $,
     Backbone,
     Mustache,
+    Q,
 
     Shop,
     ProductListView,
@@ -55,6 +57,7 @@ define([
                 this._currentPage = parseInt( args.current_page );
             }
 
+            var that = this;
             var shopId = args.shop_id;
 
             _.bindAll(
@@ -67,10 +70,18 @@ define([
             this._model = new Shop({
                 shop_id: shopId
             });
-            this.listenTo( this._model , 'change' , this.render );
             this._model.fetch({
                 data: {
                     shop_id: this._model.get( 'shop_id' )
+                },
+                //成功获取店铺信息之后才有继续下去的必要
+                //@TODO 使用 Q 改写之
+                success: function() {
+                    that.render();
+                },
+                //@TODO 没有相应商铺信息的时候 显示 404 页面
+                error: function( m ) {
+                    window.routes.navigate( '/page_not_found' , {trigger: true} );
                 }
             });
         },//}}}
