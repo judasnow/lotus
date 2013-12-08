@@ -1,5 +1,6 @@
 define([
     'zepto',
+    'underscore',
     'async',
 
     'm/user',
@@ -9,19 +10,26 @@ define([
 ] , function (
 
     $ ,
-    async,
+    _ ,
+    async ,
 
-    User,
+    User ,
 
     config
 ) {
     'use strict';
+
+    //( void ) => boolean
+    var isLogin = function() {
+        return ! ( common.getSessionId() === null );
+    };
 
     //独立出来是为了方便之后的处理
     //(void) => number | null
     var getSessionId = function() {
     //{{{
         var sessionId = window.sessionStorage.getItem( 'session_id' );
+
         return sessionId;
     };//}}}
 
@@ -37,6 +45,7 @@ define([
             },
             success: function() {
                 window.objectUser = objectUser;
+
                 success();
             }
         });
@@ -79,6 +88,7 @@ define([
     };
 
     var common = {
+        isLogin: isLogin,
         log: log,
         getSessionId: getSessionId,
         getObjectUserInfo: getObjectUserInfo,

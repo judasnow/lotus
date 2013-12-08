@@ -1,12 +1,13 @@
 define([
 
     'zepto',
+    'underscore',
     'config'
 
-] , function( $ , config ) {
+] , function( $, _, config ) {
     'use strict';
 
-    var doLogin = function( info , success , fail ) {
+    var doLogin = function( info, success, fail ) {
     //{{{
         if( arguments.length !== 3 ||
             typeof info.username === 'undefined' ||
@@ -40,12 +41,12 @@ define([
                     //login ok
                     //返回当前 session_id
                     var session_id = res.session_id;
-                    window.sessionStorage.setItem( 'session_id' , session_id );
+                    window.sessionStorage.setItem( 'session_id', session_id );
 
                     success();
                 },
 
-                error: function( xhr , type ) {
+                error: function( xhr, type ) {
                     //login fail
                     if( xhr.status !== 400 ) {
                         //登录失败期待的返回值是 400
@@ -67,6 +68,33 @@ define([
         if( typeof success === 'function' ) {
             success();
         }
+    };//}}}
+
+    //info::({
+    // username::string,
+    // password::string,
+    // regCode::string
+    //}),
+    //
+    //scuuess::function,
+    //
+    //fail::function
+    var doReg = function( info, success, fail ) {
+    //{{{
+        if( _.isEmpty( info.username ) ||
+                _.isEmpty( info.password ) ||
+                _.isEmpty( info.regCode ) ) 
+        {
+            throw new Error( 'param invalid' );
+        } else {
+            var xhr = $.post(
+                config.serverAddress + 'auth_api/do_register/',
+                info
+            );
+
+            console.dir( xhr )
+        }
+
     };//}}}
 
     var auth = {
