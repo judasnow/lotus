@@ -108,14 +108,14 @@ define([
 
     var doApply = function( info, success, fail ) {
     //{{{
-        if( _.isEmpty( info.shopkeeper_name ) ||
+        if ( _.isEmpty( info.shopkeeper_name ) ||
                 _.isEmpty( info.shopkeeper_tel ) ||
                 _.isEmpty( info.shop_address ) ||
                 _.isEmpty( info.shop_name ) )
         {
            throw new Error( 'param invalid' );
         } else {
-            var xhr = $.post(
+            var xhr = $.post (
                 config.serverAddress + 'apply_api/do_apply/',
                 info
             );
@@ -129,6 +129,24 @@ define([
             });
         }
     };//}}}
+
+    //info::{
+    //  keeper_tel::string
+    //}
+    var applyResultSearch = function( info, success, fail ) {
+        if ( _.isEmpty( info.keeper_tel ) ) {
+            throw new Error( 'param invalid' );
+        } else {
+            var xhr = $.get(
+                config.serverAddress + 'apply_api/apply_result_search', 
+                info
+            );
+
+            xhr.done( function( data ) {
+                
+            });
+        }
+    }
 
     var auth = {
         doReg: doReg,
