@@ -90,9 +90,21 @@ define([
                 }
 
                 auth.doReg({
-                    user_role: 'saler' 
-                    
-                });
+                    username: username,
+                    password: password,
+                    register_code: regCode,
+
+                    user_role: 'saler'
+                },
+                function( data ) {
+                    if( data === 'ok' ) {
+                        window.sysNotice.setMsg( '注册成功, 3 秒之后自动, 转到登录页面' );
+                        setTimeout( function() {
+                            window.router.navigate( '#seller_login' , {trigger: true} );
+                        }, 3000 );
+                    }
+                }
+                );
             }
         },
 

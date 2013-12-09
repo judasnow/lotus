@@ -22,7 +22,7 @@
             <td><?php echo $value['shopkeeper_tel']; ?></td>
             <td><?php echo $value['apply_time']; ?></td>
             <td><?php echo $value['verified_time']; ?></td>
-            <td><?php echo $value['decision']; ?></td>
+            <td class="applies-list-td-decision"><?php echo $value['decision']; ?></td>
             <td><?php echo $value['register_code']; ?></td>
             <td><?php echo $value['failed_message']; ?></td>
         </tr>
@@ -32,3 +32,19 @@
 </div>
 </div>
 
+<script>
+$( function() {
+    console.dir( $( '.applies-list-td-decision' ) )
+        $( '.applies-list-td-decision' ).forEach( function( item ) {
+            var $item = $( item );
+            var itemText = $item.text();
+
+            if( itemText === 'passed' ) {
+                $item.parent().addClass( 'applies-list-td-ok' );
+            }
+            if( itemText === 'failed' ) {
+                $item.parent().addClass( 'applies-list-td-fail' );
+            }
+    });
+});
+</script>

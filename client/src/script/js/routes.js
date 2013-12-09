@@ -9,6 +9,8 @@ define([
     'v/page/home',
     'v/page/seller_signup',
     'v/page/seller_login',
+    'v/page/shop_apply',
+
     'v/page/shop',
     'v/page/product_detail',
     'v/page/search_result',
@@ -26,6 +28,7 @@ define([
     HomePageView,
     SellerSignupView,
     SellerLoginView,
+    ShopApplyPageView,
     ShopPageView,
     ProductDetailPageView,
     SearchResultPageView,
@@ -42,6 +45,7 @@ define([
             'seller_signup': '_showSellerSignupPage',
             'seller_login': '_showSellerLoginPage',
             'seller_logout': '_sellerLogout',
+            'shop_apply': '_showShopApplyPage',
             'product_detail/:productId': '_showProductDetailPage',
 
             'shop/:shopId(/:currentPage)': '_showShop',
@@ -63,6 +67,7 @@ define([
                 '_showMainPage',
                 '_showSellerSignupPage',
                 '_showSellerLoginPage',
+                '_showShopApplyPage',
                 '_sellerLogout',
                 '_showProductDetailPage',
                 '_showShop',
@@ -83,6 +88,11 @@ define([
         _showSellerLoginPage: function() {
         //{{{
             new SellerLoginView();
+        },//}}}
+
+        _showShopApplyPage: function() {
+        //{{{
+            new ShopApplyPageView();
         },//}}}
 
         _sellerLogout: function() {

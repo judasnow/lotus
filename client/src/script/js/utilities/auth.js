@@ -83,7 +83,7 @@ define([
     //{{{
         if( _.isEmpty( info.username ) ||
                 _.isEmpty( info.password ) ||
-                _.isEmpty( info.regCode ) ) 
+                _.isEmpty( info.register_code ) )
         {
             throw new Error( 'param invalid' );
         } else {
@@ -92,12 +92,47 @@ define([
                 info
             );
 
-            console.dir( xhr )
-        }
+            xhr.done( function( data ) {
+                if( _.isFunction( success ) ) {
+                    success( data );
+                }
+            });
 
+            xhr.fail( function( xhr ) {
+                if( _.isFunction( fail ) ) {
+                    fail( xhr );
+                }
+            });
+        }
+    };//}}}
+
+    var doApply = function( info, success, fail ) {
+    //{{{
+        if( _.isEmpty( info.shopkeeper_name ) ||
+                _.isEmpty( info.shopkeeper_tel ) ||
+                _.isEmpty( info.shop_address ) ||
+                _.isEmpty( info.shop_name ) )
+        {
+           throw new Error( 'param invalid' );
+        } else {
+            var xhr = $.post(
+                config.serverAddress + 'apply_api/do_apply/',
+                info
+            );
+
+            xhr.done( function( data ) {
+                window.sysNotice.setMsg( '申请提交成功,请耐心等待审核' );
+            });
+
+            xhr.fail( function( xhr ) {
+                window.sysNotice.setMsg( '申请提交失败,请稍后再试一次' );
+            });
+        }
     };//}}}
 
     var auth = {
+        doReg: doReg,
+        doApply: doApply,
         doLogin: doLogin,
         doLogout: doLogout
     };

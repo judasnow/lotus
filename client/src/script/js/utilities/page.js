@@ -9,7 +9,7 @@ define([
 
     var $wrapper = $( '#wrapper' );
 
-    var fadeOutPage = function( cb ) {
+    var _fadeOutPage = function( cb ) {
     //{{{
         $wrapper.animate({
             opacity: 0
@@ -19,7 +19,7 @@ define([
         });
     };//}}}
 
-    var fadeInPage = function( cb ) {
+    var _fadeInPage = function( cb ) {
     //{{{
         $wrapper.animate({
             opacity: 100
@@ -34,14 +34,14 @@ define([
     //{{{
         async.series([
             function( cb ) {
-                fadeOutPage( cb );
+                _fadeOutPage( cb );
             },
             function( cb ) {
                 $wrapper.html( $el );
                 cb();
             },
             function( cb ) {
-                fadeInPage( cb );
+                _fadeInPage( cb );
 
                 if( _.isFunction( success ) ) {
                     success();
@@ -52,9 +52,43 @@ define([
         });
     };//}}}
 
+    //获取 page 中的指定元素引用
+    //{ "elName::string" : "selector::string" } => { elName: $( selector ) }
+    var getEls = function( selectors ) {
+    //{{{
+        var that = this;
+
+        if ( ! _.isObject( selectors ) ) {
+            throw new Error( 'invalid param' );
+        } else {
+            return _.reduce( selectors, function( els, selector, elName ) {
+                els[ elName ] = that.$el.find( selector );
+                return els;
+            }, {});
+        }
+    };//}}}
+
+    //{ valName::string, $input::$() } => { name: string }
+    var getInputsVal = function( $inputs ) {
+    //{{{
+        var that = this;
+
+        if( ! _.isObject( $inputs ) ) {
+            throw new Error( 'invalid param' );
+        } else {
+            return _.reduct( $inputs, function( vals, $input, valName ) { 
+                vals[ valName ] = $input.val();
+                return vals;
+            }, {});
+        }
+    };//}}}
+
     var page = {
+        getEls: getEls,
+        getInputsVal: getInputsVal,
         loadPage: loadPage
     };
 
     return page;
 });
+
