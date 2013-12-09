@@ -10,6 +10,7 @@ class Apply_api extends REST_Controller {
     
     public function __construct() {
         parent::__construct();
+        $this->load->model('apply_model', 'apply_m');
     }
 
     /**
@@ -28,6 +29,13 @@ class Apply_api extends REST_Controller {
             'shop_name'       => $this->input->post('shop_name', TRUE),
             'shop_address'    => $this->input->post('shop_address', TRUE),
         );
+        
+        $res = $this->apply_m->base_query(array('shopkeeper_tel' => $apply_info['shopkeeper_tel']), 'id');
+        $res_array = $res->result_array();
+        if (count($res_array) > 0) {
+            $this->response('该联系电话已经被注册' ,400);
+        }
+
         $this->load->library('apply_lib');
         if($this->apply_lib->do_apply($apply_info)) {
             $this->response("ok", 200);
@@ -52,6 +60,38 @@ class Apply_api extends REST_Controller {
             );
             */
         }
+    }
+
+    public function apply_result_search_get() {
+        $shopkeeper_tel = $this->input->get('shopkeeper_tel');
+
+        if (empty($shopkeeper_tel)) {
+            $this->response('TEL is illegal', 400);
+        }
+        
+        $result_object = $this->apply_m->base_query(array('shopkeeper_tel' => $shopkeeper_tel), 'status, decision, register_code, code_available, failed_message');
+        $result_array = $result_object->result_array();
+        if (count($result_array) > 0) {
+            //查找到该号码已经被注册，正式版时如果返回多条信息，则抛出异常
+            $info = $result_array[0];
+            if ($info['status'] == 'verifing') {
+                $this->response('店铺申请正在被审核', 200);
+            } elseif ($info['status'] == 'verified' && $info['decision'] == 'passed') {
+                $this->response('店铺申请已经通过，注册码已经发送至您的手机', 200);
+            } elseif ($info['status'] == 'verified' && $info['decision'] == 'failed') {
+                $this->response('店铺申请提交失败：' . $info['failed_message'], 200);
+            } elseif ($info['status'] == 'verified' && $info['decision'] == 'passed' && $info['code_available'] == 'n') {
+                $this->response('店铺申请成功，注册码已经被使用', 200);
+            } else {
+                //抛出异常
+                $this->response('数据错误，请联系管理员', 200);
+            }
+        } else {
+            $this->response('联系电话未被注册', 200);
+        }
+
+        echo '<pre>';
+        var_dump($info);die;
     }
 
     /**
