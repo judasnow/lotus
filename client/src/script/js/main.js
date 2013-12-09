@@ -38,8 +38,7 @@ require.config({
 });
 
 //main
-require(
-[
+require([
     'zepto',
     'underscore',
 
@@ -52,8 +51,7 @@ require(
     'utilities/common',
 
     'global_events'
-],
-function(
+], function (
     $,
     _,
 

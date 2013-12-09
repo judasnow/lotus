@@ -13,21 +13,27 @@ Y88888P  `Y88P'     YP    ~Y8888P' `8888Y'
 
 <!-- @if ENV='dev' -->
 <link rel="stylesheet" href="/src/style/third_party/fontawesome/css/font-awesome.css" />
-<!--script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script-->
+<!--[if IE]>
+<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]--> 
 <link rel="stylesheet/less" type="text/css" href="/src/style/less/main.less" />
 <script src="/src/script/third_party/less.js"></script>
 <!-- @endif -->
 
-<title> Lotus dev </title>
+<!-- @if ENV='prod' -->
+<link rel="stylesheet" href="/build/style/css/all.min.css" />
+<!-- @endif -->
+
+<title> 贸易街 Beta <!-- @if ENV='dev' --> DEV <!-- @endif --> </title>
 </head>
 
 <body>
 
     <div id="header">
         <div class="logo_box">
-            <span class="logo">
-                lotus
-            </span>
+            <a href="/" class="logo">
+                贸易街
+            </a>
         </div>
 
         <div id="nav" class="box">
@@ -61,6 +67,10 @@ Y88888P  `Y88P'     YP    ~Y8888P' `8888Y'
 
 <!-- @if ENV='dev' -->
 <script data-main="/src/script/js/main" src="/src/script/third_party/require.js"></script>
+<!-- @endif -->
+
+<!-- @if ENV='prod' -->
+<script data-main="/build/script/js/main-build.min" src="/build/script/third_party/require.min.js"></script>
 <!-- @endif -->
 
 </html>

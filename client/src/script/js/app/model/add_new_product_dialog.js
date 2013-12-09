@@ -1,12 +1,8 @@
-define(
-    "zepto",
-    "backbone"
-] , function( $ , Backbone ) {
-    "use strict";
-
-    var AddNewProductDialog = Backbone.View.extend({
-        
-    });
-
+define([
+    'zepto',
+    'underscore',
+    'backbone',
+] , function( $ , _ , Backbone ) {
+    'use strict';
 });
 

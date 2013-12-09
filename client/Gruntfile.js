@@ -1,6 +1,6 @@
 module.exports = function( grunt ) {
     grunt.initConfig({
-        pkg: grunt.file.readJSON( "package.json" ) ,
+        pkg: grunt.file.readJSON( 'package.json' ) ,
 
         meta: {
         //{{{
@@ -10,55 +10,52 @@ module.exports = function( grunt ) {
         env : {
         //{{{
             dev : {
-                ENV : "dev"
+                ENV : 'dev'
             } ,
             prod : {
-                ENV : "prod"
+                ENV : 'prod'
             }
         },//}}}
 
         preprocess : {
         //{{{
             dev : {
-                src : "./src/preprocess_tpl/index.html",
-                dest : "./index.html"
+                src : './src/preprocess_tpl/index.html',
+                dest : './index.html'
             } ,
             prod : {
-                src : "./src/preprocess_tpl/index.html",
-                dest : "./index.html",
+                src : './src/preprocess_tpl/index.html',
+                dest : './index.raw.html',
             }
         },//}}}
 
         clean: {
         //{{{
-            build: [ "./build/script/*.js" , "./build/script/lib/*.js" , "./build/style/css/*.css" , "petal!.mf" , "petal.mf" ]
+            build: [ './build/*', './build/*.*' , './index.raw.html' ],
+            raw_html: [ './index.raw.html' ]
         },//}}}
 
         uglify: {
         //{{{
-
             options: {
-                //banner: '/*! <%= pkg.name %> <%= grunt.template.today( "yyyy-mm-dd" ) %> */\n'
+                comments: false
             },
             main: {
                 files: [{
                     expand: true,
-                    cwd: "./src/script/",
-                    src: ["*.js", "mvc/*.js" , "lib/*.js", "third_part/cubiq-add-to-homescreen/src/add2home.js" ],
-                    dest: "./build/script/",
-                    ext: ".js"
+                    cwd: './src/script/',
+                    src: '**/*.js',
+                    dest: './build/script/',
+                    ext: '.min.js'
+                }]
+            },
+            main_build: {
+                files: [{
+                    src: './build/script/js/main-build.js',
+                    dest: './build/script/js/main-build.min.js',
                 }]
             }
         } ,//}}}
-
-        cssmin: {
-        //{{{
-            combine: {
-                files: {
-                    "./build/style/css/main.css": ["./src/style/css/icons.css","./src/style/css/jq.ui.css","./src/style/css/main.css","./src/script/third_part/cubiq-add-to-homescreen/style/add2home.css","./src/style/css/font-awesome.css" ]
-                }
-            }
-        },//}}}
 
         less: {
         //{{{
@@ -66,72 +63,49 @@ module.exports = function( grunt ) {
                 compress: false
             } ,
             main: {
-                src: "./src/style/less/main.less" ,
-                dest: "./src/style/css/main.css"
+                src: './src/style/less/main.less' ,
+                dest: './src/style/css/main.css'
             }
         },//}}}
 
-        concat: {
+        cssmin: {
         //{{{
-        //
-            js: {
-                src: [
-                    "./build/script/lib/appframework.js" ,
-                    "./build/script/lib/jqmobiui.js" ,
-                    "./build/script/init.js" ,
-                    "./build/script/third_part/cubiq-add-to-homescreen/src/add2home.js"
-                ] ,
-                dest: "./build/script/all.js"
-            } ,
-            css: {
-                
+            combine: {
+                files: {
+                    './build/style/css/all.min.css': 
+                    [
+                        './src/style/css/main.css',
+                        './src/style/third_party/fontawesome/css/font-awesome.css'
+                    ]
+                }
+            }
+        },//}}}
+
+        copy: {
+        //{{{
+            font: {
+                files: [{
+                    expand: true,
+                    cwd: './src/style/third_party/fontawesome/fonts/',
+                    src: ['*.*'],
+                    dest: './build/style/fonts/'
+                }]
             }
         },//}}}
 
         requirejs: {
         //{{{
-            app: {
+            compile: {
                 options: {
-                    baseUrl: "./src/script/",
-                    paths: {
-                        app: "app" ,
-
-                        //requirejs plugins
-                        text: "lib/text" ,
-
-                        //libs
-                        underscore: "lib/underscore" ,
-                        backbone: "lib/backbone" ,
-                        mustache: "lib/mustache" ,
-                        date_utils: "lib/date-utils" ,
-
-                        router: "router" ,
-
-                        tpl: "mvc/tpl" ,
-                        v: "mvc/v" ,
-                        m: "mvc/m" ,
-                        c: "mvc/c"
+                    optimize: "uglify",
+                    uglify: {
+                        comments: false
                     },
-                    shim: {
-                        backbone: {
-                            deps: [ "underscore" ],
-                            exports: "Backbone",
-                            init: function() {
-                                Backbone.$ = window.$;
-                            }
-                        },
-                        underscore: {
-                            exports: "_"
-                        },
-                        mustache: {
-                            exports: "Mustache"
-                        },
-                        date_utils: {
-                            exports: "date_utils"
-                        }
-                    },
-                    name: "main",
-                    out: "./build/script/rquirejs_main_build.js"
+                    baseUrl: './src/script/',
+                    mainConfigFile: './src/script/js/main.js',
+                    name: 'js/main',
+                    optimize: "uglify",
+                    out: './build/script/js/main-build.js'
                 }
             }
         },//}}}
@@ -140,35 +114,36 @@ module.exports = function( grunt ) {
         //{{{
             dist: {
                 options: {
-                    removeComments: true ,
+                    removeComments: false ,
                     collapseWhitespace: true
-                } ,
+                },
                 files: {
-                    "./build/html/index.html": "index.html"
+                    './index.html': './index.raw.html'
                 }
             }
         },//}}}
     });
 
-    grunt.loadNpmTasks( "grunt-env" );
-    grunt.loadNpmTasks( "grunt-preprocess" );
-    grunt.loadNpmTasks( "grunt-contrib-less" );
-    grunt.loadNpmTasks( "grunt-contrib-uglify" );
-    grunt.loadNpmTasks( "grunt-contrib-concat" );
-    grunt.loadNpmTasks( "grunt-contrib-clean" );
-    grunt.loadNpmTasks( "grunt-contrib-requirejs" );
-    grunt.loadNpmTasks( "grunt-contrib-cssmin" );
-    grunt.loadNpmTasks( "grunt-contrib-htmlmin" );
-    grunt.loadNpmTasks( "grunt-contrib-watch" );
+    grunt.loadNpmTasks( 'grunt-env' );
+    grunt.loadNpmTasks( 'grunt-preprocess' );
+    grunt.loadNpmTasks( 'grunt-contrib-less' );
+    grunt.loadNpmTasks( 'grunt-contrib-uglify' );
+    grunt.loadNpmTasks( 'grunt-contrib-copy' );
+    grunt.loadNpmTasks( 'grunt-contrib-concat' );
+    grunt.loadNpmTasks( 'grunt-contrib-clean' );
+    grunt.loadNpmTasks( 'grunt-contrib-requirejs' );
+    grunt.loadNpmTasks( 'grunt-contrib-cssmin' );
+    grunt.loadNpmTasks( 'grunt-contrib-htmlmin' );
+    grunt.loadNpmTasks( 'grunt-contrib-watch' );
 
-    grunt.registerTask( 
-        "dev" ,
-        ["env:dev" , "clean" , "preprocess:dev" ]
+    grunt.registerTask(
+        'dev',
+        ['env:dev', 'clean', 'preprocess:dev']
     );
 
     grunt.registerTask( 
-        "prod" ,
-        [ "env:prod" , "clean" , "preprocess:prod" ]
+        'prod',
+        ['env:prod', 'clean', 'preprocess:prod', 'less', 'cssmin', 'copy', 'uglify:main', 'requirejs', 'uglify:main_build', 'htmlmin', 'clean:raw_html' ]
     );
 };
 
