@@ -145,6 +145,10 @@ define([
             xhr.done( function( data ) {
                 
             });
+
+            xhr.fail( function( xhr ) {
+                
+            })
         }
     }
 
