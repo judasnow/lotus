@@ -3,7 +3,7 @@ define([
 ] , function() {
     'use strict';
 
-    var serverAddress = 'http://172.17.0.204:82/api/';
+    var serverAddress = 'http://maoejie.com/api/';
 
     return {
         'serverAddress': serverAddress
