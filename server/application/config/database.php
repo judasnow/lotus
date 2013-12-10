@@ -82,7 +82,7 @@ $db['odirus']['stricton'] = FALSE;
 
 $hostname = gethostname();
 
-if( PHP_OS == 'Darwin' || $ahostname == 'x200' )
+if( PHP_OS == 'Darwin' || $hostname == 'x200' )
     $db['odirus']['hostname'] = '172.17.0.202';
 
 if( $hostname == 'maoejie' ) {
