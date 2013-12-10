@@ -50,7 +50,7 @@ class Admin_auth_lib {
      */
     public function admin_is_login () {
         $admin_id = $this->_CI->session->userdata('admin_id');
-        if (! empty( $admin_id ) {
+        if (! empty( $admin_id ) ) {
             return TRUE;
         } else {
             return FALSE;

@@ -80,8 +80,16 @@ $db['odirus']['swap_pre'] = '';
 $db['odirus']['autoinit'] = TRUE;
 $db['odirus']['stricton'] = FALSE;
 
-if( PHP_OS == 'Darwin' || gethostname() == 'x200' )
+$hostname = gethostname();
+
+if( PHP_OS == 'Darwin' || $ahostname == 'x200' )
     $db['odirus']['hostname'] = '172.17.0.202';
+
+if( $hostname == 'maoejie' ) {
+    $db['odirus']['hostname'] = '127.0.0.1';
+    $db['odirus']['username'] = 'root';
+    $db['odirus']['password'] = 'maoejie';
+}
 
 /* End of file database.php */
 /* Location: ./application/config/database.php */

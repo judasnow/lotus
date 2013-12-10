@@ -34,6 +34,7 @@ class Cache_lib {
      * @param product_id   商品在数据库中的索引ID
      */
     public function set_cache_product_info ($product_id) {
+        /*
         $this->_CI->load->library('product_lib');
         $product_info = $this->_CI->product_lib->product_info($product_id);
         if ($product_info['code'] == 200) {
@@ -62,13 +63,14 @@ class Cache_lib {
                 }
                 $pipe->expire('product' . substr($product_info['data']['product_id'], 10) . 'detail_image', $this->_CI->config->item('cache_time'));
             });
-            if ($reply[0] & $reply[1] & $reply[2]) {
+            if ($reply[0] && $reply[1] && $reply[2]) {
                 return array(
                     'res' => TRUE,
                     'data' => NULL
                 );
             }
         }
+        */
         return array(
             'res' => FALSE,
             'msg' => "Error: Product id $product_id has no content in mysql db or cache fail."

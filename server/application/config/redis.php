@@ -14,3 +14,7 @@ $config['cache_time'] = 300;
 
 //首页目录缓存时间
 $config['class_cache_time'] = 86400;
+
+if( gethostname() == 'maoejie' ) {
+    $config['host']   = '127.0.0.1';
+}
