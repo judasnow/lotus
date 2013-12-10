@@ -49,7 +49,8 @@ class Admin_auth_lib {
      * (void) => boolean
      */
     public function admin_is_login () {
-        if (!empty($this->_CI->session->userdata('admin_id'))) {
+        $admin_id = $this->_CI->session->userdata('admin_id');
+        if (! empty( $admin_id ) {
             return TRUE;
         } else {
             return FALSE;

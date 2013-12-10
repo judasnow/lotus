@@ -10,12 +10,12 @@ define([
     var doLogin = function( info, success, fail ) {
     //{{{
         if( arguments.length !== 3 ||
-            typeof info.username === 'undefined' ||
-            typeof info.password === 'undefined' ||
-            typeof success !== 'function' ||
-            typeof fail !== 'function'
+            _.isEmpty( info.username ) ||
+            _.isEmpty( info.password ) ||
+            ! _.isFunction( success ) ||
+            ! _.isFunction( fail )
         ) {
-            throw new Error( 'params invalid' + arguments );
+            throw new Error( 'invalid params' );
         } else {
             var username = info.username;
             var password = info.password;
@@ -134,7 +134,8 @@ define([
     //  keeper_tel::string
     //}
     var applyResultSearch = function( info, success, fail ) {
-        if ( _.isEmpty( info.keeper_tel ) ) {
+    //{{{
+        if ( _.isEmpty( info.shopkeeper_tel ) ) {
             throw new Error( 'param invalid' );
         } else {
             var xhr = $.get(
@@ -143,17 +144,20 @@ define([
             );
 
             xhr.done( function( data ) {
-                
+                if( _.isFunction( success ) ) {
+                    success( data );
+                }
             });
 
             xhr.fail( function( xhr ) {
-                
+                window.sysNotice.setMsg( '出错了,请稍后再试一次' );
             })
         }
-    }
+    };//}}}
 
     var auth = {
         doReg: doReg,
+        applyResultSearch: applyResultSearch,
         doApply: doApply,
         doLogin: doLogin,
         doLogout: doLogout

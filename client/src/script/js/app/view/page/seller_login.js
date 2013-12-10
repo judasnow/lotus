@@ -14,9 +14,9 @@ define ([
 
 ] , function (
 
-    $ ,
-    Backbone ,
-    Mustache ,
+    $,
+    Backbone,
+    Mustache,
 
     User,
 
@@ -30,7 +30,7 @@ define ([
 
     var SellerLoginView = Backbone.View.extend({
 
-        id: 'seller_login',
+        id: 'seller-login',
         className: 'box',
 
         template: sellerLoginPageTpl,
@@ -59,27 +59,31 @@ define ([
             this._password = this._$password.val();
         },//}}}
 
-        _checkInputValues: function() {
-        //{{{
-
-        },//}}}
-
         _getEls: function() {
         //{{{
             var _$el = this.$el;
 
             this._$username = _$el.find( 'input[name="username"]' );
             this._$password = _$el.find( 'input[name="password"]' );
+            this._$errorInfo = _$el.find( '.error_info' );
         },//}}}
 
         _doLogin: function() {
         //{{{
             window.e.trigger( 'show_loading' );
 
-            //this._checkInputValues();
-
             this._getUserInput();
             var that = this;
+
+            if( _.isEmpty( this._username ) ) {
+                window.sysNotice.setMsg( '用户名不能为空' );
+                return;
+            }
+
+            if( _.isEmpty( this._password ) ) {
+                window.sysNotice.setMsg( '密码不能为空' );
+                return;
+            }
 
             auth.doLogin({
 

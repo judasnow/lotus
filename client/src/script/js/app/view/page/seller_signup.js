@@ -68,6 +68,7 @@ define([
                 var password = this._$passwordInput.val();
                 var passwordCheck = this._$passwordCheckInput.val();
                 var regCode = this._$regCodeInput.val();
+                var that = this;
 
                 if( _.isEmpty( username ) ) {
                     this._$errorInfo.text( '用户名不能为空' );
@@ -103,8 +104,22 @@ define([
                             window.router.navigate( '#seller_login' , {trigger: true} );
                         }, 3000 );
                     }
-                }
-                );
+                },
+                function( xhr, errorType, error ) {
+                    var resText = xhr.responseText;
+                    var errorMsg = '注册时发生错误,请稍后再试一次';
+
+                    switch ( resText ) {
+                        case '"Username is not available"':
+                            errorMsg = '用户名不可用,请更换用户名后再试一次';
+                            break;
+                        case '"Register code is illegal"':
+                            errorMsg = '无效的邀请码';
+                            break;
+                    }
+
+                    that._$errorInfo.text( errorMsg );
+                });
             }
         },
 
