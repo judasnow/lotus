@@ -3,6 +3,7 @@
 *~
 \#*
 
-/server/vendor/*
-/client/build/*
+/server/vendor/**/*
+/server/composer.lock
+/client/build/**/*
 
