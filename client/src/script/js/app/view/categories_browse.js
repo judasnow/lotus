@@ -1,16 +1,17 @@
 define([
+
+    'zepto',
     'underscore',
     'backbone',
 
     'v/class_a_list'
 
-], function( _ , Backbone , ClassAListView ) {
+], function( $, _, Backbone, ClassAListView ) {
     'use strict';
 
-    var CategoriesBrowse = Backbone.View.extend({
+    var CategoriesBrowseView = Backbone.View.extend({
 
-        id: 'categories_browse',
-        tagName: 'div',
+        id: 'categories-browse',
 
         initialize: function() {
             _.bindAll( this , 'render' );
@@ -30,6 +31,6 @@ define([
         }
     });
 
-    return CategoriesBrowse;
+    return CategoriesBrowseView;
 });
 

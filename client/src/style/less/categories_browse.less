@@ -1,43 +1,50 @@
-#categories_browse {
-    display: none;
-    @categories_browse_width: 680px;
-    @categories_browse_padding: 8px;
-    @categories_browse_min_height: 445px;
-    @categories_list_width: 168px;
+// box and placehoder
+#categories-browse-box {
+//{{{
+    display: inline-block;
+    position: absolute;
+}//}}}
 
-    //width: @categories_browse_width;
-    min-height: @categories_browse_min_height;
+#categories-browse {
+//{{{
+    #header > .header-vars;
 
-    padding: @categories_browse_padding;
+    .categories-browse-vars {
+        @categories-browse-width: 400px;
+        @categories-browse-paddingg: 8px;
+        @categories-browse-min-height: 200px;
+        @categories-list-width: 168px;
+    };
+    .categories-browse-vars;
+
+    width: @categories-browse-width;
+    min-height: @categories-browse-min-height;
+
+    padding: @categories-browse-paddingg;
 
     position: fixed;
-    top: @header_height;
+    top: @header-height + 1;
 
-    background: rgba(255,255,255,0.9);
-    box-shadow: 1px 1px 32px rgba(0,0,0,0.4);
-    border: 1px solid #999;
+    background: rgba(250, 250, 250, 0.95);
+    border: 1px solid rgba(0, 0, 0, 0.4);
     border-top: 0;
 
-    border-bottom-left-radius: 6px;
-    border-bottom-right-radius: 6px;
+    border-bottom-left-radius: 2px;
+    border-bottom-right-radius: 2px;
+    z-index: 900;
 
-    z-index: 999;
-
-    .categories_list {
-
-        width: @categories_list_width;
-        min-height: @categories_browse_min_height;
+    .categories-list {
+        width: @categories-list-width;
+        min-height: @categories-browse-min-height;
 
         float: left;
-
-        padding-right: @categories_browse_padding;
-
-        color: #333;
+        padding-right: @categories-browse-paddingg;
 
         .row {
             @height: 1.618 * @font_size;
 
             height: @height;
+            line-height: @height;
 
             margin-bottom: 6px;
 
@@ -54,33 +61,38 @@
 
             .icon {
                 display: none;
-                color: #ddd;
                 line-height: @height;
                 float: right;
             }
 
             &:hover {
-                color: @link_color;
+                color: @link-color;
             }
         }
     }
 
-    .categories_detail {
-        @padding_left: 24px;
-        width: @categories_browse_width - @categories_list_width - @categories_browse_padding - 1 - @padding_left;
-        min-height: @categories_browse_min_height;
-        padding-left: @padding_left;
+    .categories-detail {
+        .categories-detail-vars {
+            @padding-left: 24px;
+        };
+        .categories-detail-vars;
+
+        width: @categories-browse-width - @categories-list-width - @categories-browse-paddingg - 1 - @padding-left;
+        min-height: @categories-browse-min-height;
+        padding-left: @padding-left;
 
         float: left;
-        border-left: 1px dashed @link_color3;
+        border-left: 1px solid #bbb;
 
-        .row {
+        .categories-detail-row {
             width: 100%;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
             cursor: pointer;
+            line-height: 24px;
+
             &:hover {
-                color: @link_color;
+                color: @link-color;
             }
         }
     }
-}
+}//}}}

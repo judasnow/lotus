@@ -395,6 +395,11 @@
   background: #fdd;
   text-decoration: underline;
 }
+.dialog_box .dialog .body .item .ok_info {
+  color: #08bd2d;
+  background: #dfd;
+  text-decoration: underline;
+}
 .dialog_box .dialog .body .item .hint {
   font-size: 12px;
   color: #ccc;
@@ -481,6 +486,11 @@
 #add_new_product_dialog .dialog .body .item .error_info {
   color: #bd082d;
   background: #fdd;
+  text-decoration: underline;
+}
+#add_new_product_dialog .dialog .body .item .ok_info {
+  color: #08bd2d;
+  background: #dfd;
   text-decoration: underline;
 }
 #add_new_product_dialog .dialog .body .item .hint {

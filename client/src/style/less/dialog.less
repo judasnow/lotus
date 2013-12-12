@@ -5,7 +5,7 @@
         @dialog_box_padding: 4px;
         @dialog_box_width: @_width - (@dialog_box_padding * 2) - 2;
         @dialog_box_height: @_height - (@dialog_box_padding * 2) - 2;
-        @dialog_box_border_radius: 0px;
+        @dialog_box_border_radius: 4px;
     }
     .dialog_box_var;
 
@@ -13,10 +13,11 @@
     min-height: @dialog_box_height;
 
     left: 50%;
-    top: 33%;
+    top: 25%;
     margin-left: -(@dialog_box_width / 2);
     margin-top: -(@dialog_box_height / 2);
     position: fixed;
+    z-index: 10001;
 
     border: 1px solid rgba(0,0,0,0.4);
     //padding: @dialog_box_padding;
@@ -33,17 +34,18 @@
 
         //border: 1px solid #888;
         background: #fbfbfb;
-        //border-radius: @dialog_box_border_radius;
+        border-radius: @dialog_box_border_radius;
 
         .header {
             height: @dialog_header_height;
             line-height: @dialog_header_height;
 
-            border-bottom: 1px solid #ddd;
+            border-bottom: 1px solid #d1d1d1;
             border-top-right-radius: @dialog_box_border_radius;
             border-top-left-radius: @dialog_box_border_radius;
 
             text-align: left;
+            background: #f1f1f1;
 
             padding: @dialog_padding;
 
@@ -52,12 +54,13 @@
                 float: right;
                 display: inline-block;
                 line-height: @dialog_header_height;
-                color: #333;
+                color: #000;
             }
 
             .title {
-                font-weight: bolder;
-                color: @link_color2;
+                font-weight: 100;
+                font-size: 16px;
+                color: @link-color3;
             }
 
             .sub_title {
@@ -91,6 +94,8 @@
 
                     &:focus {
                         border: 1px solid #999;
+                        background: #fefefe;
+                        color: @link-color;
                     }
                 }
 
@@ -109,15 +114,18 @@
                 }
 
                 .error_info {
-                    color: #bd082d;
-                    background: #fdd;
-                    text-decoration: underline;
+                    color: #e66;
+                    background: #fee;
                 }
 
                 .ok_info {
                     color: #08bd2d;
                     background: #dfd;
                     text-decoration: underline;
+                }
+
+                .common-text {
+                    color: #717171;
                 }
 
                 .hint {
@@ -132,10 +140,12 @@
             line-height: @dialog_footer_height;
             padding: 12px @dialog_padding;
 
-            border-top: 1px double #ddd;
+            border-top: 1px double #d1d1d1;
             border-bottom-right-radius: @dialog_box_border_radius;
             border-bottom-left-radius: @dialog_box_border_radius;
             text-align: right;
+
+            background: #f1f1f1;
 
             .text {
 
@@ -165,6 +175,7 @@
 }
 
 #add_new_product_dialog {
+//{{{
     display: none;
 
     @add-new-product-dialog-width: 666;
@@ -222,9 +233,9 @@
 
             i {
                 cursor: pointer;
-                color: @link_color;
+                color: @link-color;
                 font-size: @preview-img-remove-size;
             }
         }
     }
-}
+}//}}}

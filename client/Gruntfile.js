@@ -20,12 +20,16 @@ module.exports = function( grunt ) {
         preprocess : {
         //{{{
             dev : {
-                src : './src/preprocess_tpl/index.html',
-                dest : './index.html'
+                files: {
+                    './index.html': './src/preprocess_tpl/index.html',
+                    './src/script/js/config.js': './src/preprocess_tpl/config.js'
+                }
             } ,
             prod : {
-                src : './src/preprocess_tpl/index.html',
-                dest : './index.raw.html',
+                files: {
+                    './index.html': './src/preprocess_tpl/index.html',
+                    './src/script/js/config.js': './src/preprocess_tpl/config.js'
+                }
             }
         },//}}}
 

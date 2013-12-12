@@ -6,4 +6,5 @@
 /server/vendor/**/*
 /server/composer.lock
 /client/build/**/*
+/client/node_modules/**/*
 

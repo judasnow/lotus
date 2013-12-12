@@ -22,8 +22,7 @@ define([
 
     var ClassAListView = Backbone.View.extend({
 
-        className: 'categories_list',
-        tagName: 'div',
+        className: 'categories-list',
 
         events: {
             'mouseover .row': '_show_class_b',
@@ -37,13 +36,15 @@ define([
             _.bindAll(
                 this ,
 
-                '_addAll' ,
-                '_addOne' ,
-                '_show_class_b' ,
-                '_mouseleave_row' ,
+                '_addAll',
+                '_addOne',
+                '_show_class_b',
+                '_mouseleave_row',
                 'render'
             );
 
+            //@TODO 1 cache it ( store in localStore or window ? )
+            //      2 嘗試性的使用 web worker
             this._coll = new ClassAColl();
             this._coll.on( 'fetch_ok' , this._addAll );
 
@@ -60,17 +61,22 @@ define([
         _show_class_b: function( e ) {
         //{{{
             var $row = $( e.currentTarget );
-            $row.find( '.icon' ).show();
             var classAId = $row.attr( 'data-id' );
             var classAContent = $row.find( '.text' ).text();
 
-            this._classBListView = new ClassBListView( this._$categoriesBrowse , classAId , classAContent );
+            $row.find( '.icon' ).show();
+            this._classBListView = new ClassBListView(
+                this._$categoriesBrowse,
+                classAId,
+                classAContent
+            );
         },//}}}
 
         _mouseleave_row: function( e ) {
         //{{{
-            var $target = $( e.currentTarget );
-            $target.find( '.icon' ).hide();
+            var $currItem = $( e.currentTarget );
+
+            $currItem.find( '.icon' ).hide();
         },//}}}
 
         _addAll: function() {

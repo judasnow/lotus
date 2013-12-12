@@ -1,11 +1,11 @@
 define([
 
-    "backbone",
-    "mustache",
+    'backbone',
+    'mustache',
 
-    "c/class_b",
+    'c/class_b',
 
-    "text!tpl/class_b_list_item.mustache"
+    'text!tpl/class_b_list_item.mustache'
 
 ] , function(
 
@@ -16,12 +16,11 @@ define([
 
     classBListItemTpl
 ) {
-    "use strice";
+    'use strice';
 
     var ClassBListView = Backbone.View.extend({
 
-        className: "categories_detail",
-        tagName: "div",
+        className: 'categories-detail',
 
         events: {
             'click .row': '_goProductListByClassPage'
@@ -29,38 +28,42 @@ define([
 
         initialize: function( $categoriesBrowse , classAId , classAContent ) {
         //{{{
-            _.bindAll( this , "_addAll" , "_addOne" , "_postShowList" , "_hide" , "render" );
+            _.bindAll(
+                this,
+
+                '_addAll',
+                '_addOne',
+                '_hide',
+                'render'
+            );
 
             this._classAId = classAId;
             this._classAContent = classAContent;
             this._$categoriesBrowse = $categoriesBrowse;
 
             var that = this;
-            this._$categoriesBrowse.on( "mouseleave" , function( event ) {
+            this._$categoriesBrowse.on( 'mouseleave' , function( event ) {
                 that._hide.bind( that )();
             });
 
             this._classBColl = new ClassBColl( classAId );
-            this._classBColl.on( "fetch_ok" , this._addAll );
+            this._classBColl.on( 'fetch_ok' , this._addAll );
 
             this._classBColl.fetch({
                 success: function( coll ) {
-                    coll.trigger( "fetch_ok" );
+                    coll.trigger( 'fetch_ok' );
                 }
             });
 
             this.render();
         },//}}}
 
-        //进行一些显示之前列表的准备工作
-        //@TODO 缓存之
         _postShowList: function() {
         //{{{
-            var $categoriesDetail = this._$categoriesBrowse.find( ".categories_detail" );
+            var $categoriesDetail = this._$categoriesBrowse.find( '.categories-detail' );
+
             if( $categoriesDetail.length !== 0 ) {
-                $categoriesDetail.remove();
-            } else {
-                this._$categoriesBrowse.css( "width" , "680px" );
+                //$categoriesDetail.remove();
             }
         },//}}}
 
@@ -90,8 +93,8 @@ define([
 
         _hide: function() {
         //{{{
-            this.$el.remove();
-            this._$categoriesBrowse.css( "width" , "auto" );
+            //this.$el.remove();
+            //this._$categoriesBrowse.css( 'width' , 'auto' );
         },//}}}
 
         render: function() {

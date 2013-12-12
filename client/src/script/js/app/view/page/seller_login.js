@@ -70,46 +70,43 @@ define ([
 
         _doLogin: function() {
         //{{{
-            window.e.trigger( 'show_loading' );
-
-            this._getUserInput();
             var that = this;
+            this._getUserInput();
 
             if( _.isEmpty( this._username ) ) {
-                window.sysNotice.setMsg( '用户名不能为空' );
+                this._$errorInfo.text( '用户名不能为空' );
                 return;
             }
 
             if( _.isEmpty( this._password ) ) {
-                window.sysNotice.setMsg( '密码不能为空' );
+                this._$errorInfo.text( '密码不能为空' );
                 return;
             }
 
+            window.e.trigger( 'show_loading' );
             auth.doLogin({
-
                 username: this._username,
                 password: this._password
-
             }, function() {
-                //ok
-                window.routes.navigate( 'main' , {trigger: true});
                 window.e.trigger( 'hide_loading' );
-
                 window.e.trigger( 'login_ok' );
+
+                window.routes.navigate( 'main' , {trigger: true});
             }, function() {
-                //fail
-                that._$error_info.text( '用户名或密码错误' );
                 window.e.trigger( 'hide_loading' );
+
+                that._$errorInfo.text( '用户名或密码错误' );
             });
         },//}}}
 
         render: function() {
         //{{{
-            this.$el.html( Mustache.to_html( this.template ) );
-            page.loadPage( this.$el );
+            var that = this;
 
-            this._getEls();
-            this._$error_info = this.$el.find( '.error_info' );
+            this.$el.html( Mustache.to_html( this.template ) );
+            page.loadPage( this.$el, function() {
+                that._getEls();
+            });
         }//}}}
     });
 

@@ -1,9 +1,10 @@
+// 將需要渲染的信息放到 model 中
 define([
-
     'zepto',
     'backbone',
     'mustache',
 
+    'm/nav',
     'v/categories_browse',
     'v/dropdown',
     'v/add_new_product_dialog',
@@ -19,6 +20,7 @@ define([
     Backbone,
     Mustache,
 
+    NavModel,
     CategoriesBrowseView,
     DropdownView,
     AddNewProductDialog,
@@ -43,17 +45,20 @@ define([
         initialize: function() {
         //{{{
             _.bindAll(
-                this ,
+                this,
 
-                'toggleCategoriesBrowse',
                 '_getEls',
+                'toggleCategoriesBrowse',
                 'showObjectUserInfo',
                 'showObjectUserDropDown',
                 'showLoading',
                 'hideLoading'
             );
 
+            this._model = new NavModel();
+
             this._getEls();
+            //渲染分類列表
             this._categoriesBrowseView = new CategoriesBrowseView();
         },//}}}
 
@@ -84,8 +89,7 @@ define([
             var id = 'object_user_dropdown';
             var offset = $(e.currentTarget).offset();
 
-            //@XXX 这样的设置是不是显得有点碎片化了？
-            //是不是应该将 DropdownView 派生一下？
+            //如果還沒有渲染該部分 則渲染之 否則只是顯示
             if( typeof this.dropdownView === 'undefined' ) {
 
                 var e = {
@@ -96,7 +100,7 @@ define([
                     }
                 };
 
-                this.dropdownView = new DropdownView( offset , 'object_user_dropdown' , objectUserDropdownTpl , e );
+                this.dropdownView = new DropdownView( offset, 'object_user_dropdown', objectUserDropdownTpl, e );
             }
 
             this.dropdownView.$el.toggle();
@@ -105,7 +109,11 @@ define([
         toggleCategoriesBrowse: function() {
         //{{{
             this._categoriesBrowseView.toggle();
-        }//}}}
+        },//}}}
+
+        render: function() {
+            
+        }
 
     });
 
