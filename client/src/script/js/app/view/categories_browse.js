@@ -10,7 +10,6 @@ define([
     'text!tpl/categories_browse.mustache',
     'text!tpl/class_a_list_item.mustache',
     'text!tpl/class_b_list_item.mustache'
-
 ], function(
     $,
     _,
@@ -50,6 +49,7 @@ define([
                 '_renderClassAlist',
                 '_renderClassBlist',
                 '_hideCategoriesDetail',
+                '_setCategoriesBrowseWidth',
                 '_goProductListByClassPage',
                 '_render'
             );
@@ -66,13 +66,20 @@ define([
         },
 
         toggle: function() {
-            this.$el.toggle();
+            this._$categoriesBrowse.toggle();
         },
 
         //需要在 render 之後調用
         _getEls: function() {
+            this._$categoriesBrowse = this.$el.find( '#categories-browse' );
             this._$categoriesList = this.$el.find( '.categories-list' );
             this._$categoriesDetail = this.$el.find( '.categories-detail' );
+        },
+
+        _setCategoriesBrowseWidth: function( event ) {
+            var $currEl = $( event.currentTarget );
+            $currEl.css( 'width' , $currEl.css( 'width' ) );
+            console.dir( $currEl.css( 'width' ) )
         },
 
         //class_a
@@ -117,7 +124,8 @@ define([
             var $categoriesDetail = this._$categoriesDetail;
 
             $categoriesDetail
-                .html( '' );
+                .html( '' )
+                .show();
 
             this._classBColl.forEach( function( item ) {
                 $categoriesDetail.append(
@@ -142,7 +150,7 @@ define([
         },
 
         _hideCategoriesDetail: function() {
-            this._$categoriesDetail.html( '' );
+            this._$categoriesDetail.hide();
         },
         //}}}
 
