@@ -38,8 +38,8 @@ define([
         el: '#nav',
 
         events: {
-            'click .categories_browse_btn': 'toggleCategoriesBrowse',
-            'click .nav_user': 'showObjectUserDropDown'
+            'click .categories-browse-btn': 'toggleCategoriesBrowse',
+            'click .nav-user': 'showObjectUserDropDown'
         },
 
         initialize: function() {
@@ -58,6 +58,7 @@ define([
             this._model = new NavModel();
 
             this._getEls();
+
             //渲染分類列表
             this._categoriesBrowseView = new CategoriesBrowseView();
         },//}}}

@@ -12,8 +12,8 @@ define([
 
         model: ClassB,
 
-        initialize: function( class_a_id ) {
-            this.url = config.serverAddress + '/home_api/class_b/?class_a_id=' + class_a_id;
+        initialize: function() {
+            this.url = config.serverAddress + '/home_api/class_b/';
         }
 
     });
