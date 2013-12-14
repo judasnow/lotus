@@ -24,7 +24,7 @@ define([
         //@param id string 当前 list DOM 元素的 id
         //@param coll object 当前 list 显示的 bb coll
         //@param itemTpl string 
-        _baseInit: function( id , coll , itemTpl ) {
+        _baseInit: function( id, coll, itemTpl ) {
             if( typeof id !== 'string' 
                 || typeof coll !== 'object'
                 || typeof itemTpl !== 'string' )
@@ -33,6 +33,7 @@ define([
             }
 
             this.$el = $( '#' + id );
+            this._id = id;
             this._coll = coll;
             this._itemTpl = itemTpl;
 
@@ -67,8 +68,16 @@ define([
         },
 
         _render: function() {
+            switch( this._id ) {
+                case 'hot_product_recommend':
+                    this._listTitle = '热门商品推荐';
+                    break;
+                case 'hot_shop_recommend':
+                    this._listTitle = '热门店铺推荐';
+                    break;
+            }
             this.$el
-                .html( Mustache.to_html( HotListTpl , { list_title: this._listTitle } ) );
+                .html( Mustache.to_html( HotListTpl , { listTitle: this._listTitle } ) );
         }
     });
 

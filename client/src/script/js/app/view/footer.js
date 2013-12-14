@@ -32,19 +32,19 @@ define([
         className: 'box',
 
         initialize: function() {
-            this._model = new FooterModel();
+            this.model = new FooterModel();
 
             _.bindAll( this , 'render' );
 
-            this._model.on( 'change' , this.render );
-            this._model.set( 'is_login' , common.isLogin() );
+            this.listenTo( this.model, 'change', this.render );
+            this.model.set( 'isLogin' , common.isLogin() );
         },
 
         render: function() {
             this.$el.html(
                 Mustache.to_html(
                     footerTpl ,
-                    this._model.toJSON()
+                    this.model.toJSON()
                 ) 
             );
         }

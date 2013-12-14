@@ -82,25 +82,39 @@ define([
         },//}}}
 
         //用户信息配套的下拉菜单
-        showObjectUserDropDown: function( e ) {
+        showObjectUserDropDown: function( event ) {
         //{{{
             var id = 'object_user_dropdown';
-            var offset = $(e.currentTarget).offset();
+            var offset = $(event.currentTarget).offset();
+            var $dropdown = null;
 
             //如果還沒有渲染該部分 則渲染之 否則只是顯示
             if( typeof this.dropdownView === 'undefined' ) {
-
-                var e = {
+                var event = {
                     'click .add_new_product': function() {
                         //@XXX 实例化的位置在哪里比较好？
                         window.addNewProductDialogView = window.addNewProductDialogView || new AddNewProductDialog();
                         window.addNewProductDialogView.toggle();
                     }
                 };
-                this.dropdownView = new DropdownView( offset, 'object_user_dropdown', objectUserDropdownTpl, e );
+                this.dropdownView = new DropdownView( offset, 'object_user_dropdown', objectUserDropdownTpl, event );
+                $dropdown = this.dropdownView.$el;
+                $( window ).on( 'click', function( event ) {
+                    var $targetEl = $( event.target );
+
+                    //不在目標區域的 才執行隱藏操作
+                    if( (! $targetEl.hasClass( 'nav-user' ) && $targetEl.parents( '.nav-user' ).length === 0)  &&
+                        (! $targetEl.hasClass( 'dropdown' ) && $targetEl.parents( '.dropdown' ).length === 0) ) {
+                        common.log( $targetEl.attr( 'class' ) );
+                        common.log( $targetEl.parents( '.dropdown' ).length );
+                        $dropdown.hide();
+                    }
+                });
+            } else {
+                $dropdown = this.dropdownView.$el;
             }
 
-            this.dropdownView.$el.toggle();
+            $dropdown.toggle();
         },//}}}
 
         toggleCategoriesBrowse: function() {

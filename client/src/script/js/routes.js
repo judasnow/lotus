@@ -102,19 +102,20 @@ define([
         },//}}}
 
         _showApplyResultSearch: function() {
+        //{{{
             new ApplyResultSearchPageView();
-        },
+        },//}}}
 
         _sellerLogout: function() {
         //{{{
             auth.doLogout( function() {
-                window.routes.navigate( 'main' , {trigger: true} );
+                window.routes.navigate( 'main', {trigger: true} );
             });
         },//}}}
 
         _showShop: function( shopId , currentPage ) {
         //{{{
-            new ShopPageView({ shop_id: shopId , current_page: currentPage});
+            new ShopPageView({ shop_id: shopId, current_page: currentPage});
         },//}}}
 
         _showSearchResult: function( q ) {
@@ -127,7 +128,7 @@ define([
             new ProductDetailPageView({ product_id: productId });
         },//}}}
 
-        _showProductListByClass: function( classA , classB , currentPage ) {
+        _showProductListByClass: function( classA, classB, currentPage ) {
         //{{{
             new ProductListByClassView({
                 class_a: classA,

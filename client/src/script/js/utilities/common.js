@@ -75,7 +75,7 @@ define([
     var log = function( text , color ) {
     //{{{
         if( typeof color === 'undefined' ) {
-            color = 'green';
+            color = '#f99';
         }
 
         console.log( '%c ' + text , 'color:' + color );
