@@ -5,7 +5,7 @@ define([
     'use strict';
 
 
-    var serverAddress = 'http://172.17.0.204:82/api/';
+    var serverAddress = 'http://127.0.0.1:82/api/';
 
 
 
