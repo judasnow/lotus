@@ -32,13 +32,11 @@ define([
         e.on( 'hide_loading', navView.hideLoading );
 
         e.on( 'login_ok', function() {
-            console.log( 'login_ok fire' );
+            common.log( 'login_ok fire' , 'blue' );
 
-            common.getObjectUserInfo( function() {
+            common.getObjectUserInfo( function( objectUserInfo ) {
                 //刷新頁首
-                navView.showObjectUserInfo();
-
-                //刷新頁腳
+                navView.model.set( 'objectUserInfo' , objectUserInfo.toJSON() );
             });
         });
         e.trigger( 'login_ok' );

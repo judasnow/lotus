@@ -46,10 +46,9 @@ define([
             success: function() {
                 window.objectUser = objectUser;
 
-                success();
+                success( objectUser );
             }
         });
-
     };//}}}
 
     //上传文件
