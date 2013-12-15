@@ -311,8 +311,8 @@ define([
             var mouseStartY = event.clientY - $body.scrollTop();
 
             //獲取本元素的初始位置
-            var originX = $target.get( 'attr', 'offsetLeft' );
-            var originY = $target.get( 'attr', 'offsetTop' );
+            var originX = $target.get(0).offsetLeft;
+            var originY = $target.get(0).offsetTop;
 
             //計算本元素需要進行的位置偏移 並設置之
             var delteX = mouseStartX - originX;
@@ -323,13 +323,13 @@ define([
             $( document ).on({
                 'mousemove': function( event ) {
                     $target.css({
-                        'left': event.clientX + $body.scrollLeft() - delteX,
-                        'top':  event.clientY + $body.scrollLeft() - delteY,
+                        'left': ( event.clientX + $body.scrollLeft() - delteX ) + 'px',
+                        'top': ( event.clientY + $body.scrollLeft() - delteY ) + 'px',
                     });
                 },
 
                 'mouseup': function( event ) {
-                    
+                    console.dir( 123 )
                 }
             });
 
