@@ -48,6 +48,7 @@ define([
             async.series([
                 function( cb ) {
                     page.loadPage( that.$el , cb );
+                    window.e.trigger( 'load_home_page' );
                 },
                 function( cb ) {
                     //@XXX 內聚性有問題
