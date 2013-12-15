@@ -566,19 +566,42 @@
   font-size: 48px;
 }
 #footer {
-  height: 48px;
-  line-height: 48px;
-  color: #9f9f9f;
+  width: 100%;
+  margin-top: 24px;
+  padding: 12px 8px;
+  color: #cbcbcb;
   text-align: center;
   clear: both;
+  display: inline-block;
+  background: #f7f7f7 url(/picture/common/bg_texture_dark.jpg) repeat scroll 0px 0px;
 }
-#footer a {
-  color: #9f9f9f;
-  text-shadow: #eee 0px 1px;
+#footer .footer-row {
+  width: 960px;
+  margin: 0 auto;
+  display: inline-block;
+  text-shadow: #000 0px 1px;
+  margin-bottom: 12px;
 }
-#footer a:hover {
+#footer .footer-row:last-child {
+  margin-bottom: 0;
+}
+#footer .footer-row-info-list {
+  display: inline-block;
+}
+#footer .footer-row-info-list-item {
+  float: left;
+  margin-right: 20px;
+}
+#footer .footer-row-info-list-item:last-child {
+  margin-right: 0;
+}
+#footer .footer-row-info-link {
+  color: #cbcbcb;
+}
+#footer .footer-row-info-link:hover {
   color: #e36768;
   text-decoration: underline;
+  text-shadow: none;
 }
 .product-list {
   width: 100%;
@@ -826,6 +849,7 @@
 }
 #services-info {
   padding: 20px 0;
+  text-shadow: 0px 0px 1px rgba(64, 64, 64, 0.1);
   display: inline-block;
 }
 #services-info .services-info-title {
@@ -922,6 +946,11 @@ a {
   border: 1px solid rgba(0, 0, 0, 0.1);
   float: right;
   background: #f9f9f9;
+}
+@media (min-height: 960px) {
+  .box {
+    min-height: 960px;
+  }
 }
 .gpu {
   -webkit-transform: translate3d(0, 0, 0);
