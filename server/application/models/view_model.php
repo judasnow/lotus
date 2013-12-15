@@ -62,6 +62,12 @@ class View_model extends Base_model {
      * @param $row   需要被排名的数量
      */
     public function count_view_rank($class, $row) {
+        if ($class == 'shop') {
+            $class = 0;
+        } else {
+            $class = 1;
+        }
+
         $this->_CI->load->model('product_model', 'product_m');
         $sql = "SELECT sn FROM view WHERE class = '$class' ORDER BY count DESC LIMIT 0,$row";
         $res_array = $this->_CI->db->query($sql)->result_array();

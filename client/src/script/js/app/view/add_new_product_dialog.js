@@ -17,6 +17,7 @@ define([
     'config',
 
     'utilities/common',
+    'utilities/helper',
 
     'text!tpl/dialog/add_new_product.mustache',
     'text!tpl/dialog/class_a_select.mustache',
@@ -41,6 +42,7 @@ define([
     config,
 
     common,
+    helper,
 
     addNewProductDialogTpl,
     classASelectOptionTpl,
@@ -58,9 +60,6 @@ define([
             this._baseInit();
 
             this.events = _.extend({
-
-                'mousedown .header': '_dragstart',
-
                 'change .class_a_option': '_trySetClassBOptions',
                 'change .image_input': '_changeImageInput',
                 'change .detail_image_input': '_changeImageInput',
@@ -75,8 +74,6 @@ define([
                 this ,
 
                 'render' ,
-
-                '_dragstart',
 
                 '_getEls',
                 'doSubmit',
@@ -110,6 +107,8 @@ define([
 
             this._imageName = '';
             this._detailNames = [];
+
+            helper.drag( this.$el.find( '.header' ), this.$el );
         },//}}}
 
         _setClassAOptions: function() {
@@ -301,38 +300,6 @@ define([
                 .parent()
                 .remove();
         },//}}}
-
-        _dragstart: function( event ) {
-            var $target = this.$el;
-            var $body = $( 'body' );
-
-            //獲取鼠標的初始位置
-            var mouseStartX = event.clientX - $body.scrollLeft();
-            var mouseStartY = event.clientY - $body.scrollTop();
-
-            //獲取本元素的初始位置
-            var originX = $target.get(0).offsetLeft;
-            var originY = $target.get(0).offsetTop;
-
-            //計算本元素需要進行的位置偏移 並設置之
-            var delteX = mouseStartX - originX;
-            var delteY = mouseStartY - originY;
-
-            $( document ).on({
-                'mousemove': function( event ) {
-                    $target.css({
-                        'left': ( event.clientX + $body.scrollLeft() - delteX ) + 'px',
-                        'top': ( event.clientY + $body.scrollLeft() - delteY ) + 'px',
-                    });
-                },
-
-                'mouseup': function( event ) {
-                    console.dir( 123 )
-                }
-            });
-
-            event.stopPropagation();
-        },
 
         doSubmit: function() {
         //{{{

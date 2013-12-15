@@ -3,9 +3,47 @@ define( [
 ] , function( $ ) {
     "use strict";
 
-    
+    //( $(), $() ) => void
     var drag = function( $handle, $target ) {
-        
+
+        //用於捕獲 scroll 信息
+        var $body = $( 'body' );
+        var $document = $( document );
+
+        $handle.on( 'mousedown', function( event ) {
+            var mouseStartX = event.clientX - $body.scrollLeft();
+            var mouseStartY = event.clientY - $body.scrollTop();
+
+            //獲取本元素的初始位置
+            var originX = $target.get(0).offsetLeft;
+            var originY = $target.get(0).offsetTop;
+
+            //計算本元素需要進行的位置偏移 並設置之
+            var delteX = mouseStartX - originX;
+            var delteY = mouseStartY - originY;
+
+            $handle.css( 'cursor', 'move' );
+
+            $document.on({
+                'mousemove': function( event ) {
+                    $target.css({
+                        //初始化 css 屏蔽之前的信息
+                        'margin-left': '0',
+                        'margin-top': '0',
+                        'left': ( event.clientX + $body.scrollLeft() - delteX ) + 'px',
+                        'top': ( event.clientY + $body.scrollLeft() - delteY ) + 'px',
+                    });
+                },
+                'mouseup': function( event ) {
+                    //用戶釋放鼠標 取消 handle 事件綁定
+                    $document.off( 'mouseup' ).off( 'mousemove' );
+                    $handle.css( 'cursor', 'auto' );
+                    event.stopPropagation();
+                }
+            });
+
+            event.stopPropagation();
+        });
     };
 
     var helper = {
@@ -130,6 +168,8 @@ define( [
 
         }//}}}
     }
+
+    helper.drag = drag;
 
     return helper;
 
