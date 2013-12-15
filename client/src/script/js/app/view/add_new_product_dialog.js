@@ -59,8 +59,8 @@ define([
 
             this.events = _.extend({
 
-                'dragstart': '_ondragstart',
-                'dragleave': '_ondragleave',
+                'mousedown .header': '_dragstart',
+
                 'change .class_a_option': '_trySetClassBOptions',
                 'change .image_input': '_changeImageInput',
                 'change .detail_image_input': '_changeImageInput',
@@ -69,15 +69,15 @@ define([
                 'click .preview-img-func-remove': '_removeThisImage',
                 'click .submit': 'doSubmit'
 
-            } , this._baseEvents );
+            }, this._baseEvents );
 
             _.bindAll(
                 this ,
 
                 'render' ,
 
-                '_ondragstart',
-                '_ondragleave',
+                '_dragstart',
+
                 '_getEls',
                 'doSubmit',
                 '_fetchClassAList',
@@ -302,11 +302,38 @@ define([
                 .remove();
         },//}}}
 
-        _ondragstart: function( event ) {
-            console.dir( event )
-        },
+        _dragstart: function( event ) {
+            var $target = this.$el;
+            var $body = $( 'body' );
 
-        _ondragleave: function( event ) {
+            //獲取鼠標的初始位置
+            var mouseStartX = event.clientX - $body.scrollLeft();
+            var mouseStartY = event.clientY - $body.scrollTop();
+
+            //獲取本元素的初始位置
+            var originX = $target.get( 'attr', 'offsetLeft' );
+            var originY = $target.get( 'attr', 'offsetTop' );
+
+            //計算本元素需要進行的位置偏移 並設置之
+            var delteX = mouseStartX - originX;
+            var delteY = mouseStartY - originY;
+
+            //cursor: move;
+
+            $( document ).on({
+                'mousemove': function( event ) {
+                    $target.css({
+                        'left': event.clientX + $body.scrollLeft() - delteX,
+                        'top':  event.clientY + $body.scrollLeft() - delteY,
+                    });
+                },
+
+                'mouseup': function( event ) {
+                    
+                }
+            });
+
+            event.stopPropagation();
         },
 
         doSubmit: function() {
