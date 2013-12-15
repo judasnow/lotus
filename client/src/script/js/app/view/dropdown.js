@@ -12,11 +12,13 @@ define([
         tagName: "nav",
         className: "dropdown",
 
+        events: {},
+
         //@offset object 需要关联 dropdown 的元素的 位置信息
         //@id string @XXX 似乎是可有可无的 因为可以自动生成一个 现在的话 这个 id 是包含在了 tpl 中
         //@tpl string
         //@events object 
-        initialize: function( offset , id , tpl , events ) {
+        initialize: function( offset, id, tpl, events ) {
         //{{{
             if( typeof offset !== "object" ||
                 typeof offset.top === "undefined" ||
@@ -28,7 +30,7 @@ define([
             }
 
             if( typeof events === "object" ) {
-                this.events = events;
+                _.extend( this.events, events );
             }
 
             _.bindAll( this , "render" );

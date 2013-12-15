@@ -72,7 +72,8 @@ require([
     window.sysNotice = new SysNotice();
 
     window.e = new GlobalEvents({
-        nav_view: navView
+        navView: navView,
+        footerView: footerView
     }).e;
 
     //在用户刷新页面之后根据当前的状态初始化页面

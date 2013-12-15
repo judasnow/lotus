@@ -44,7 +44,11 @@
   position: absolute;
   left: 50%;
   margin-left: -24px;
+<<<<<<< HEAD
   display: inline-block;
+=======
+  display: none;
+>>>>>>> d3e5890f019f62d2d5724779a01f20306a00a135
   text-align: center;
   font-size: 24px;
   color: #747474;
@@ -352,9 +356,15 @@
   color: #000;
 }
 .dialog_box .dialog .header .title {
+<<<<<<< HEAD
   font-weight: 100;
   font-size: 16px;
   color: #8ab375;
+=======
+  font-weight: bold;
+  font-size: 16px;
+  color: #1286bd;
+>>>>>>> d3e5890f019f62d2d5724779a01f20306a00a135
 }
 .dialog_box .dialog .header .sub_title {
   color: #ccc;
@@ -393,7 +403,11 @@
   width: 64px;
 }
 .dialog_box .dialog .body .item .error_info {
+<<<<<<< HEAD
   color: #e66;
+=======
+  color: #e33;
+>>>>>>> d3e5890f019f62d2d5724779a01f20306a00a135
   background: #fee;
 }
 .dialog_box .dialog .body .item .ok_info {
@@ -454,9 +468,15 @@
   color: #000;
 }
 #add_new_product_dialog .dialog .header .title {
+<<<<<<< HEAD
   font-weight: 100;
   font-size: 16px;
   color: #8ab375;
+=======
+  font-weight: bold;
+  font-size: 16px;
+  color: #1286bd;
+>>>>>>> d3e5890f019f62d2d5724779a01f20306a00a135
 }
 #add_new_product_dialog .dialog .header .sub_title {
   color: #ccc;
@@ -495,7 +515,11 @@
   width: 64px;
 }
 #add_new_product_dialog .dialog .body .item .error_info {
+<<<<<<< HEAD
   color: #e66;
+=======
+  color: #e33;
+>>>>>>> d3e5890f019f62d2d5724779a01f20306a00a135
   background: #fee;
 }
 #add_new_product_dialog .dialog .body .item .ok_info {

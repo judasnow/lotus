@@ -31,7 +31,7 @@ define([
 
             _.bindAll( this , '_goProductDetailPage' );
 
-            this._baseInit( 'hot_product_recommend' , new HotProductColl() , HotProductListItemTpl );
+            this._baseInit( 'hot_product_recommend', new HotProductColl(), HotProductListItemTpl );
         },
 
         _goProductDetailPage: function( e ) {

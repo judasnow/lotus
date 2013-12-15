@@ -1,6 +1,5 @@
 .dialog_box_base( @_width , @_height ) {
 //{{{
-
     .dialog_box_var {
         @dialog_box_padding: 4px;
         @dialog_box_width: @_width - (@dialog_box_padding * 2) - 2;
@@ -19,10 +18,10 @@
     position: fixed;
     z-index: 10001;
 
-    border: 1px solid rgba(0,0,0,0.4);
+    border: 1px solid rgba(0, 0, 0, 0.5);
     //padding: @dialog_box_padding;
     border-radius: @dialog_box_border_radius;
-    box-shadow: 0 4px 12px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.5);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4),inset 0 1px 0 rgba(255, 255, 255, 0.5);
 
     .dialog {
         .dialog_var {
@@ -58,9 +57,9 @@
             }
 
             .title {
-                font-weight: 100;
+                font-weight: bold;
                 font-size: 16px;
-                color: @link-color3;
+                color: @link-color5-darken;
             }
 
             .sub_title {
@@ -114,7 +113,7 @@
                 }
 
                 .error_info {
-                    color: #e66;
+                    color: #e33;
                     background: #fee;
                 }
 
@@ -158,11 +157,11 @@
     position: absolute;
     top: 0;
     left: 0;
-    background: rgba(0,0,0,0.3);
+    background: rgba(0,0,0,0.5);
     width: 100%;
     //@XXX 需要根据不同的情况进行改变
     height: 400%;
-    z-index: 999;
+    z-index: 1002;
 }
 
 //default

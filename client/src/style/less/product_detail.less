@@ -7,7 +7,7 @@
     .product-detail-row {
         margin-bottom: 12px;
         text-align: left;
-        color: #777;
+        color: @link-color4-darken;
         font-weight: 100;
         display: inline-block;
         width: 100%;
@@ -39,8 +39,9 @@
         height: @box_width / 3;
         display: inline-block;
         overflow: hidden;
-        background: #eee;
+        background: @bg;
     }
+
     .product-detail-product-image {
         max-height: 256px;
         max-width: 256px;
@@ -55,16 +56,37 @@
     }
 
     .product-detail-product-detail-image-list-item-image-box {
-        width: @box_width / 4;
-        height: @box_width / 4;
-        background: #eee;
+        .product-detail-product-detail-image-list-item-image-box-vars {
+            @count: 4;
+            @product-detail-product-detail-image-list-item-image-box-margin-right: 8px;
+            @product-detail-product-detail-image-list-item-image-box-padding: 0px;
+            @product-detail-product-detail-image-list-item-image-box-size: (@box_width
+                    - (@product-detail-product-detail-image-list-item-image-box-padding * (@count * 2))
+                    - (@product-detail-product-detail-image-list-item-image-box-margin-right * (@count - 1))
+                ) / @count;
+        };
+        .product-detail-product-detail-image-list-item-image-box-vars;
+
+        width: @product-detail-product-detail-image-list-item-image-box-size;
+        height: @product-detail-product-detail-image-list-item-image-box-size;
+        padding: @product-detail-product-detail-image-list-item-image-box-padding;
+        margin-right: @product-detail-product-detail-image-list-item-image-box-margin-right;
+        &:last-child {
+            margin-right: 0;
+        }
+
         float: left;
         display: inline-block;
         overflow: hidden;
+        box-shadow: 0 0px 1px #999;
+        border-radius: 4px;
+        background: @bg;
+        &:hover {
+
+        }
     }
 
     .product-detail-product-detail-image-list-item-image {
-        max-height: 128px;
-        max-width: 128px;
+
     }
 }

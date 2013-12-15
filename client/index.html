@@ -1,23 +1,27 @@
 <!DOCTYPE html>
 <!--{{{
-dab       .d88b.  d888888b db    db .d8888. 
-88      .8P  Y8. `~~88~~' 88    88 88'  YP 
-88      88    88    88    88    88 `8bo.   
-88      88    88    88    88    88   `Y8b. 
-88booo. `8b  d8'    88    88b  d88 db   8D 
-Y88888P  `Y88P'     YP    ~Y8888P' `8888Y' 
+ __         ______     ______   __  __     ______    
+/\ \       /\  __ \   /\__  _\ /\ \/\ \   /\  ___\   
+\ \ \____  \ \ \/\ \  \/_/\ \/ \ \ \_\ \  \ \___  \  
+ \ \_____\  \ \_____\    \ \_\  \ \_____\  \/\_____\ 
+  \/_____/   \/_____/     \/_/   \/_____/   \/_____/ 
 }}}-->
 <html lang="zh-CN">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 
 
+<link rel="stylesheet" href="/src/style/third_party/fontawesome/css/font-awesome.css" />
+<!--[if IE]>
+<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]--> 
+<link rel="stylesheet/less" type="text/css" href="/src/style/less/main.less" />
+<script src="/src/script/third_party/less.js"></script>
 
 
-<link rel="stylesheet" href="/build/style/css/all.min.css" />
 
 
-<title> 贸e街 Beta  </title>
+<title> 贸e街 Beta  DEV  </title>
 </head>
 
 <body>
@@ -29,19 +33,7 @@ Y88888P  `Y88P'     YP    ~Y8888P' `8888Y'
             </a>
         </div>
 
-        <div id="nav" class="box">
-            <div id="categories-browse-box"></div>
-
-            <div class="nav-item categories-browse-btn">
-               <i class="fa fa-reorder"></i>
-            </div>
-
-            <div class="nav-user">
-                <div class="nav-item userinfo"></div>
-            </div>
-
-            <i class="fa fa-cog fa-spin loading"></i>
-        </div>
+        <div id="nav" class="box"></div>
 
     </div>
 
@@ -54,9 +46,9 @@ Y88888P  `Y88P'     YP    ~Y8888P' `8888Y'
 </body>
 
 
+<script data-main="/src/script/js/main" src="/src/script/third_party/require.js"></script>
 
 
-<script data-main="/build/script/js/main-build.min" src="/build/script/third_party/require.min.js"></script>
 
 
 </html>

@@ -61,6 +61,7 @@ define([
         window.sessionStorage.clear();
 
         if( typeof success === 'function' ) {
+            window.e.trigger( 'logout_ok' );
             success();
         }
     };//}}}
