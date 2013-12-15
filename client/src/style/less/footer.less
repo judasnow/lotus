@@ -11,15 +11,18 @@
     background: #F7F7F7 url(/picture/common/bg_texture_dark.jpg) repeat scroll 0px 0px;
 
     .footer-row {
-        width: 100%;
+        width: @box_width;
+        margin: 0 auto;
         display: inline-block;
-        margin: 8px 0;
-        padding: 0 24px;
         text-shadow: #000 0px 1px;
+        margin-bottom: 12px;
+        &:last-child {
+            margin-bottom: 0;
+        }
     }
 
     .footer-row-info-list {
-        width: 100%;
+        display: inline-block;
     }
 
     .footer-row-info-list-item {

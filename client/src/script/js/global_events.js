@@ -32,6 +32,11 @@ define([
         e.on( 'show_loading', navView.showLoading );
         e.on( 'hide_loading', navView.hideLoading );
 
+        //對 home page 設置特殊的 footer
+        e.on( 'load_home_page', function() {
+            footerView.model.set( 'isHomePage', true );
+        });
+
         e.on( 'login_ok', function() {
         //{{{
             common.log( 'login_ok fire' );
