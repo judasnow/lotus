@@ -1,6 +1,27 @@
-<span>maoejie.com © 2013</span>
+<div class="footer-row">
+<ul class="footer-row-info-list">
+    <li class="footer-row-info-list-item">
+        <i class="fa fa-phone"></i> 聯繫電話：1377777777 
+    </li>
+    <li class="footer-row-info-list-item">
+        <i class="fa fa-envelope"></i> 電子郵箱：master@maoejie.com
+    </li>
+    <li class="footer-row-info-list-item">
+        <i class="fa fa-weibo"></i> 新浪微博：<a class="footer-row-info-link" href="#">http://weibo.com/maoejie</a>
+    </li>
+    <li class="footer-row-info-list-item"> 
+        <i class="fa fa-clock-o"></i> 工作时间：每天09:30-18:00
+    </li>
+    {{^isLogin}}
+        <li class="footer-row-info-list-item">
+            <a class="seller_login footer-row-info-link" href="#seller_login"><i class="fa fa-sign-in"></i> 卖家登录</a>
+        </li>
+    {{/isLogin}}
+</ul>
+</div>
 
-{{^isLogin}}
-    <a class="seller_login" href="#seller_login">卖家登录 <i class="fa fa-sign-in"></i></a>
-{{/isLogin}}
+<div class="footer-row">
+    <span>maoejie.com © 2013</span>
+</div>
+
 

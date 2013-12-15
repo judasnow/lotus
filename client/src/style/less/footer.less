@@ -1,21 +1,42 @@
 #footer {
-    @height: 48px;
-    @color: #9f9f9f;
+    width: 100%;
 
-    height: @height;
-    line-height: @height;
+    margin-top: 24px;
+    padding: 12px 8px;
 
-    color: @color;
+    color: @link-color4;
     text-align: center;
     clear: both;
+    display: inline-block;
+    background: #F7F7F7 url(/picture/common/bg_texture_dark.jpg) repeat scroll 0px 0px;
 
-    a {
-        color: @color;
-        text-shadow: #eee 0px 1px;
+    .footer-row {
+        width: 100%;
+        display: inline-block;
+        margin: 8px 0;
+        padding: 0 24px;
+        text-shadow: #000 0px 1px;
+    }
+
+    .footer-row-info-list {
+        width: 100%;
+    }
+
+    .footer-row-info-list-item {
+        float: left;
+        margin-right: 20px;
+        &:last-child {
+            margin-right: 0;
+        }
+    }
+
+    .footer-row-info-link {
+        color: @link-color4;
 
         &:hover {
             color: @link-color;
             text-decoration: underline;
+            text-shadow: none;
         }
     }
 }

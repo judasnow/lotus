@@ -17,6 +17,7 @@ define([
     'config',
 
     'utilities/common',
+    'utilities/helper',
 
     'text!tpl/dialog/add_new_product.mustache',
     'text!tpl/dialog/class_a_select.mustache',
@@ -41,6 +42,7 @@ define([
     config,
 
     common,
+    helper,
 
     addNewProductDialogTpl,
     classASelectOptionTpl,
@@ -58,9 +60,6 @@ define([
             this._baseInit();
 
             this.events = _.extend({
-
-                'dragstart': '_ondragstart',
-                'dragleave': '_ondragleave',
                 'change .class_a_option': '_trySetClassBOptions',
                 'change .image_input': '_changeImageInput',
                 'change .detail_image_input': '_changeImageInput',
@@ -69,15 +68,13 @@ define([
                 'click .preview-img-func-remove': '_removeThisImage',
                 'click .submit': 'doSubmit'
 
-            } , this._baseEvents );
+            }, this._baseEvents );
 
             _.bindAll(
                 this ,
 
                 'render' ,
 
-                '_ondragstart',
-                '_ondragleave',
                 '_getEls',
                 'doSubmit',
                 '_fetchClassAList',
@@ -110,6 +107,8 @@ define([
 
             this._imageName = '';
             this._detailNames = [];
+
+            helper.drag( this.$el.find( '.header' ), this.$el );
         },//}}}
 
         _setClassAOptions: function() {
@@ -301,13 +300,6 @@ define([
                 .parent()
                 .remove();
         },//}}}
-
-        _ondragstart: function( event ) {
-            console.dir( event )
-        },
-
-        _ondragleave: function( event ) {
-        },
 
         doSubmit: function() {
         //{{{
