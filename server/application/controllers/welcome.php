@@ -6,6 +6,7 @@ class Welcome extends CI_Controller {
         $this->load->library('cache_lib');
         $this->load->library('home_lib');
         $this->load->model('product_model','product_m');
+        $this->load->library('qiniuyun_lib');
         //$res = $this->cache_lib->set_cache_product_info(1);
         //$res = $this->cache_lib->get_cache_product_info(1);
         //$res = $this->cache_lib->get_cache_search_product("商品", 4b);
@@ -23,10 +24,10 @@ class Welcome extends CI_Controller {
         //$res = $this->cache_lib->set_cache_class_search_product(array('class_a' => 50000, 'class_b' => 50001));
         //$res = $this->cache_lib->get_cache_class_search_product(array('class_a' => 50000, 'class_b' => 50001));
         
-        $res = $this->home_lib->search_result_page('商品');
-
-
-        echo '<pre>';var_dump($res['data']);die;
+        //$res = $this->home_lib->search_result_page('商品');
+        
+        $res = $this->qiniuyun_lib->generate_qiniu_id();
+        echo '<pre>';die;
         echo 'It works!';
     }
 

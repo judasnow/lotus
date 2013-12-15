@@ -23,7 +23,15 @@ class Product_lib {
     /**
      * 该函数使用经过处理后的商品编号
      */
-    public function product($product_id) {
+    public function product($product_id, $location = 'index') {
+        //如果是直接从商品 api 加载的信息
+        if ($location == 'product_detail') {
+            $location_main = 'product_detail_main';
+            $location_detail = 'product_detail_else';
+        } else {
+            $location_main = $location;
+            $location_detail = $location;
+        }
         $product_id_string = (string) $product_id;
         $this->_CI->regulation->validate('product_id', $product_id_string);
         if (count($this->_CI->regulation->err_msg) > 0) {
@@ -61,14 +69,14 @@ class Product_lib {
             $product_info_format['product_name']    = $product_info['name'];
             $product_info_format['product_describe']= $product_info['describe'];
          
-            $product_info_format['product_image_url'] = $this->_CI->qiniuyun_lib->thumbnail_private_url($product_info['image'] . '.jpg', 'large', 'product');
+            $product_info_format['product_image_url'] = $this->_CI->qiniuyun_lib->thumbnail_qiniu_image_url($product_info['image'] . '.jpg', $location_main, 'product');
             if ($product_info['detail_image'] == '') {
                 $product_info_format['product_detail_image_url'] = array();
             } else {
                 $product_info_format['product_detail_image'] = array();
                 $product_info_format['product_detail_image'] = explode(',', $product_info['detail_image']);
                 foreach ($product_info_format['product_detail_image']  as $key => $value) {
-                    $product_info_format['product_detail_image_url'][$key] = $this->_CI->qiniuyun_lib->thumbnail_private_url($value . '.jpg', 'large', 'product');
+                    $product_info_format['product_detail_image_url'][$key] = $this->_CI->qiniuyun_lib->thumbnail_qiniu_image_url($value . '.jpg', $location_detail, 'product');
                 }
                 unset($product_info_format['product_detail_image']);
             }
@@ -96,7 +104,17 @@ class Product_lib {
     /**
      * 该函数使用数据库中的商品编号
      */
-    public function product_info($product_id) {
+    public function product_info($product_id, $location = 'index') {
+
+        //如果是直接从商品 api 加载的信息
+        if ($location == 'product_detail') {
+            $location_main = 'product_detail_main';
+            $location_detail = 'product_detail_else';
+        } else {
+            $location_main = $location;
+            $location_detail = $location;
+        }
+        
         //统计页面访问两
         $this->_CI->view_lib->add_view('product', $product_id);
         if($product_info = $this->_CI->product_m->product_info($product_id)) {
@@ -112,14 +130,14 @@ class Product_lib {
             $product_info_format['product_name']    = $product_info['name'];
             $product_info_format['product_describe']= $product_info['describe'];
             
-            $product_info_format['product_image_url'] = $this->_CI->qiniuyun_lib->thumbnail_private_url($product_info['image'] . '.jpg', 'large', 'product');
+            $product_info_format['product_image_url'] = $this->_CI->qiniuyun_lib->thumbnail_qiniu_image_url($product_info['image'] . '.jpg', $location_main, 'product');
             if ($product_info['detail_image'] == '') {
                 $product_info_format['product_detail_image_url'] = array();
             } else {
                 $product_info_format['product_detail_image'] = array();
                 $product_info_format['product_detail_image'] = explode(',', $product_info['detail_image']);
                 foreach ($product_info_format['product_detail_image']  as $key => $value) {
-                    $product_info_format['product_detail_image_url'][$key] = $this->_CI->qiniuyun_lib->thumbnail_private_url($value . '.jpg', 'large', 'product');
+                    $product_info_format['product_detail_image_url'][$key] = $this->_CI->qiniuyun_lib->thumbnail_qiniu_image_url($value . '.jpg', $location_detail , 'product');
                 }
                 unset($product_info_format['product_detail_image']);
             }

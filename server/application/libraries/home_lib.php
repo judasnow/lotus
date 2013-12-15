@@ -115,7 +115,7 @@ class Home_lib {
         //如果没有缓存数据，则从数据库中获取信息
         $k = count($products_info);
         foreach ($res_not_cache as $key => $product_id) {
-            $product_info = $this->_CI->product_lib->product_info($product_id);
+            $product_info = $this->_CI->product_lib->product_info($product_id, 'search_result_page');
             
             if ($product_info['code'] == 200) {
                 $products_info[$k] = $product_info['data'];
@@ -203,7 +203,7 @@ class Home_lib {
                 if ($cache['res']) {
                     $shops_info[$i] = $cache['data'];
                 } else {
-                    $res = $this->_CI->shop_lib->shop_info($value['id']);
+                    $res = $this->_CI->shop_lib->shop_info($value['id'], 'index');
                     $shops_info[$i] = $res['data'];
                     //添加缓存信息
                     $this->_CI->cache_lib->set_cache_shop_info($value['id']);
@@ -238,7 +238,7 @@ class Home_lib {
                 } else {
                     //从数据库中读取数据信息
                     $res = $this->_CI->product_m->product_info($value['id']);
-                    $result = $this->_CI->product_lib->product($res['class_a'] . $res['class_b'] . $res['id']);
+                    $result = $this->_CI->product_lib->product($res['class_a'] . $res['class_b'] . $res['id'], 'index');
                     $products_info[$i] = $result['data'];
                     //向redis中写入缓存信息
                     $this->_CI->cache_lib->set_cache_product_info($value['id']);
@@ -366,7 +366,7 @@ class Home_lib {
             if ($product_cache['res'] = FALSE) {
                 $products_info[$i] = $product_cache['data'];
             } else {
-                $product = $this->_CI->product_lib->product_info($value['id']);
+                $product = $this->_CI->product_lib->product_info($value['id'], 'search_result_page');
                 $products_info[$i] = $product['data'];
                 //设置缓存
                 $this->_CI->cache_lib->set_cache_product_info($value['id']);

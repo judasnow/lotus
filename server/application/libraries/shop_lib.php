@@ -20,10 +20,10 @@ class Shop_lib {
     }
 
     //登录用户获取店铺信息
-    public function owner_shop_info() {
+    public function owner_shop_info($location = 'index') {
         if(!empty($_SESSION['object_user_id'])) {
             if($shop_base_info = $this->_CI->shop_m->shop_base_info($_SESSION['object_user_id'])) {
-                $shop_base_info['shop_image_url'] = $this->_CI->qiniuyun_lib->thumbnail_private_url($shop_base_info['shop_image'] . '.jpg', 'small', 'shop');
+                $shop_base_info['shop_image_url'] = $this->_CI->qiniuyun_lib->thumbnail_qiniu_image_url($shop_base_info['shop_image'] . '.jpg', 'small', 'shop');
                 $shop_base_info['shop_id']         = $shop_base_info['id'];
                 unset($shop_base_info['id']);
                 unset($shop_base_info['shop_image']);
@@ -84,7 +84,7 @@ class Shop_lib {
     }
 
     //游客获取店铺基本信息
-    public function shop_info($shop_id) {
+    public function shop_info($shop_id, $location = 'index') {
         $this->_CI->regulation->validate('shop_id', $shop_id);
         if (count($this->_CI->regulation->err_msg) > 0) {
             $this->err_msg = $this->_CI->regulation->err_msg;
@@ -104,7 +104,7 @@ class Shop_lib {
                 $shop['shop_tel'] = $res['shop_tel'];
             }
             $shop['shop_address'] = $res['shop_address'];
-            $shop['shop_image_url'] = $this->_CI->qiniuyun_lib->thumbnail_private_url($res['shop_image'] . '.jpg', 'large', 'shop');
+            $shop['shop_image_url'] = $this->_CI->qiniuyun_lib->thumbnail_qiniu_image_url($res['shop_image'] . '.jpg', $location, 'shop');
             $shop['shop_register_time'] = date('Y-m-d', strtotime($res['register_time']));
             return array(
                 'code' => 200,
@@ -230,7 +230,7 @@ class Shop_lib {
         $product_id = $this->_CI->shop_m->product_id($shop_id, $start, $this->_page_count, $flag);
         $products =array();
         foreach ($product_id as $key => $value) {
-            $res = $this->_CI->product_lib->product($value);
+            $res = $this->_CI->product_lib->product($value, 'shop_product_list');
             if ($res['code'] == 200) {
                 $products[$key] = $res['data'];
             } else {
