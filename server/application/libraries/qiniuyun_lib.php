@@ -66,7 +66,7 @@ class Qiniuyun_lib {
      * 生成预览图片（新接口）
      */
     public function thumbnail_qiniu_image_url($image_full_name, $size, $type) {
-        if (strlen($image_full_name) < 5) {
+        if (strlen($image_full_name) <= 24) {
             $image_node = 'nodea';
             $this->_CI->config->load('variable', TRUE);
             $qiniuyun_config = $this->_CI->config->item('qiniuyun_config');
