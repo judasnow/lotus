@@ -68,7 +68,7 @@ class Qiniuyun_lib {
     public function thumbnail_qiniu_image_url($image_full_name, $size, $type) {
         if (strlen($image_full_name) <= 24) {
             $image_node = 'nodea';
-            $this->_CI->config->load('variable', TRUE);
+            $this->_CI->config->load('variable');
             $qiniuyun_config = $this->_CI->config->item('qiniuyun_config');
             $image_node_key = 'maoejie' . $image_node;
             $accessKey = $qiniuyun_config[$image_node_key]['_accessKey'];
@@ -78,7 +78,7 @@ class Qiniuyun_lib {
             $baseUrl = Qiniu_RS_MakeBaseUrl($domain, 'defaultimage-' . $type . '.jpg');
         } else {
             $image_node = substr($image_full_name, 7, 5);
-            $this->_CI->config->load('variable', TRUE);
+            $this->_CI->config->load('variable');
             $qiniuyun_config = $this->_CI->config->item('qiniuyun_config');
             $image_node_key = 'maoejie' . $image_node;
             $accessKey = $qiniuyun_config[$image_node_key]['_accessKey'];
