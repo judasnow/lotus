@@ -1,8 +1,12 @@
 define( [
     "zepto"
 ] , function( $ ) {
-
     "use strict";
+
+    
+    var drag = function( $handle, $target ) {
+        
+    };
 
     var helper = {
 

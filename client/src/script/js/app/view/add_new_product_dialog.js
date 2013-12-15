@@ -318,8 +318,6 @@ define([
             var delteX = mouseStartX - originX;
             var delteY = mouseStartY - originY;
 
-            //cursor: move;
-
             $( document ).on({
                 'mousemove': function( event ) {
                     $target.css({
