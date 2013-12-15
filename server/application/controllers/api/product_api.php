@@ -24,8 +24,7 @@ class Product_api extends REST_Controller {
      */
     public function product_get() {
         $product_id = $this->input->get('product_id', TRUE);
-        $res = $this->product_lib->product($product_id);
-        $this->response_api->api_response($this->product_lib->product($product_id));
+        $this->response_api->api_response($this->product_lib->product($product_id, 'product_detail'));
     }
 
     /**

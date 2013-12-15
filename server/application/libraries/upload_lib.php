@@ -8,18 +8,23 @@ class Upload_lib {
 
     private $_CI;
     public $err_msg = array();
+    public $qiniuyun_nodes;
 
     public function __construct() {
         $this->_CI =& get_instance();
+        $this->_CI->config->load('variable');
         $this->_CI->load->model('shop_model', 'shop_m');
         $this->_CI->load->library('qiniuyun_lib');
+        $this->qiniuyun_nodes = $this->_CI->config->item('qiniuyun_nodes');
     }
 
     /**
      * 格式化上传的图片至指定格式
      */
     private function format_image($image_info, $type) {
-        $image_name = uniqid('maoejie');
+        $random = array_rand($this->qiniuyun_nodes);
+        $image_name = 'maoejie' . $this->qiniuyun_nodes[$random] . uniqid();
+        
         $input = $image_info['full_path'];
         $output = getcwd() . '/file/image/' . "$type" . "/$image_name" . '.jpg';
         $file_type = $image_info['file_type'];
@@ -85,7 +90,7 @@ class Upload_lib {
             $file = $upload_path . "/$image_name.jpg";
             $image_full_name = $image_name . '.jpg';
 
-            if ($this->_CI->qiniuyun_lib->upload($image_full_name, $file)) {
+            if ($this->_CI->qiniuyun_lib->upload_to_qiniu($image_full_name, $file)) {
                 return array(
                     'res' => TRUE,
                     'data' => $image_name

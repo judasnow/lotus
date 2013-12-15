@@ -283,6 +283,12 @@ class Cache_lib {
      * 缓存热门店铺信息
      */
     public function set_cache_shop_info($shop_id) {
+        //关闭该缓存
+        return array(
+             'res' => FALSE,
+                'msg' => 'Cache shop info fail.'
+         );
+
         $res = $this->_CI->shop_m->shop_info_detail($shop_id);
         if ($res) {
             $reply = $this->_redis->pipeline(function($pipe) use ($res) {
