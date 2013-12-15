@@ -59,6 +59,8 @@ define([
 
             this.events = _.extend({
 
+                'dragstart': '_ondragstart',
+                'dragleave': '_ondragleave',
                 'change .class_a_option': '_trySetClassBOptions',
                 'change .image_input': '_changeImageInput',
                 'change .detail_image_input': '_changeImageInput',
@@ -74,6 +76,8 @@ define([
 
                 'render' ,
 
+                '_ondragstart',
+                '_ondragleave',
                 '_getEls',
                 'doSubmit',
                 '_fetchClassAList',
@@ -297,6 +301,13 @@ define([
                 .parent()
                 .remove();
         },//}}}
+
+        _ondragstart: function( event ) {
+            console.dir( event )
+        },
+
+        _ondragleave: function( event ) {
+        },
 
         doSubmit: function() {
         //{{{
