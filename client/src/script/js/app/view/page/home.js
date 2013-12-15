@@ -50,7 +50,8 @@ define([
                     page.loadPage( that.$el , cb );
                 },
                 function( cb ) {
-                    new SearchView({ $el: that.$el.find( '#search_box' ) });
+                    //@XXX 內聚性有問題
+                    new SearchView({ $el: that.$el.find( '#search-box' ) });
                     new HotShopListView();
                     new HotProductListView();
 

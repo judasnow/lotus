@@ -9,12 +9,7 @@ define([
 
     var doLogin = function( info, success, fail ) {
     //{{{
-        if( arguments.length !== 3 ||
-            _.isEmpty( info.username ) ||
-            _.isEmpty( info.password ) ||
-            ! _.isFunction( success ) ||
-            ! _.isFunction( fail )
-        ) {
+        if( _.isEmpty( info.username ) || _.isEmpty( info.password ) ) {
             throw new Error( 'invalid params' );
         } else {
             var username = info.username;
