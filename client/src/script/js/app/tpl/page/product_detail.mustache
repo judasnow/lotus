@@ -1,9 +1,37 @@
+<div class="box-left">
+    <div class="shop-page-shop-info box-left-item">
+        <h4 class="shop-page-shop-info-title">店铺信息</h4>
+        <ul>
+            <li>
+                <span class="shop-page-shop-info-key">店铺名称</span>
+                <span class="shop-page-shop-info-value">{{shop_name}}</span>
+            </li>
+            <li>
+                <span class="shop-page-shop-info-key">注册时间</span>
+                <span class="shop-page-shop-info-value">{{shop_register_time}}</span>
+            </li>
+            <li>
+                <span class="shop-page-shop-info-key"><i class="fa fa-phone"></i></span>
+                <span class="shop-page-shop-info-value">{{shop_tel}}</span>
+            </li>
+            <li>
+                <span class="shop-page-shop-info-key"><i class="fa fa-map-marker"></i></span>
+                <span class="shop-page-shop-info-value">{{shop_address}}</span>
+            </li>
+        </ul>
+    </div>
+
+    <img class="box-left-item-qr-img" src="/picture/common/1730387088.png" alt="">
+</div>
+
+<div class="box-right">
 <div class="product-detail-row">
     <div class="product-detail-product-name">
-        {{product_name}}
+        商品名称：{{product_name}}
     </div>
 </div>
 
+<!-- 商品封面圖片以及簡介信息 -->
 <div class="product-detail-row">
     <div class="product-detail-row-left">
         <div class="product-detail-product-image-box">
@@ -12,31 +40,37 @@
             </div>
         </div>
     </div>
+
     <div class="product-detail-row-right">
         <div class="product-detail-product-describe">
-            {{product_describe}}
+            商品描述：{{product_describe}}
         </div>
 
         <br />
 
-        <div class="product-detail-product-class-content">
-            <span class="product-detail-row-title">分类</span> {{product_class_a_name}} / {{product_class_b_name}} 
+        <div class="product-detail-product-class-content product-detail-product-info">
+            <span class="product-detail-row-title">分类</span>
+            <span class="product-detail-row-text">{{product_class_a_name}} / {{product_class_b_name}} </span>
         </div>
 
-        <div class="product-detail-product-price">
-            <span class="product-detail-row-title">现价</span> <i class="fa fa-jpy"></i> {{product_now_price}}
+        <div class="product-detail-product-price product-detail-product-info">
+            <span class="product-detail-row-title">现价</span> 
+            <span class="product-detail-row-text"> <i class="fa fa-jpy"></i> {{product_now_price}} </span>
         </div>
 
-        <div class="product-detail-product-original-price">
-            <span class="product-detail-row-title">原价</span> <i class="fa fa-jpy"></i>  {{product_original_price}}
+        <div class="product-detail-product-original-price product-detail-product-info">
+            <span class="product-detail-row-title">原价</span> 
+            <span class="product-detail-row-text"> <i class="fa fa-jpy"></i>  {{product_original_price}} </span>
         </div>
 
-        <div class="product-detail-product-discount">
-            <span class="product-detail-row-title">折扣</span> {{product_discount}}
+        <div class="product-detail-product-discount product-detail-product-info">
+            <span class="product-detail-row-title">折扣</span>
+            <span class="product-detail-row-text"> {{product_discount}} </span>
         </div>
 
-        <div class="product-detail-product-quantity">
-            <span class="product-detail-row-title">数量</span> {{product_quantity}}
+        <div class="product-detail-product-quantity product-detail-product-info">
+            <span class="product-detail-row-title">数量</span> 
+            <span class="product-detail-row-text"> {{product_quantity}} </span>
         </div>
     </div>
 </div>
@@ -45,4 +79,5 @@
     <div class="product-detail-product-detail-image-list">
         {{> detail_image_list}}
     </div>
+</div>
 </div>

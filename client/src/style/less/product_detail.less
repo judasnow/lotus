@@ -1,45 +1,62 @@
 #product-detail {
     .product-detail-vars {
-        
+        .box > .box-vars;
+
+        @product-detail-row-left-margin-right: 12px;
+        @product-detail-row-left-width: 320px;
+        @product-detail-row-right-width:
+            @box-right-width - @product-detail-row-left-width - @product-detail-row-left-margin-right;
     }
     .product-detail-vars;
 
     .product-detail-row {
-        margin-bottom: 12px;
-        text-align: left;
-        color: @link-color4-darken;
-        font-weight: 100;
-        display: inline-block;
         width: 100%;
+        display: inline-block;
+        margin-bottom: 12px;
+
+        .product-detail-product-info {
+            margin-bottom: 4px;
+        }
+
         .product-detail-row-title {
-            color: #333;
-            font-weight: 900;
+            color: @link-color4-darken;
+            font-weight: bold;
+            display: inline-block;
+            margin-right: 12px;
+        }
+
+        .product-detail-row-text {
+            font-weight: 100;
+            display: inline-block;
+            color: darken(@link-color4, 20%);
+        }
+
+        .product-detail-row-left {
+            margin-right: @product-detail-row-left-margin-right;
+            width: @product-detail-row-left-width;
+            float: left;
+        }
+
+        .product-detail-row-right {
+            width: @product-detail-row-right-width;
+            float: left;
         }
     }
 
-    .product-detail-row-left {
-        float: left;
-        height: 100%;
-        margin-right: 24px;
-    }
-
-    .product-detail-row-right {
-        float: left;
-    }
-
     .product-detail-product-name {
-        font-size: 18px;
+        font-size: 16px;
         font-weight: bolder;
         color: @link-color;
         overflow: hidden;
     }
 
     .product-detail-product-image-box {
-        width: @box_width / 3;
-        height: @box_width / 3;
+        width: @product-detail-row-left-width;
+        height: @product-detail-row-left-width;
         display: inline-block;
         overflow: hidden;
-        background: @bg;
+
+        box-shadow: 0 0 1px #8f8f8f;
     }
 
     .product-detail-product-image {
@@ -48,46 +65,36 @@
     }
 
     .product-detail-product-detail-image-list {
+        width: 100%;
         display: inline-block;
     }
 
     .product-detail-product-detail-image-list-item {
-        
+        width: 100%;
+        margin-bottom: 8px;
+        text-align: left;
     }
 
     .product-detail-product-detail-image-list-item-image-box {
-        .product-detail-product-detail-image-list-item-image-box-vars {
-            @count: 4;
-            @product-detail-product-detail-image-list-item-image-box-margin-right: 8px;
-            @product-detail-product-detail-image-list-item-image-box-padding: 0px;
-            @product-detail-product-detail-image-list-item-image-box-size: (@box_width
-                    - (@product-detail-product-detail-image-list-item-image-box-padding * (@count * 2))
-                    - (@product-detail-product-detail-image-list-item-image-box-margin-right * (@count - 1))
-                ) / @count;
-        };
-        .product-detail-product-detail-image-list-item-image-box-vars;
+        clear: both;
+        display: inline-block;
+        max-height: 256px;
 
-        width: @product-detail-product-detail-image-list-item-image-box-size;
-        height: @product-detail-product-detail-image-list-item-image-box-size;
-        padding: @product-detail-product-detail-image-list-item-image-box-padding;
-        margin-right: @product-detail-product-detail-image-list-item-image-box-margin-right;
         &:last-child {
-            margin-right: 0;
+
         }
 
-        float: left;
-        display: inline-block;
         overflow: hidden;
-        box-shadow: 0 0px 1px #999;
+        box-shadow: 0 0px 1px #ddd;
         border-radius: 4px;
-        background: @bg;
-        &:hover {
 
+        &:hover {
+            box-shadow: 0 0px 1px #888;
         }
     }
 
     .product-detail-product-detail-image-list-item-image {
-
+    
     }
 }
 
