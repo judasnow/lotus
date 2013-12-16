@@ -120,8 +120,8 @@ class Qiniuyun_lib {
             break;
         case 'product_detail_else'://商品细节图片
             $imgView->Mode = 2;
-            $imgView->Width = 234;
-            $imgView->Height = 234;
+            $imgView->Width = 622;
+            //$imgView->Height = 234;
             break;
         case 'index'://首页图片
             $imgView->Mode = 2;
