@@ -85,7 +85,8 @@ class Product_lib {
             $product_info_format['product_discount'] = $product_info['discount'];
             $product_info_format['product_now_price'] = number_format($product_info['original_price'] * $product_info['discount'] * 0.1, 1);
             
-            $product_info_format['product_quantity'] = $product_info['quantity'];
+            $product_info_format['product_quantity'] = $product_info['quantity']; 
+            $product_info_format['shop_id'] = $product_info['shop_id'];
             return array(
                 'code' => 200,
                 'msg'  => [],
@@ -147,6 +148,7 @@ class Product_lib {
             $product_info_format['product_now_price'] = number_format($product_info['original_price'] * $product_info['discount'] * 0.1, 1);
             
             $product_info_format['product_quantity'] = $product_info['quantity'];
+            $product_info_format['shop_id'] = $product_info['shop_id'];
             return array(
                 'code' => 200,
                 'msg'  => [],
