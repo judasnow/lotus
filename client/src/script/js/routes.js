@@ -9,6 +9,7 @@ define([
     'v/page/home',
     'v/page/seller_signup',
     'v/page/seller_login',
+    'v/page/add_new_product',
 
     'v/page/shop_apply',
     'v/page/apply_result_search',
@@ -30,6 +31,7 @@ define([
     HomePageView,
     SellerSignupView,
     SellerLoginView,
+    AddNewProductPageView,
 
     ShopApplyPageView,
     ApplyResultSearchPageView,
@@ -53,6 +55,7 @@ define([
             'shop_apply': '_showShopApplyPage',
             'apply_result_search': '_showApplyResultSearch',
             'product_detail/:productId': '_showProductDetailPage',
+            'add_new_product': '_addNewProduct',
 
             'shop/:shopId(/:currentPage)': '_showShop',
 
@@ -136,6 +139,10 @@ define([
                 current_pagep: currentPage
             });
         },//}}}
+
+        _addNewProduct: function() {
+            new AddNewProductPageView();
+        },
 
         _showNotFoundPage: function() {
         //{{{

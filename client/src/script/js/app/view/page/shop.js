@@ -1,4 +1,5 @@
 define([
+
     'zepto',
     'backbone',
     'mustache',
@@ -16,6 +17,7 @@ define([
     'text!tpl/page/shop.mustache'
 
 ] , function(
+
     $,
     Backbone,
     Mustache,

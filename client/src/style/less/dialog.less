@@ -166,7 +166,18 @@
 
 //default
 .dialog_box {
-    .dialog_box_base( 384px , 256px );
+    .dialog_box_base( 384px, 256px );
+}
+
+//作为单独存在的页面
+.dialog-as-page {
+    left: 0 !important;
+    top: 0 !important;
+    margin-left: 0 !important;
+    margin-top: 0 !important;
+
+    margin: 0 auto !important;
+    position: static !important;
 }
 
 #seller_login_dialog {
@@ -175,11 +186,13 @@
 
 #add_new_product_dialog {
 //{{{
-    display: none;
-
-    @add-new-product-dialog-width: 666;
+    @add-new-product-dialog-width: 840;
     @add-new-product-dialog-height: 222;
     .dialog_box_base( @add-new-product-dialog-width , @add-new-product-dialog-height );
+
+    .product-describe-textarea {
+        height: 128px;
+    }
 
     .preview-list {
         margin: 14px 0;
@@ -188,7 +201,7 @@
 
         .preview-img-box {
             .preview-img-box-var {
-                @count-preview-img-box-by-row: 4;
+                @count-preview-img-box-by-row: 5;
                 @preview-img-box-max-width: ((@dialog_box_width - 2) / @count-preview-img-box-by-row) - (@count-preview-img-box-by-row * 2);
             }
             .preview-img-box-var;
@@ -238,3 +251,4 @@
         }
     }
 }//}}}
+

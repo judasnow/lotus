@@ -76,7 +76,7 @@ define([
     //
     //fail::function
     var doReg = function( info, success, fail ) {
-    //{{e
+    //{{{
         if( _.isEmpty( info.username ) ||
                 _.isEmpty( info.password ) ||
                 _.isEmpty( info.register_code ) )

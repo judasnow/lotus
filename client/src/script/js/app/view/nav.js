@@ -7,7 +7,6 @@ define([
 
     'v/categories_browse',
     'v/dropdown',
-    'v/add_new_product_dialog',
 
     'utilities/common',
 
@@ -24,7 +23,6 @@ define([
 
     CategoriesBrowseView,
     DropdownView,
-    AddNewProductDialog,
 
     common,
 
@@ -90,13 +88,7 @@ define([
 
             //如果還沒有渲染該部分 則渲染之 否則只是顯示
             if( typeof this.dropdownView === 'undefined' ) {
-                var event = {
-                    'click .add_new_product': function() {
-                        //@XXX 实例化的位置在哪里比较好？
-                        window.addNewProductDialogView = window.addNewProductDialogView || new AddNewProductDialog();
-                        window.addNewProductDialogView.toggle();
-                    }
-                };
+                var event = {};
                 this.dropdownView = new DropdownView( offset, 'object_user_dropdown', objectUserDropdownTpl, event );
                 $dropdown = this.dropdownView.$el;
                 $( window ).on( 'click', function( event ) {

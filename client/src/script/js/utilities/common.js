@@ -78,7 +78,7 @@ define([
             color = '#f99';
         }
 
-        console.log( '%c ' + text , 'color:' + color );
+        //console.log( '%c ' + text , 'color:' + color );
     }//}}}
 
     //显示系统默认样式的提示信息
