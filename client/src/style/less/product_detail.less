@@ -56,7 +56,7 @@
         display: inline-block;
         overflow: hidden;
 
-        box-shadow: 0 0 1px #8f8f8f;
+        box-shadow: 0 0 4px @link-color4-darken;
     }
 
     .product-detail-product-image {
@@ -72,24 +72,24 @@
     .product-detail-product-detail-image-list-item {
         width: 100%;
         margin-bottom: 8px;
-        text-align: left;
+        text-align: center;
     }
 
     .product-detail-product-detail-image-list-item-image-box {
         clear: both;
         display: inline-block;
-        max-height: 256px;
+        max-height: 512px;
 
         &:last-child {
 
         }
 
         overflow: hidden;
-        box-shadow: 0 0px 1px #ddd;
+        box-shadow: 0 0 4px @link-color4-darken;
         border-radius: 4px;
 
         &:hover {
-            box-shadow: 0 0px 1px #888;
+            box-shadow: 0 0 4px @link-color4;
         }
     }
 
