@@ -36,7 +36,8 @@ class Auth_api extends REST_Controller {
         if($res['res']) {
             //登录成功返回 session_id 
             $this->response([
-                'session_id' => session_id()
+                'session_id' => session_id(),
+                'shop_id' => $res['data']
             ], 200);
         } else {
             $msg = 'Username or password wrong';
