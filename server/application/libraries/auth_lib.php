@@ -74,10 +74,9 @@ class Auth_lib {
                     setcookie('maoejie_session_id', session_id(), time() + 3600 * 24 * 7);
                     $this->_CI->cookie_m->write_user_cookie($_SESSION['object_user_id'], session_id(), $_SERVER['HTTP_USER_AGENT']);
                 }
-                $shop_info = $this->_CI->shop_m->shop_base_info($_SESSION['object_user_id']);
                 return array(
                     'res' => TRUE,
-                    'data' => $shop_info['id']
+                    'data' => NULL
                 );
             }
         }
@@ -101,6 +100,8 @@ class Auth_lib {
                 $user_info['user_role'] = $user_info['role'];
                 unset($user_info['role']);
                 unset($user_info['id']);
+                $shop_info = $this->_CI->shop_m->shop_base_info($_SESSION['object_user_id']);
+                $user_info['shop_id'] = $shop_info['id'];
                 return $user_info;
             }
         }
