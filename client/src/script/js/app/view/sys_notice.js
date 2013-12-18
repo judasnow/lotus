@@ -35,8 +35,16 @@ define([
             this.listenTo( this._model , 'change' , this.render );
         },
 
-        setMsg: function( msg ) {
-            this._model.set( 'msg' , msg );
+        setMsg: function( msg, timeOut ) {
+            if( isNaN( timeOut ) ) {
+                timeOut = 1000;
+            }
+
+            this._model.set({ 
+                
+                'msg': msg,
+                'timeOut': timeOut
+            });
         },
 
         render: function() {
@@ -53,7 +61,7 @@ define([
             setTimeout( function() {
                 that.$el.hide();
                 that._model.set( 'msg' , '' );
-            } , 1000 );
+            } , that._model.get( 'timeOut' ) );
         }
     });
 
