@@ -21,6 +21,7 @@ define([
     'v/page/not_found'
 
 ] , function(
+
     _,
     Backbone,
     async,
@@ -58,6 +59,7 @@ define([
             'add_new_product': '_addNewProduct',
 
             'shop/:shopId(/:currentPage)': '_showShop',
+            'my_shop(/:current_page)': '_myShop',
 
             'search_result(/:q/:p)(/)': '_showSearchResult',
 
@@ -118,8 +120,20 @@ define([
 
         _showShop: function( shopId , currentPage ) {
         //{{{
-            new ShopPageView({ shop_id: shopId, current_page: currentPage});
+            new ShopPageView({ shop_id: shopId, current_page: currentPage });
         },//}}}
+
+        _myShop: function( currentPage ) {
+            if( ! common.isLogin() ) {
+                window.routes.navigate('seller_login', {trigger: true});
+            } else {
+                new ShopPageView({
+                    shop_id: window.objectUser.get( 'shop_id' ),
+                    current_page: currentPage,
+                    my_shop: true
+                });
+            }
+        },
 
         _showSearchResult: function( q ) {
         //{{{

@@ -5,7 +5,7 @@ define( [
 
     //( $(), $() ) => void
     var drag = function( $handle, $target ) {
-
+    //{{{
         //用於捕獲 scroll 信息
         var $body = $( 'body' );
         var $document = $( document );
@@ -44,7 +44,7 @@ define( [
 
             event.stopPropagation();
         });
-    };
+    };//}}}
 
     var helper = {
 

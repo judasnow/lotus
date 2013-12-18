@@ -38,6 +38,7 @@ define([
 
     // shop model -> render page -> product_list
     var ShopPageView = Backbone.View.extend({
+
         id: 'shop-page',
         className: 'box',
 
@@ -76,11 +77,13 @@ define([
                 data: {
                     shop_id: this._model.get( 'shop_id' )
                 },
+
                 //成功获取店铺信息之后才有继续下去的必要
                 //@TODO 使用 Q 改写之
                 success: function() {
                     that.render();
                 },
+
                 //@TODO 没有相应商铺信息的时候 显示 404 页面
                 error: function( m ) {
                     window.routes.navigate( '/page_not_found' , {trigger: true} );

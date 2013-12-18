@@ -8,5 +8,10 @@
 /client/build/**/*
 /client/node_modules/**/*
 
+<<<<<<< HEAD
 /server/vendor/
+=======
+/server/vendor
+/server/file/image/product/**/*
+>>>>>>> a59b8c92fdd99100d8d54399ac65e77e2c36d260
 

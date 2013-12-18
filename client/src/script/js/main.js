@@ -41,6 +41,7 @@ require.config({
 require([
     'zepto',
     'underscore',
+    'async',
 
     'v/nav',
     'v/footer',
@@ -54,6 +55,7 @@ require([
 ], function (
     $,
     _,
+    async,
 
     NavView,
     FooterView,
@@ -76,15 +78,24 @@ require([
         footerView: footerView
     }).e;
 
-    //在用户刷新页面之后根据当前的状态初始化页面
-    //is login ?
-    if( common.getSessionId() !== null ) {
-        // has logged in
-        window.e.trigger( 'login_ok' );
-    }
+    async.series([
+        function( cb ) {
+            //在用户刷新页面之后根据当前的状态初始化页面
+            //is login ?
+            if( common.getSessionId() !== null ) {
+                // has logged in
+                window.e.trigger( 'login_ok', cb );
+            }
+        },
 
-    var routes = new Routes();
-    window.routes = routes;
-    Backbone.history.start();
+        function( cb ) {
+            var routes = new Routes();
+            window.routes = routes;
+            Backbone.history.start();
+
+            cb();
+        }
+    ]);
+
 });
 
