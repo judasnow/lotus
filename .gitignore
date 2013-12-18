@@ -9,4 +9,5 @@
 /client/node_modules/**/*
 
 /server/vendor
+/server/file/image/product/**/*
 
