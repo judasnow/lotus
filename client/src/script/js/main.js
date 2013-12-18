@@ -85,6 +85,8 @@ require([
             if( common.getSessionId() !== null ) {
                 // has logged in
                 window.e.trigger( 'login_ok', cb );
+            } else {
+                cb();
             }
         },
 
