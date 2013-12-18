@@ -37,7 +37,7 @@ define([
             footerView.model.set( 'isHomePage', true );
         });
 
-        e.on( 'login_ok', function() {
+        e.on( 'login_ok', function( cb ) {
         //{{{
             common.log( 'login_ok fire' );
 
@@ -50,6 +50,8 @@ define([
                 footerView.model.set({
                     isLogin: true
                 });
+
+                cb();
             });
         });//}}}
 

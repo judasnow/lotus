@@ -1,6 +1,6 @@
 .product-list {
     .product-list-vars {
-        @product-list-item-box-height: 222px;
+        @product-list-item-box-height: 320px;
         @product-list-item-pic-box-height: (@product-list-item-box-height / 3) * 2;
     }
     .product-list-vars;
@@ -10,14 +10,13 @@
     .product-list-item-box {
         width: 25%;
         min-height: @product-list-item-box-height;
-        background: #efefef;
 
         float: left;
         overflow: hidden;
 
         cursor: pointer;
         &:hover {
-            background: #dfdfdf;
+            background: rgba(192, 192, 192, 0.2);
         }
     }
 
@@ -27,7 +26,8 @@
 
     .product-list-item-pic-box {
         height: @product-list-item-pic-box-height;
-        background: #aaa;
+        background: rgba(230, 230, 230, 0.6);
+        text-align: center;
         border-radius: 2px;
 
         overflow: hidden;

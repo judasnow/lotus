@@ -1,0 +1,75 @@
+<div id="add_new_product_dialog" class="dialog-as-page">
+<div class="dialog">
+
+<div class="header">
+    <span class="title">添加一件新的商品</span>
+    <span class="sub_title">按要求填写表单，并提交</span>
+</div>
+
+<div class="body">
+    <div class="item">
+        <span class="error_info"></span>
+    </div>
+
+    <div class="item">
+        <input class="input" type="text" name="name" placeholder="商品名称">
+        <span class="hint">用户将看到的名字</span>
+    </div>
+
+    <div class="item">
+        <textarea class="product-describe-textarea input" name="describe" placeholder="商品描述" ></textarea>
+        <span class="hint">关于本商品的一段简洁描述</span>
+    </div>
+
+    <div class="item">
+        <input class="input small_input" name="original_price" type="text" placeholder="定价"><br />
+        <span class="hint">定价，填写商品的原始定价</span>
+    </div>
+
+    <div class="item">
+        <input class="input small_input" name="discount" type="text" placeholder="折扣"><br />
+        <span class="hint">折扣</span>
+    </div>
+
+    <div class="item">
+        <input class="input small_input" name="quantity" type="text" placeholder="数量"><br />
+        <span class="hint">数量，本次添加商品的数量</span>
+    </div>
+
+    <div class="item">
+        <span>一级分类</span>
+        <select class="select class_a_option" name="class_a"></select>
+        <br />
+        <span class="hint">顶级分类</span>
+    </div>
+
+    <div class="item">
+        <span>二级分类</span>
+        <select class="select class_b_option" name="class_b"></select>
+        <br />
+        <span class="hint">次级分类</span>
+    </div>
+
+    <div class="item">
+        <input class="image_input" name="image_input" type="file" accept="image/*">
+        <br />
+        <span class="hint">上传一张商品封面图片</span>
+        <ul class="image-preview preview-list"></ul>
+    </div>
+
+    <div class="item">
+        <input class="detail_image_input" name="detail_image_input" type="file" multiple accept="image/*">
+        <br />
+        <span class="hint">上传多张商品相关的细节照片</span>
+        <ul class="detail-image-preview-list preview-list"></ul>
+    </div>
+
+</div>
+
+<div class="footer">
+    <div class="btn_ok submit">提交</div>
+</div>
+
+</div>
+</div>
+
