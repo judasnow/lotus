@@ -9,7 +9,7 @@ define([
     'v/page/home',
     'v/page/seller_signup',
     'v/page/seller_login',
-    'v/page/add_new_product',
+    'v/page/edit_product',
 
     'v/page/shop_apply',
     'v/page/apply_result_search',
@@ -32,7 +32,7 @@ define([
     HomePageView,
     SellerSignupView,
     SellerLoginView,
-    AddNewProductPageView,
+    EditProductPageView,
 
     ShopApplyPageView,
     ApplyResultSearchPageView,
@@ -120,7 +120,15 @@ define([
 
         _showShop: function( shopId , currentPage ) {
         //{{{
-            new ShopPageView({ shop_id: shopId, current_page: currentPage });
+            var isSelfShop = false;
+            if( window.objectUser.get( 'shop_id' ) === shopId ) {
+                isSelfShop = true;
+            }
+            new ShopPageView({
+                shopId: shopId,
+                currentPage: currentPage,
+                isSelfShop: isSelfShop
+            });
         },//}}}
 
         _myShop: function( currentPage ) {
@@ -128,9 +136,9 @@ define([
                 window.routes.navigate('seller_login', {trigger: true});
             } else {
                 new ShopPageView({
-                    shop_id: window.objectUser.get( 'shop_id' ),
-                    current_page: currentPage,
-                    my_shop: true
+                    shopId: window.objectUser.get( 'shop_id' ),
+                    currentPage: currentPage,
+                    isSelfShop: true
                 });
             }
         },
@@ -155,7 +163,11 @@ define([
         },//}}}
 
         _addNewProduct: function() {
-            new AddNewProductPageView();
+            new EditProductPageView();
+        },
+
+        _editProduct: function( productId ) {
+            new EditProductPageView({ productId: productId });
         },
 
         _showNotFoundPage: function() {

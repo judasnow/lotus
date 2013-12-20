@@ -19,6 +19,9 @@ define([
 
     var ProductListView = Backbone.View.extend({
         events: {
+            'mouseover .shop-page-product-list-item': '_showToolBar',
+            'mouseleave .shop-page-product-list-item': '_hideToolBar',
+            'click .product-list-item-toolbar .edit-btn': '_editProduct',
             'click .shop-page-product-list-item': '_goProductDetailPage'
         },
 
@@ -34,11 +37,14 @@ define([
             _.bindAll(
                 this ,
 
-                'render' ,
-                '_addAll' ,
-                '_addOne' ,
+                '_editProduct',
+                '_showToolBar',
+                '_showToolBar',
+                '_addAll',
+                '_addOne',
                 '_goProductDetailPage',
-                'getListByPage'
+                'getListByPage',
+                'render'
             );
 
             this._coll = args.coll;
@@ -56,9 +62,29 @@ define([
             this._coll.each( this._addOne );
         },//}}}
 
+        _showToolBar: function( event ) {
+        //{{{
+            var $item = $( event.currentTarget );
+            $item.find( '.product-list-item-toolbar' ).show();
+        },//}}}
+
+        _hideToolBar: function( event ) {
+        //{{{
+            var $item = $( event.currentTarget );
+            $item.find( '.product-list-item-toolbar' ).hide();
+        },//}}}
+
+
+        _editProduct: function( event ) {
+        //{{{
+            var $item = $( event.currentTarget ).parents( '.shop-page-product-list-item' ),
+                productId = $item.attr( 'data-attr' );
+
+        },//}}}
+
         //( number , object ) -> void
         //其中 option hash 中保存的是 fetch 所需的额外参数
-        getListByPage: function( page , options ) {
+        getListByPage: function( page, options ) {
         //{{{
             if( typeof page !== 'number' ) {
                 throw new Error( 'param invalid' );
@@ -78,16 +104,18 @@ define([
                         window.sysNotice.setMsg( '没有商品了' );
                     }
                 },
-                error: function( coll , rep ) {
+                error: function( coll, rep ) {
                     console.dir( rep );
                 }
             });
         },//}}}
 
-        _goProductDetailPage: function( e ) {
+        _goProductDetailPage: function( event ) {
         //{{{
-            var productId = $( e.currentTarget ).attr( 'data-attr' );
-            window.routes.navigate( '/product_detail/' + productId , {trigger: true} );
+            if( ! $(event.target).is( '.edit-btn' ) ) {
+                var productId = $( event.currentTarget ).attr( 'data-attr' );
+                window.routes.navigate( '/product_detail/' + productId , {trigger: true} );
+            }
         }//}}}
 
     });

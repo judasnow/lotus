@@ -45,23 +45,32 @@ define([
         template: shopPageTpl,
 
         // ({ 
-        //  shop_id::number,
-        //  current_page::number
+        //  shopId::number,
+        //  currentPage::number,
+        //  isSelfShop::boolean
         // }) => void
         initialize: function( args ) {
         //{{{
-            if( isNaN( args.shop_id ) ) {
-                throw new Error( 'param invalid' );
+            this.events = {};
+
+            if( isNaN( args.shopId ) ) {
+                throw new Error( 'param invalid, shopId`s type must be number' );
             }
 
-            if( isNaN( args.current_page ) ) {
+            if( isNaN( args.currentPage ) ) {
                 this._currentPage = 1;
             } else {
                 this._currentPage = parseInt( args.current_page );
             }
 
             var that = this;
-            var shopId = args.shop_id;
+            var shopId = args.shopId;
+
+            // 表明是当前用户自己的店铺 允许用户修改商品信息
+            this._isSelfShop = false;
+            if( typeof args.isSelfShop === 'boolean' && args.isSelfShop === true ) {
+                this._isSelfShop = true;
+            }
 
             _.bindAll(
                 this ,
@@ -117,14 +126,17 @@ define([
             this._productListView.getListByPage( 1 , {
                 shop_id: this._model.get( 'shop_id' )
             });
+
         },//}}}
 
         render: function() {
         //{{{
-            this.$el.html( Mustache.to_html( this.template , this._model.toJSON() ) );
-            page.loadPage( this.$el );
+            var renderProductList = this._renderProductList;
 
-            this._renderProductList();
+            this.$el.html( Mustache.to_html( this.template , this._model.toJSON() ) );
+            page.loadPage( this.$el, function() {
+                renderProductList();
+            });
         }//}}}
     });
 
