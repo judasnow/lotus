@@ -1,8 +1,14 @@
-<div id="add_new_product_dialog" class="dialog-as-page">
+<div id="edit_product_dialog" class="dialog-as-page">
 <div class="dialog">
 
 <div class="header">
-    <span class="title">添加一件新的商品</span>
+    <span class="title">
+        {{^product_id}}添加一件商品{{/product_id}}
+        {{#product_id}}
+            修改商品信息
+            <a href="#product_detail/{{product_id}} ">编号: {{product_id}}</a> 
+        {{/product_id}}
+    </span>
     <span class="sub_title">按要求填写表单，并提交</span>
 </div>
 
@@ -12,27 +18,32 @@
     </div>
 
     <div class="item">
-        <input class="input" type="text" name="name" placeholder="商品名称">
+        <input class="input" type="text" name="name" placeholder="商品名称" value="{{product_name}}">
         <span class="hint">用户将看到的名字</span>
     </div>
 
     <div class="item">
-        <textarea class="product-describe-textarea input" name="describe" placeholder="商品描述" ></textarea>
+        <textarea class="product-describe-textarea input" name="describe" placeholder="商品描述" >
+            {{product_describe}}
+        </textarea>
         <span class="hint">关于本商品的一段简洁描述</span>
     </div>
 
     <div class="item">
-        <input class="input small_input" name="original_price" type="text" placeholder="定价"><br />
+        <input class="input small_input" name="original_price" type="text" placeholder="定价" value="{{product_original_price}}">
+        <br />
         <span class="hint">定价，填写商品的原始定价</span>
     </div>
 
     <div class="item">
-        <input class="input small_input" name="discount" type="text" placeholder="折扣"><br />
+        <input class="input small_input" name="discount" type="text" placeholder="折扣" value="{{product_discount}}">
+        <br />
         <span class="hint">折扣</span>
     </div>
 
     <div class="item">
-        <input class="input small_input" name="quantity" type="text" placeholder="数量"><br />
+        <input class="input small_input" name="quantity" type="text" placeholder="数量" value="{{product_quantity}}">
+        <br />
         <span class="hint">数量，本次添加商品的数量</span>
     </div>
 
@@ -67,9 +78,13 @@
 </div>
 
 <div class="footer">
-    <div class="btn_ok submit">提交</div>
+    <div class="btn_ok submit">
+        {{^product_id}}提交{{/product_id}}
+        {{#product_id}}确认修改{{/product_id}}
+    </div>
 </div>
 
 </div>
 </div>
+
 

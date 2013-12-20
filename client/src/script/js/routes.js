@@ -57,6 +57,7 @@ define([
             'apply_result_search': '_showApplyResultSearch',
             'product_detail/:productId': '_showProductDetailPage',
             'add_new_product': '_addNewProduct',
+            'edit_product/(:productId)': '_editProduct',
 
             'shop/:shopId(/:currentPage)': '_showShop',
             'my_shop(/:current_page)': '_myShop',
@@ -178,5 +179,6 @@ define([
 
     return Routes;
 });
+
 
 

@@ -18,10 +18,10 @@
     position: fixed;
     z-index: 10001;
 
-    border: 1px solid rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(0, 0, 0, 0.4);
     //padding: @dialog_box_padding;
     border-radius: @dialog_box_border_radius;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4),inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    box-shadow: 0 0px 16px rgba(0, 0, 0, 0.6),inset 0 1px 0 rgba(255, 255, 255, 0.5);
 
     .dialog {
         .dialog_var {
@@ -157,7 +157,7 @@
     position: absolute;
     top: 0;
     left: 0;
-    background: rgba(0,0,0,0.5);
+    background: rgba(0,0,0,0.4);
     width: 100%;
     //@XXX 需要根据不同的情况进行改变
     height: 400%;
@@ -184,14 +184,14 @@
     
 }
 
-#add_new_product_dialog {
+#edit_product_dialog {
 //{{{
-    @add-new-product-dialog-width: 840;
+    @add-new-product-dialog-width: 800;
     @add-new-product-dialog-height: 222;
     .dialog_box_base( @add-new-product-dialog-width , @add-new-product-dialog-height );
 
     .product-describe-textarea {
-        height: 128px;
+        height: 140px;
     }
 
     .preview-list {
@@ -213,39 +213,33 @@
             float: left;
 
             display: block;
-            background: #efefef;
+            background: #fefefe;
+            position: relative;
         }
 
         .preview-img {
             .preview-img-box > .preview-img-box-var;
 
-            @size: @preview-img-box-max-width * 3;
+            @size: @preview-img-box-max-width;
             position: relative;
             max-width: @size;
-            max-height: @size;
-            left: 33.3%;
-            top: 33.3%;
-            margin-left: -(@size / 3);
-            margin-top: -(@size / 3);
-            z-index: 998;
         }
 
         .preview-img-func {
-            @preview-img-remove-size: 48px;
+            @preview-img-remove-size: 26px;
 
-            width: 100%;
+            display: none;
             height: @preview-img-remove-size;
+            width: @preview-img-remove-size;
             line-height: @preview-img-remove-size;
             text-align: center;
-            display: inline-block;
-            position: relative;
-            top: 50%;
-            margin-top: -(@preview-img-remove-size / 2);
-            z-index: 997;
+            position: absolute;
+            right: 0;
+            z-index: 1001;
 
             i {
                 cursor: pointer;
-                color: @link-color;
+                color: @link-color-darken;
                 font-size: @preview-img-remove-size;
             }
         }

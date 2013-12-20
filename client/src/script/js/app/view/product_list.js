@@ -80,6 +80,7 @@ define([
             var $item = $( event.currentTarget ).parents( '.shop-page-product-list-item' ),
                 productId = $item.attr( 'data-attr' );
 
+            window.routes.navigate( '/edit_product/' + productId, {trigger: true} );
         },//}}}
 
         //( number , object ) -> void
@@ -112,7 +113,9 @@ define([
 
         _goProductDetailPage: function( event ) {
         //{{{
-            if( ! $(event.target).is( '.edit-btn' ) ) {
+            var $target = $( event.target );
+
+            if( ! $target.is( '.edit-btn' ) && ! $target.is( '.product-list-item-toolbar' ) ) {
                 var productId = $( event.currentTarget ).attr( 'data-attr' );
                 window.routes.navigate( '/product_detail/' + productId , {trigger: true} );
             }

@@ -19,10 +19,10 @@ define([
    'utilities/helper',
    'utilities/page',
 
-   'text!tpl/page/add_new_product.mustache',
+   'text!tpl/page/edit_product.mustache',
    'text!tpl/dialog/class_a_select.mustache',
    'text!tpl/dialog/class_b_select.mustache',
-   'text!tpl/dialog/add_new_product_picture_preview_item.mustache'
+   'text!tpl/dialog/edit_product_picture_preview_item.mustache'
 //}}}
 ] , function(
 //{{{
@@ -45,19 +45,19 @@ define([
     helper,
     page,
 
-    addNewProductTpl,
+    editProductTpl,
     classASelectOptionTpl,
     classBSelectOptionTpl,
-    addNewProductPicturePreviewItem
+    editProductPicturePreviewItem
 //}}}
 ) {
     'use strict';
 
-    var AddNewProductPageView = Backbone.View.extend({
-        id: 'add_new_product',
+    var EditProductPageView = Backbone.View.extend({
+        id: 'edit_product',
         className: 'box',
 
-        template: addNewProductTpl,
+        template: editProductTpl,
 
         events: {
             'change .class_a_option': '_changeClassAOption',
@@ -73,15 +73,14 @@ define([
             'click .submit': 'doSubmit'
         },
 
-        initialize: function() {
+        initialize: function( args ) {
         //{{{
             _.bindAll(
-                this ,
+                this,
 
-                'render' ,
+                'render',
 
                 '_getEls',
-                'doSubmit',
                 '_changeClassAOption',
                 '_fetchClassAList',
                 '_setClassAOptions',
@@ -93,82 +92,39 @@ define([
                 '_hideFuncBtns',
                 '_removeThisImage',
                 '_uploadImages',
-                '_checkAttr'
+                '_checkAttr',
+                'doSubmit'
             );
-
-            this._model = new Product();
 
             this.classAColl = new ClassAColl();
             this.classAColl.on( 'fetch_ok' , this._setClassAOptions );
-
             this.classBColl = new ClassBColl();
             this.classBColl.on( 'fetch_ok' , this._setClassBOptions );
 
-            this.render();
-            this._getEls();
-
-            //size = 1
-            this._imageFiles = {};
-            //size >= 1
-            this._detailImageFiles = {};
-
+            this._imageFiles = [];
+            this._detailImageFiles = [];
             this._imageName = '';
             this._detailNames = [];
-        },//}}}
 
-        _setClassAOptions: function() {
-        //{{{
-            var $classAOption = this.$el.find( '.class_a_option' );
-            $classAOption.html( Mustache.to_html( classASelectOptionTpl , {options: this.classAColl.toJSON()} ) );
-            this._trySetClassBOptions( this._$classA.val() );
-        },//}}}
+            if( typeof args !== 'undefined' 
+                    && typeof args.productId !== 'undefined' 
+                    && ! isNaN( args.productId ) ) 
+            {
+                // 这里不能先 new 一个 product 再设置 id 因为需要向 initialize 方法传入 id 来
+                // 设置不同的 url , 这是前期设计的一个失误
+                this._model = new Product({ id: args.productId });
+                this._model.on( 'fetch_ok', this.render );
 
-        //體現了事件處理同邏輯代碼分開的必要性
-        _changeClassAOption: function( event ) {
-        //{{{
-            var $option = $( event.currentTarget );
-            this._trySetClassBOptions( $option.val() )
-        },//}}}
+                this._model.fetch({
+                    success: function( model ) {
+                        model.trigger( 'fetch_ok' );
+                    }
+                });
+            } else {
+                this._model = new Product();
+                this.render();
+            }
 
-        _trySetClassBOptions: function( classAId ) {
-        //{{{
-            this.classBColl.fetch({
-                data: {
-                    class_a_id: classAId
-                },
-                success: function( coll ) {
-                    coll.trigger( 'fetch_ok' );
-                }
-            });
-        },//}}}
-
-        _setClassBOptions: function() {
-        //{{{
-            var $classBOption = this.$el.find( '.class_b_option' );
-            $classBOption.html( Mustache.to_html( classBSelectOptionTpl , {options: this.classBColl.toJSON()} ) );
-        },//}}}
-
-        _fetchClassAList: function() {
-        //{{{
-            this.classAColl.fetch({
-                success: function( coll ) {
-                    coll.trigger( 'fetch_ok' );
-                }
-            });
-        },//}}}
-
-        _showFuncBtns: function( e ) {
-        //{{{
-            $( e.currentTarget )
-                .find( '.preview-img-func' )
-                .css( 'z-index' , '999' );
-        },//}}}
-
-        _hideFuncBtns: function( e ) {
-        //{{{
-            $( e.currentTarget )
-                .find( '.preview-img-func' )
-                .css( 'z-index' , '997' );
         },//}}}
 
         _getEls: function() {
@@ -188,6 +144,96 @@ define([
             this._$detailImagePreviewList = this.$el.find( '.detail-image-preview-list' );
 
             this._$errorInfo = this.$el.find( '.error_info' );
+        },//}}}
+
+        _setModel: function() {
+        //{{{
+            var attrs = {
+                name: this._$name.val(),
+                describe: this._$describe.val(),
+                original_price: this._$originalPrice.val(),
+                discount: this._$discount.val(),
+                quantity: this._$quantity.val(),
+                class_a: this._$classA.val(),
+                class_b: this._$classB.val()
+            };
+
+            this._model.set( attrs );
+        },//}}}
+
+        // 获取 class_a 列表中的信息
+        _fetchClassAList: function() {
+        //{{{
+            this.classAColl.fetch({
+                success: function( coll ) {
+                    coll.trigger( 'fetch_ok' );
+                }
+            });
+        },//}}}
+
+        _setClassAOptions: function() {
+        //{{{
+            //渲染 class_a 列表
+            this._$classA.html(
+                Mustache.to_html(
+                    classASelectOptionTpl,
+                    {
+                        options: this.classAColl.toJSON()
+                    }
+                )
+            );
+
+            //如果是在修改已有商品的信息 则填写相应商品的 class_a 信息
+            //并据此加载 class_b 中的信息
+            var classAId = this._model.get( 'product_class_a' );
+            if( typeof classAId === 'undefined' ) {
+                this._trySetClassBOptions( this._$classA.val() );
+            } else {
+                this._$classA.val( classAId );
+                this._trySetClassBOptions( classAId );
+            }
+        },//}}}
+
+        _setClassBOptions: function() {
+        //{{{
+            var $classBOption = this.$el.find( '.class_b_option' );
+            $classBOption.html( Mustache.to_html( classBSelectOptionTpl , {options: this.classBColl.toJSON()} ) );
+
+            var classBId = this._model.get( 'product_class_b' );
+            if( typeof classBId !== 'undefined' ) {
+                this._$classB.val( classBId );
+            }
+
+        },//}}}
+
+        _changeClassAOption: function( event ) {
+        //{{{
+            var $option = $( event.currentTarget );
+            this._trySetClassBOptions( $option.val() )
+        },//}}}
+
+        _trySetClassBOptions: function( classAId ) {
+        //{{{
+            this.classBColl.fetch({
+                data: {
+                    class_a_id: classAId
+                },
+                success: function( coll ) {
+                    coll.trigger( 'fetch_ok' );
+                }
+            });
+        },//}}}
+
+        _showFuncBtns: function( event ) {
+        //{{{
+            $( event.currentTarget )
+                .find( '.preview-img-func' ).show();
+        },//}}}
+
+        _hideFuncBtns: function( event ) {
+        //{{{
+            $( event.currentTarget )
+                .find( '.preview-img-func' ).hide();
         },//}}}
 
         //() => boolean
@@ -236,26 +282,10 @@ define([
             return true;
         },//}}}
 
-        _setModel: function() {
-        //{{{
-            var attrs = {
-                name: this._$name.val(),
-                describe: this._$describe.val(),
-                original_price: this._$originalPrice.val(),
-                discount: this._$discount.val(),
-                quantity: this._$quantity.val(),
-                class_a: this._$classA.val(),
-                class_b: this._$classB.val()
-            };
-
-            this._model.set( attrs );
-        },//}}}
-
         _uploadImages: function( doSubmitCb ) {
         //{{{
             var that = this;
             var targetUrl = "upload_api/do_upload_image/";
-
             var files = [];
 
             _.each( this._imageFiles, function( file, index ) {
@@ -319,25 +349,27 @@ define([
             var files = [];
 
             if( where === 'image' ) {
+
                 to$El = this._$imagePreview;
                 to$El.html( '' );
                 files = this._imageFiles;
+
             } else if( where === 'detail_image' ) {
+
                 to$El = this._$detailImagePreviewList;
                 files = this._detailImageFiles;
-            } else {
-                //shoud not be here
+
             }
 
-            _.each( files , function( file , index ) {
+            _.each( files, function( file , index ) {
                 var reader = new FileReader();
 
-                reader.onload = function( e ) {
+                reader.onload = function( event ) {
                     to$El.prepend( Mustache.to_html(
-                        addNewProductPicturePreviewItem,
+                        editProductPicturePreviewItem,
                         {
                             index: index,
-                            src: e.target.result 
+                            src: event.target.result
                         }
                     ));
                 }
@@ -358,17 +390,19 @@ define([
 
             } else if( $input.hasClass( 'detail_image_input' ) ) {
 
-                _.extend( this._detailImageFiles , files );
-                this._previewImage( 'detail_image' );
+                this._detailImageFiles =
+                    _.filter( _.values( files ), function( item ) {
+                        return item instanceof File;
+                    }
+                ).concat( this._detailImageFiles );
 
-            } else {
-                //shoud never be here
+                this._previewImage( 'detail_image' );
             }
         },//}}}
 
-        _removeThisImage: function( e ) {
+        _removeThisImage: function( event ) {
         //{{{
-            $( e.currentTarget )
+            $( event.currentTarget )
                 .parent()
                 .parent()
                 .remove();
@@ -410,12 +444,18 @@ define([
 
         render: function() {
         //{{{
-            this.$el.html( Mustache.to_html( this.template ) );
+            console.dir( this._model.toJSON()  )
+
+            this.$el.html( Mustache.to_html( this.template, this._model.toJSON() ) );
+            this._getEls();
+
             this._fetchClassAList();
+
             page.loadPage( this.$el );
+
         }//}}}
     });
 
-    return AddNewProductPageView;
+    return EditProductPageView;
 });
 
