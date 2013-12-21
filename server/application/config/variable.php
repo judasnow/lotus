@@ -22,10 +22,11 @@ $config['shop_show_product_page_num'] = 12;
 //Qiniuyun设置
 $config['qiniuyun_image_expire_time'] = 6 * 60 * 60;//过期时间为 6 小时
 
+$hostname = gethostname();
 
 
 /*-------------------------------------------------------------------------------------*/
-if (PHP_OS == 'Darwin' || $hostname == 'x200' ) {
+if (false && PHP_OS == 'Darwin' || $hostname == 'x200' ) {
     //开启的节点
     $config['qiniuyun_access_nodes'] = ['maoejie'];
     
