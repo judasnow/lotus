@@ -1,0 +1,28 @@
+{
+    "name": "AlloVince/EvaThumber",
+    "description": "EvaThumber",
+    "license": "BSD-3-Clause",
+    "homepage": "http://avnpc.com/",
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/AlloVince/Imagine"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3",
+        "imagine/Imagine": "dev-EvaThumber"
+    },
+    "require-dev": {
+        "firephp/firephp-core": "dev-master",
+        "rmccue/Requests": "dev-master@dev",
+        "aferrandini/phpqrcode": "dev-master@dev",
+		"symfony/process": "dev-master@dev"
+    },
+	"autoload": {
+        "psr-0": {
+			"Requests": "library/",
+			"PHPQRCode": "lib/"
+		}
+    }
+}
