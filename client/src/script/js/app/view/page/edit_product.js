@@ -1,3 +1,7 @@
+//
+// 添加一个新的商品 或者 修改一个已有的商品
+// @author <judasnow@gmail.com>
+//
 define([
 //{{{
    'zepto',
@@ -75,12 +79,15 @@ define([
 
         initialize: function( args ) {
         //{{{
+            var that = this;
+
             _.bindAll(
                 this,
 
                 'render',
 
                 '_getEls',
+                '_convertImageUrlToNameOnly',
                 '_changeClassAOption',
                 '_fetchClassAList',
                 '_setClassAOptions',
@@ -101,22 +108,41 @@ define([
             this.classBColl = new ClassBColl();
             this.classBColl.on( 'fetch_ok' , this._setClassBOptions );
 
+            //用户上传的文件对象
+            // [ File ]
             this._imageFiles = [];
             this._detailImageFiles = [];
+
+            //用户选择的文件 在上传成功之后 获取的唯一标识
             this._imageName = '';
+            //[ string ]
             this._detailNames = [];
 
-            if( typeof args !== 'undefined' 
-                    && typeof args.productId !== 'undefined' 
-                    && ! isNaN( args.productId ) ) 
+            if( typeof args !== 'undefined'
+                && typeof args.productId !== 'undefined'
+                && ! isNaN( args.productId ) )
             {
                 // 这里不能先 new 一个 product 再设置 id 因为需要向 initialize 方法传入 id 来
                 // 设置不同的 url , 这是前期设计的一个失误
                 this._model = new Product({ id: args.productId });
                 this._model.on( 'fetch_ok', this.render );
-
                 this._model.fetch({
                     success: function( model ) {
+                        var imageUrl = model.get( 'product_image_url' );
+                        var detailImageUrl = model.get( 'product_detail_image_url' );
+
+                        if( typeof imageUrl === 'string' ) {
+                           that._imageName = that._convertImageUrlToNameOnly( imageUrl );
+                        }
+                        if( $.isArray( detailImageUrl ) ) {
+                            _.each(
+                                detailImageUrl,
+                                function( url ) {
+                                    return that._detailNames.push( that._convertImageUrlToNameOnly( url ) )
+                                }
+                            );
+                        }
+
                         model.trigger( 'fetch_ok' );
                     }
                 });
@@ -126,6 +152,18 @@ define([
             }
 
         },//}}}
+
+        //( url::string ) => string
+        _convertImageUrlToNameOnly: function( url ) {
+            if( typeof url === 'string' ) {
+                var imageName = url.match( /.{25}\.jpg/i )[0];
+                if( _.isString( imageName ) ) {
+                    return imageName.replace( '.jpg', '' );
+                }
+            }
+
+            return '';
+        },
 
         _getEls: function() {
         //{{{
@@ -357,7 +395,9 @@ define([
             } else if( where === 'detail_image' ) {
 
                 to$El = this._$detailImagePreviewList;
-                files = this._detailImageFiles;
+                //@TODO 闪烁的情况
+                to$El.html( '' );
+                files = this._detailImageFiles; 
 
             }
 
@@ -444,15 +484,19 @@ define([
 
         render: function() {
         //{{{
-            console.dir( this._model.toJSON()  )
+            console.dir( this._model.toJSON() );
 
-            this.$el.html( Mustache.to_html( this.template, this._model.toJSON() ) );
+            this.$el.html(
+                Mustache.to_html(
+                    this.template,
+                    this._model.toJSON()
+                )
+            );
             this._getEls();
 
             this._fetchClassAList();
 
             page.loadPage( this.$el );
-
         }//}}}
     });
 

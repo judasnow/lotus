@@ -26,7 +26,7 @@ define([
                 'product_describe_summary':
                     helper.cutTextByMaxLength( this.get( 'product_describe' ), MAX_LENGTH ),
                 'product_name_summary':
-                    helper.cutTextByMaxLength( this.get( 'product_name' ), MAX_LENGTH )
+                    helper.cutTextByMaxLength( this.get( 'product_name' ), MAX_LENGTH + 5 )
             });
 
         }
