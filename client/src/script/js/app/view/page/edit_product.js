@@ -108,14 +108,17 @@ define([
             this.classBColl = new ClassBColl();
             this.classBColl.on( 'fetch_ok' , this._setClassBOptions );
 
-            //用户上传的文件对象
-            // [ File ]
+            // [ file::File | url::string ]
+            // 封面图片以及商品细节图片 有可能是
+            // 对应于用户选择的图片的文件对象 也 有可能是
+            // 之前文件的 url (仅仅在修改信息的时候 会出现这样的情况)
             this._imageFiles = [];
             this._detailImageFiles = [];
 
-            //用户选择的文件 在上传成功之后 获取的唯一标识
-            this._imageName = '';
-            //[ string ]
+            // 用户选择的文件 在上传成功之后 获取的唯一标识 或
+            // 者是 url 中对应的 文件名称部分
+            // [ string ]
+            this._imageName = [];
             this._detailNames = [];
 
             if ( typeof args !== 'undefined'
@@ -123,26 +126,29 @@ define([
                 && ! isNaN( args.productId ) )
             {
                 // edit
-                // 
+                //
                 // 这里不能先 new 一个 product 再设置 id 因为需要向 initialize 方法传入 id 来
                 // 设置不同的 url , 这是前期设计的一个失误
                 this._model = new Product({ id: args.productId });
                 this._model.on( 'fetch_ok', this.render );
+
                 this._model.fetch({
                     success: function( model ) {
+                        // 初始化商品图片信息
                         var imageUrl = model.get( 'product_image_url' );
                         var detailImageUrl = model.get( 'product_detail_image_url' );
 
                         if( typeof imageUrl === 'string' ) {
                             that._imageFiles.push( imageUrl );
-                            that._imageName = that._convertImageUrlToNameOnly( imageUrl );
+                            that._imageName.push( that._convertImageUrlToNameOnly( imageUrl ) );
                         }
+
                         if( $.isArray( detailImageUrl ) ) {
                             _.each(
                                 detailImageUrl,
                                 function( url ) {
                                     that._detailImageFiles.push( url );
-                                    that._detailNames.push( that._convertImageUrlToNameOnly( url ) )
+                                    that._detailNames.push( that._convertImageUrlToNameOnly( url ) );
                                 }
                             );
                         }
@@ -157,18 +163,6 @@ define([
             }
 
         },//}}}
-
-        //( url::string ) => string
-        _convertImageUrlToNameOnly: function( url ) {
-            if( typeof url === 'string' ) {
-                var imageName = url.match( /.{25}\.jpg/i )[0];
-                if( _.isString( imageName ) ) {
-                    return imageName.replace( '.jpg', '' );
-                }
-            }
-
-            return '';
-        },
 
         _getEls: function() {
         //{{{
@@ -325,6 +319,28 @@ define([
             return true;
         },//}}}
 
+        // 返回默认图片 证明数据库中有不一致的情况
+        // ( url::string ) => boolean
+        _isDefaultImage: function( url ) {
+            return url.indexOf( 'defaultimage-product.jpg' ) !== -1;
+        },
+
+        //( url::string ) => string
+        _convertImageUrlToNameOnly: function( url ) {
+        //{{{
+            if( typeof url === 'string' ) {
+                if( ! this._isDefaultImage( url ) ) {
+                    var imageName = url.match( /.{25}\.jpg/i )[0];
+
+                    if( _.isString( imageName ) ) {
+                        return imageName.replace( '.jpg', '' );
+                    }
+                }
+            }
+
+            return '';
+        },//}}}
+
         _uploadImages: function( doSubmitCb ) {
         //{{{
             var that = this;
@@ -388,6 +404,7 @@ define([
         //@parem where string ['image'|'detail_image']
         _previewImage: function( where ) {
         //{{{
+            var that = this;
             var to$El = null;
             var files = [];
 
@@ -402,7 +419,7 @@ define([
                 to$El = this._$detailImagePreviewList;
                 //@TODO 闪烁的情况
                 to$El.html( '' );
-                files = this._detailImageFiles; 
+                files = this._detailImageFiles;
 
             }
 
@@ -424,6 +441,9 @@ define([
                     reader.readAsDataURL( file );
                 } else {
                     // 从 url
+                    if( that._isDefaultImage( file ) ) {
+                        return true;
+                    }
                     to$El.prepend( Mustache.to_html(
                         editProductPicturePreviewItem,
                         {
@@ -442,7 +462,9 @@ define([
 
             if ( $input.hasClass( 'image_input' ) ) {
 
-                this._imageFiles = files;
+                //因为之允许有一个 cover image
+                this._imageFiles = [];
+                this._imageFiles.push( files );
                 this._previewImage( 'image' );
 
             } else if ( $input.hasClass( 'detail_image_input' ) ) {
@@ -460,14 +482,19 @@ define([
         _removeThisImage: function( event ) {
         //{{{
             var $imageBox = $( event.currentTarget ).parents( '.preview-img-box' );
-            var index = $imageBox.attr( 'data-attr' );
-            $imageBox.remove();
+            var index = $imageBox.attr( 'data-index' );
 
             if( $imageBox.parents( '.detail-image-preview-list' ).length > 0 ) {
-                //detail
+                //detail image
+                delete( this._detailImageFiles[index] );
+                delete( this._detailNames[index] );
             } else if ( $imageBox.parents( '.image-preview' ).length > 0 ) {
-                //cover
+                //cover image
+                delete( this._imageFiles[index] );
+                delete( this._imageName[index] );
             }
+
+            $imageBox.remove();
         },//}}}
 
         doSubmit: function() {
@@ -495,11 +522,11 @@ define([
                         success: function() {
                             window.e.trigger( 'hide_loading' );
                             window.sysNotice.setMsg( '添加新的商品成功' );
+
                             cb();
                         }
                     });
                 }
-
             ]);
 
         },//}}}
@@ -519,6 +546,7 @@ define([
             this._fetchClassAList();
 
             page.loadPage( this.$el );
+
             this._previewImage( 'detail_image' );
             this._previewImage( 'image' );
         }//}}}
