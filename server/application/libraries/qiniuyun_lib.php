@@ -87,7 +87,7 @@ class Qiniuyun_lib {
             //在失败队列中，从本地获取，重新加入失败队列
             $this->redis->rpush('cloud_worker_uploaded_failed', $image_name);
             return $this->thumbnail_image_url_form_local($image_name, $size, $type);
-        } elseif ($indexOf = $this->redis->sismember('cloud_worker_upoading_image', $image_name)) {
+        } elseif ($indexOf = $this->redis->sismember('cloud_worker_uploading_image', $image_name)) {
             //在正在上传队列中
             return $this->thumbnail_image_url_form_local($image_name, $size, $type);
         }
