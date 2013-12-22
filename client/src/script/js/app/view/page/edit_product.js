@@ -121,6 +121,7 @@ define([
             this._imageName = [];
             this._detailNames = [];
 
+            this._Edit = false;
             if ( typeof args !== 'undefined'
                 && typeof args.productId !== 'undefined'
                 && ! isNaN( args.productId ) )
@@ -129,6 +130,7 @@ define([
                 //
                 // 这里不能先 new 一个 product 再设置 id 因为需要向 initialize 方法传入 id 来
                 // 设置不同的 url , 这是前期设计的一个失误
+                this._Edit = true;
                 this._model = new Product({ id: args.productId });
                 this._model.on( 'fetch_ok', this.render );
 
@@ -347,57 +349,67 @@ define([
             var targetUrl = "upload_api/do_upload_image/";
             var files = [];
 
+            console.dir( this._imageFiles )
+            console.dir( this._detailImageFiles )
+
             _.each( this._imageFiles, function( file, index ) {
-               files.push({
-                   type: 'image',
-                   file: file
-               });
+                if ( file instanceof File ) {
+                    files.push({
+                        type: 'image',
+                        file: file
+                    })
+                }
             });
 
             _.each( this._detailImageFiles, function( file, index ) {
-               files.push({
-                   type: 'detail_image',
-                   file: file
-               });
+                if( file instanceof File ) {
+                    files.push({
+                        type: 'detail_image',
+                        file: file
+                    });
+                }
             });
 
-            window.sysNotice.setMsg( '上传图片中...' );
+            if( files.length > 0 ) {
 
-            async.eachSeries(
+                window.sysNotice.setMsg( '上传图片中...' );
 
-                files,
+                async.eachSeries(
 
-                function( fileInfoObj, cb ) {
-                    var type = fileInfoObj.type;
-                    var file = fileInfoObj.file;
+                    files,
 
-                    common.uploadFile( file, targetUrl, function( resText ) {
-                        var resObj = JSON.parse( resText );
-                        var imageName = resObj.image_name;
+                    function( fileInfoObj, cb ) {
+                        var type = fileInfoObj.type;
+                        var file = fileInfoObj.file;
 
-                        //@XXX
-                        if( type === 'image' ) {
-                            that._imageName = imageName;
-                            that._model.set( 'image' , that._imageName );
-                        } else if( type === 'detail_image' ) {
-                            that._detailNames.push( imageName );
-                            that._model.set( 'detail_image' , that._detailNames.join( ',' ) );
+                        common.uploadFile( file, targetUrl, function( resText ) {
+                            var resObj = JSON.parse( resText );
+                            var imageName = resObj.image_name;
+
+                            //@XXX
+                            if( type === 'image' ) {
+                                that._imageName = imageName;
+                            } else if( type === 'detail_image' ) {
+                                that._detailNames.push( imageName );
+                            }
+
+                            cb( null );
+                        });
+
+                    },
+
+                    function( err ) {
+
+                        if( err ) {
+                            window.sysNotice.setMsg( '上传图片时发生错误，请稍后再试一次' );
                         }
 
-                        cb( null );
-                    });
-
-                },
-
-                function( err ) {
-
-                    if( err ) {
-                        window.sysNotice.setMsg( '上传图片时发生错误，请稍后再试一次' );
+                        doSubmitCb();
                     }
-
-                    doSubmitCb();
-                }
-            );
+                );
+            } else {
+                doSubmitCb( null );
+            }
 
         },//}}}
 
@@ -464,7 +476,7 @@ define([
 
                 //因为之允许有一个 cover image
                 this._imageFiles = [];
-                this._imageFiles.push( files );
+                this._imageFiles.push( files[0] );
                 this._previewImage( 'image' );
 
             } else if ( $input.hasClass( 'detail_image_input' ) ) {
@@ -518,14 +530,27 @@ define([
                 },
 
                 function( cb ) {
-                    that._model.save( null , {
-                        success: function() {
-                            window.e.trigger( 'hide_loading' );
-                            window.sysNotice.setMsg( '添加新的商品成功' );
+                    that._model.set( 'image', that._imageName );
+                    that._model.set( 'detail_image', that._detailNames.join( ',' ) );
 
+                    if( that._isEdit === false ) {
+                        // add new
+                        that._model.save( null , {
+                            success: function() {
+                                window.e.trigger( 'hide_loading' );
+                                window.sysNotice.setMsg( '添加新的商品成功' );
+
+                                cb();
+                            }
+                        });
+                    } else {
+                        // edit
+                        that._model.doUpdate( function() {
+                            window.e.trigger( 'hide_loading' );
+                            window.sysNotice.setMsg( '更新商品信息成功' );
                             cb();
-                        }
-                    });
+                        });
+                    }
                 }
             ]);
 
@@ -533,8 +558,6 @@ define([
 
         render: function() {
         //{{{
-            console.dir( this._model.toJSON() );
-
             this.$el.html(
                 Mustache.to_html(
                     this.template,

@@ -16,7 +16,7 @@ define([
             var MAX_LENGTH = 35;
 
             if( typeof args !== 'undefined' && typeof args.id !== 'undefined' && ! isNaN ( args.id ) ) {
-                this.set( 'id' , args.id );
+                this.set( 'id', args.id );
                 this.url = config.serverAddress + 'product_api/product/?product_id=' + this.get( 'id' );
             } else {
                 this.urlRoot = config.serverAddress + 'product_api/new_product/?session_id=' + common.getSessionId();
@@ -28,7 +28,15 @@ define([
                 'product_name_summary':
                     helper.cutTextByMaxLength( this.get( 'product_name' ), MAX_LENGTH + 5 )
             });
+        },
 
+        doUpdate: function( success, fail ) {
+            var url = config.serverAddress + 'product_api/product_update/?session_id=' + common.getSessionId();
+            $.post( url, this.toJSON(), function() {
+                if( _.isFunction( success ) ) {
+                    success();
+                }
+            });
         }
     });
 
