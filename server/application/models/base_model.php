@@ -44,7 +44,11 @@ class Base_model {
     }
 
     public function base_update(array $cond, array $content) {
-        $this->_CI->db->update($this->_table, $content, $cond);
+        try{
+            $this->_CI->db->update($this->_table, $content, $cond);
+        }catch( Exception $e ) {
+            var_dump( $e );
+        }
     }
 
     public function base_delete(array $cond) {
