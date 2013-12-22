@@ -8,6 +8,7 @@ class Product_lib {
     
     private $_CI;
     public $err_msg = array();
+    public $redis;
 
     public function __construct() {
         $this->_CI =& get_instance();
@@ -18,6 +19,12 @@ class Product_lib {
         $this->_CI->load->model('class_model', 'class_m');
         $this->_CI->load->library('view_lib');
         $this->_CI->load->library('qiniuyun_lib');
+        $this->_CI->load->library('access_lib');
+        $this->redis = new \Predis\Client([
+            'scheme' => $this->_CI->config->item('scheme'),
+            'host'   => $this->_CI->config->item('host'),
+            'port'   => $this->_CI->config->item('port')
+        ]);
     }
 
     /**
@@ -71,6 +78,7 @@ class Product_lib {
          
             $product_info_format['product_image_url'] = $this->_CI->qiniuyun_lib->thumbnail_qiniu_image_url($product_info['image'] . '.jpg', $location_main, 'product');
             if ($product_info['detail_image'] == '') {
+                $product_info_format['product_detail_image'] = array();
                 $product_info_format['product_detail_image_url'] = array();
             } else {
                 $product_info_format['product_detail_image'] = array();
@@ -78,7 +86,6 @@ class Product_lib {
                 foreach ($product_info_format['product_detail_image']  as $key => $value) {
                     $product_info_format['product_detail_image_url'][$key] = $this->_CI->qiniuyun_lib->thumbnail_qiniu_image_url($value . '.jpg', $location_detail, 'product');
                 }
-                unset($product_info_format['product_detail_image']);
             }
             
             $product_info_format['product_original_price'] = $product_info['original_price'];
@@ -87,6 +94,10 @@ class Product_lib {
             
             $product_info_format['product_quantity'] = $product_info['quantity']; 
             $product_info_format['shop_id'] = $product_info['shop_id'];
+            //合并所有图片信息
+            array_push($product_info_format['product_detail_image'], $product_info['image']);
+            $product_info_format['lock'] = $this->product_lock($product_id_string, $product_info_format['product_detail_image']);
+            unset($product_info_format['product_detail_image']);
             return array(
                 'code' => 200,
                 'msg'  => [],
@@ -133,6 +144,7 @@ class Product_lib {
             
             $product_info_format['product_image_url'] = $this->_CI->qiniuyun_lib->thumbnail_qiniu_image_url($product_info['image'] . '.jpg', $location_main, 'product');
             if ($product_info['detail_image'] == '') {
+                $product_info_format['product_detail_image'] = array();
                 $product_info_format['product_detail_image_url'] = array();
             } else {
                 $product_info_format['product_detail_image'] = array();
@@ -140,7 +152,6 @@ class Product_lib {
                 foreach ($product_info_format['product_detail_image']  as $key => $value) {
                     $product_info_format['product_detail_image_url'][$key] = $this->_CI->qiniuyun_lib->thumbnail_qiniu_image_url($value . '.jpg', $location_detail , 'product');
                 }
-                unset($product_info_format['product_detail_image']);
             }
             
             $product_info_format['product_original_price'] = $product_info['original_price'];
@@ -149,6 +160,12 @@ class Product_lib {
             
             $product_info_format['product_quantity'] = $product_info['quantity'];
             $product_info_format['shop_id'] = $product_info['shop_id'];
+            
+            //合并所有图片信息
+            array_push($product_info_format['product_detail_image'], $product_info['image']);
+            $product_info_format['lock'] = $this->product_lock($product_info_format['product_id'], $product_info_format['product_detail_image']);
+            unset($product_info_format['product_detail_image']);
+            
             return array(
                 'code' => 200,
                 'msg'  => [],
@@ -284,5 +301,36 @@ class Product_lib {
                 'data' => []
             );
         }
+    }
+
+    //验证用户是否能够对该商品进行更新
+    private function product_lock($id, $image_info) {
+        //判断该商品是否属于当前登录用户
+        $owner = $this->_CI->access_lib->validate_privilege('product', $id);
+        if (!empty($this->_CI->access_lib->error)) {
+            //该用户不具有权限
+            return true;
+        }
+        foreach ($image_info as $key => $image_name) {
+            //判断该图片是否还在上传中
+            if ($searchList = $this->redis->lrem('cloud_worker_waiting_upload_image', 0, $image_name)) {
+                //在上传队列中，从本地获取资源，从新加入队列
+                $this->redis->rpush('cloud_worker_waiting_upload_image', $image_name);
+                return true;
+            } elseif ($indexOf = $this->redis->zrank('cloud_worker_retry_upload_image', $image_name)) {
+                //在重试队列中，从本地获取资源，重新加入队列
+                $this->redis->zadd('cloud_worker_retry_upload_image', 1, $image_name);
+                return true;
+            } elseif ($searchListOf = $this->redis->lrem('cloud_worker_uploaded_failed', 0, $image_name)) {
+                //在失败队列中，从本地获取，重新加入失败队列
+                $this->redis->rpush('cloud_worker_uploaded_failed', $image_name);
+                return true;
+            } elseif ($indexOf = $this->redis->sismember('cloud_worker_uploading_image', $image_name)) {
+                //在正在上传队列中
+                return $this->thumbnail_image_url_form_local($image_name, $size, $type);
+                return true;
+            }
+        }
+        return false;
     }
 }
