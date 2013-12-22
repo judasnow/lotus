@@ -118,10 +118,12 @@ define([
             //[ string ]
             this._detailNames = [];
 
-            if( typeof args !== 'undefined'
+            if ( typeof args !== 'undefined'
                 && typeof args.productId !== 'undefined'
                 && ! isNaN( args.productId ) )
             {
+                // edit
+                // 
                 // 这里不能先 new 一个 product 再设置 id 因为需要向 initialize 方法传入 id 来
                 // 设置不同的 url , 这是前期设计的一个失误
                 this._model = new Product({ id: args.productId });
@@ -132,13 +134,15 @@ define([
                         var detailImageUrl = model.get( 'product_detail_image_url' );
 
                         if( typeof imageUrl === 'string' ) {
-                           that._imageName = that._convertImageUrlToNameOnly( imageUrl );
+                            that._imageFiles.push( imageUrl );
+                            that._imageName = that._convertImageUrlToNameOnly( imageUrl );
                         }
                         if( $.isArray( detailImageUrl ) ) {
                             _.each(
                                 detailImageUrl,
                                 function( url ) {
-                                    return that._detailNames.push( that._convertImageUrlToNameOnly( url ) )
+                                    that._detailImageFiles.push( url );
+                                    that._detailNames.push( that._convertImageUrlToNameOnly( url ) )
                                 }
                             );
                         }
@@ -147,6 +151,7 @@ define([
                     }
                 });
             } else {
+                // add new
                 this._model = new Product();
                 this.render();
             }
@@ -401,20 +406,32 @@ define([
 
             }
 
-            _.each( files, function( file , index ) {
-                var reader = new FileReader();
+            _.each( files, function( file, index ) {
+                if ( file instanceof File ) {
+                    // 从文件
+                    var reader = new FileReader();
 
-                reader.onload = function( event ) {
+                    reader.onload = function( event ) {
+                        to$El.prepend( Mustache.to_html(
+                            editProductPicturePreviewItem,
+                            {
+                                index: index,
+                                src: event.target.result
+                            }
+                        ));
+                    }
+
+                    reader.readAsDataURL( file );
+                } else {
+                    // 从 url
                     to$El.prepend( Mustache.to_html(
                         editProductPicturePreviewItem,
                         {
                             index: index,
-                            src: event.target.result
+                            src: file
                         }
                     ));
                 }
-
-                reader.readAsDataURL( file );
             });
         },//}}}
 
@@ -423,12 +440,12 @@ define([
             var $input = $( event.currentTarget );
             var files = $input[0].files;
 
-            if( $input.hasClass( 'image_input' ) ) {
+            if ( $input.hasClass( 'image_input' ) ) {
 
                 this._imageFiles = files;
                 this._previewImage( 'image' );
 
-            } else if( $input.hasClass( 'detail_image_input' ) ) {
+            } else if ( $input.hasClass( 'detail_image_input' ) ) {
 
                 this._detailImageFiles =
                     _.filter( _.values( files ), function( item ) {
@@ -442,10 +459,15 @@ define([
 
         _removeThisImage: function( event ) {
         //{{{
-            $( event.currentTarget )
-                .parent()
-                .parent()
-                .remove();
+            var $imageBox = $( event.currentTarget ).parents( '.preview-img-box' );
+            var index = $imageBox.attr( 'data-attr' );
+            $imageBox.remove();
+
+            if( $imageBox.parents( '.detail-image-preview-list' ).length > 0 ) {
+                //detail
+            } else if ( $imageBox.parents( '.image-preview' ).length > 0 ) {
+                //cover
+            }
         },//}}}
 
         doSubmit: function() {
@@ -497,6 +519,8 @@ define([
             this._fetchClassAList();
 
             page.loadPage( this.$el );
+            this._previewImage( 'detail_image' );
+            this._previewImage( 'image' );
         }//}}}
     });
 

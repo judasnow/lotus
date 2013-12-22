@@ -9,6 +9,7 @@ class Upload_lib {
     private $_CI;
     public $err_msg = array();
     public $qiniuyun_nodes;
+    public $redis;
 
     public function __construct() {
         $this->_CI =& get_instance();
@@ -16,6 +17,11 @@ class Upload_lib {
         $this->_CI->load->model('shop_model', 'shop_m');
         $this->_CI->load->library('qiniuyun_lib');
         $this->qiniuyun_nodes = $this->_CI->config->item('qiniuyun_nodes');
+        $this->redis = $this->redis = new \Predis\Client([
+            'scheme' => $this->_CI->config->item('scheme'),
+            'host'   => $this->_CI->config->item('host'),
+            'port'   => $this->_CI->config->item('port')
+        ]);
     }
 
     /**
@@ -87,6 +93,13 @@ class Upload_lib {
                     array('shop_image' => $image_name)
                 );
             }
+            //图片上传成功，图片加入上传队列
+            $this->redis->lpush('cloud_worker_waiting_upload_image', $image_name);
+            return array(
+                'res' => TRUE,
+                'data' => $image_name
+            );
+            /**
             $file = $upload_path . "/$image_name.jpg";
             $image_full_name = $image_name . '.jpg';
 
@@ -102,6 +115,7 @@ class Upload_lib {
                     'msg' => $this->err_msg
                 );
             }
+            **/
         } else {
             $this->err_msg[] = $this->_CI->upload->display_errors();
             $this->err_msg[] = 'Do upload image failed';

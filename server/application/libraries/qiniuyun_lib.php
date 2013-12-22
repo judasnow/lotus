@@ -13,11 +13,17 @@ class Qiniuyun_lib {
     private $_bucket = 'maoejie';
     private $_accessKey = 'ylMDiB_RbB1C1JRaEWHg8fqLmCXxf7RuBbOLKCZu';
     private $_secretKey = 'bHcsEs2YvYKZDjimcHzQDQEwOaeVKPgPmYENztAT';
-    
+    public $redis;
+
     private $_CI;
     
     public function __construct() {
         $this->_CI =& get_instance();
+        $this->redis = new \Predis\Client([
+            'scheme' => $this->_CI->config->item('scheme'),
+            'host'   => $this->_CI->config->item('host'),
+            'port'   => $this->_CI->config->item('port')
+        ]);
     }
 
     /**
@@ -66,6 +72,22 @@ class Qiniuyun_lib {
      * 生成预览图片（新接口）
      */
     public function thumbnail_qiniu_image_url($image_full_name, $size, $type) {
+        //查询该文件是否在传输队列、重试队列、手动队列中
+        $image_name = substr($image_full_name, 0, 25);
+        //'cloud_worker_waiting_upload_image','cloud_worker_retry_upload_image',' cloud_worker_uploaded_failed';
+        if ($searchList = $this->redis->lrem('cloud_worker_waiting_upload_image', 0, $image_name)) {
+            //在上传队列中，从本地获取资源，从新加入队列
+            $this->redis->rpush('cloud_worker_waiting_upload_image', $image_name);
+            return $this->thumbnail_image_url_form_local($image_name, $size, $type);
+        } elseif ($indexOf = $this->redis->zrank('cloud_worker_retry_upload_image', $image_name)) {
+            //在重试队列中，从本地获取资源，重新加入队列
+            $this->redis->zadd('cloud_worker_retry_upload_image', 1, $image_name);
+            return $this->thumbnail_image_url_form_local($image_name, $size, $type);
+        } elseif ($searchListOf = $this->redis->lrem('cloud_worker_uploaded_failed', 0, $image_name)) {
+            //在失败队列中，从本地获取，重新加入失败队列
+            $this->redis->rpush('cloud_worker_uploaded_failed', $image_name);
+            return $this->thumbnail_image_url_form_local($image_name, $size, $type);
+        }
         if (strlen($image_full_name) <= 24) {
             $image_node = 'nodea';
             $this->_CI->config->load('variable');
@@ -142,6 +164,48 @@ class Qiniuyun_lib {
         $getPolicy = new Qiniu_RS_GetPolicy();
         $imgViewPrivateUrl = $getPolicy->MakeRequest($imgViewUrl, null);
         return $imgViewPrivateUrl;
+    }
+
+    public function thumbnail_image_url_form_local($image_name, $size, $type) {
+        if ($type == 'product') {
+            $prefix = 'p';
+        } elseif ($type == 'shop') {
+            $prefix = 's';
+        } else {
+            return 'http://maoejiestatic.u.qiniudn.com/defaultimage-shop.jpg';//返回默认图片地址
+        }
+        switch ($size) {
+        case 'small':
+            $string = 'c_60,g_120';
+            break;
+        case 'middle':
+            $string = 'c_360,g_720';
+            break;
+        case 'large':
+            $string = 'c_360,g_720';
+            break;
+        case 'product':
+            $string = 'g_512';
+            break;
+        case 'search_result_page'://搜索结果页面商品
+            $string = 'c_230,g_148';
+            break;
+        case 'product_detail_main'://商品主要图片
+            $string = 'c_320,g_320';
+            break;
+        case 'product_detail_else'://商品细节图片
+            $string = 'c_622';
+            break;
+        case 'index'://首页图片
+            $string = 'c_231,g_192';
+            break;
+        case 'shop_product_list'://店铺商品列表
+            $string = 'c_148,g_148';
+            break;
+        default:
+            $string = 'c_180,g_360';
+        }
+        return "http://maoejie.com/images/thumb/$prefix/$image_name,$string.jpg";
     }
 
     /**
