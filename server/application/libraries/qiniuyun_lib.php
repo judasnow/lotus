@@ -87,6 +87,9 @@ class Qiniuyun_lib {
             //在失败队列中，从本地获取，重新加入失败队列
             $this->redis->rpush('cloud_worker_uploaded_failed', $image_name);
             return $this->thumbnail_image_url_form_local($image_name, $size, $type);
+        } elseif ($indexOf = $this->redis->sismember('cloud_worker_uploading_image', $image_name)) {
+            //在正在上传队列中
+            return $this->thumbnail_image_url_form_local($image_name, $size, $type);
         }
         if (strlen($image_full_name) <= 24) {
             $image_node = 'nodea';
@@ -142,7 +145,7 @@ class Qiniuyun_lib {
             break;
         case 'product_detail_else'://商品细节图片
             $imgView->Mode = 2;
-            $imgView->Width = 622;
+            $imgView->Width = 320;
             //$imgView->Height = 234;
             break;
         case 'index'://首页图片
@@ -171,41 +174,8 @@ class Qiniuyun_lib {
             $prefix = 'p';
         } elseif ($type == 'shop') {
             $prefix = 's';
-        } else {
-            return 'http://maoejiestatic.u.qiniudn.com/defaultimage-shop.jpg';//返回默认图片地址
         }
-        switch ($size) {
-        case 'small':
-            $string = 'c_60,g_120';
-            break;
-        case 'middle':
-            $string = 'c_360,g_720';
-            break;
-        case 'large':
-            $string = 'c_360,g_720';
-            break;
-        case 'product':
-            $string = 'g_512';
-            break;
-        case 'search_result_page'://搜索结果页面商品
-            $string = 'c_230,g_148';
-            break;
-        case 'product_detail_main'://商品主要图片
-            $string = 'c_320,g_320';
-            break;
-        case 'product_detail_else'://商品细节图片
-            $string = 'c_622';
-            break;
-        case 'index'://首页图片
-            $string = 'c_231,g_192';
-            break;
-        case 'shop_product_list'://店铺商品列表
-            $string = 'c_148,g_148';
-            break;
-        default:
-            $string = 'c_180,g_360';
-        }
-        return "http://maoejie.com/images/thumb/$prefix/$image_name,$string.jpg";
+        return "http://maoejie.com/images/thumb/$prefix/$image_name.jpg";
     }
 
     /**
