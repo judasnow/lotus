@@ -324,8 +324,9 @@ define([
         // 返回默认图片 证明数据库中有不一致的情况
         // ( url::string ) => boolean
         _isDefaultImage: function( url ) {
+        //{{{
             return url.indexOf( 'defaultimage-product.jpg' ) !== -1;
-        },
+        },//}}}
 
         //( url::string ) => string
         _convertImageUrlToNameOnly: function( url ) {
@@ -496,7 +497,7 @@ define([
             var $imageBox = $( event.currentTarget ).parents( '.preview-img-box' );
             var index = $imageBox.attr( 'data-index' );
 
-            if( $imageBox.parents( '.detail-image-preview-list' ).length > 0 ) {
+            if ( $imageBox.parents( '.detail-image-preview-list' ).length > 0 ) {
                 //detail image
                 delete( this._detailImageFiles[index] );
                 delete( this._detailNames[index] );
@@ -514,7 +515,7 @@ define([
             var that = this;
             this._setModel();
 
-            if( ! this._checkAttr() ) {
+            if ( ! this._checkAttr() ) {
                 window.sysNotice.setMsg( '填写信息无效，请修改表单的内容' );
                 //return;
             }
