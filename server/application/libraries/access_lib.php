@@ -16,7 +16,7 @@ class Access_lib {
     /**
      * 权限验证
      *
-     * @param string $type 需要验证的权限。可选值'shop', 'product'
+     * @param string $type 需要验证的权限。可选值'shop', 'product',id要用外部样式
      */
     public function validate_privilege($type, $id) {
         
