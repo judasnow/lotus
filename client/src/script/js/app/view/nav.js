@@ -90,8 +90,6 @@ define([
             // 用户鼠标移动到 host 上的触发元素之后 初始化
             // dropdown
             this.$el.find( '.nav-user' ).one( 'mouseover', function( event ) {
-                console.dir( 'init dropdown' );
-
                 this._dropdownView = new DropdownView({
                     $host: $( event.currentTarget ),
                     tpl: objectUserDropdownTpl
