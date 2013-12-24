@@ -11,6 +11,7 @@ define([
     'v/product_list_page',
 
     'utilities/page',
+    'utilities/common',
 
     'config',
 
@@ -29,6 +30,7 @@ define([
     ProductListPageView,
 
     page,
+    common,
 
     config,
 

@@ -57,7 +57,6 @@ define([
 
             this.render();
 
-            this._categoriesBrowseView = new CategoriesBrowseView();
         },//}}}
 
         _getEls: function() {
@@ -86,6 +85,8 @@ define([
             this.$el.html( Mustache.to_html( this.template, this.model.toJSON() ) );
 
             this._getEls();
+
+            this._categoriesBrowseView = new CategoriesBrowseView();
 
             // 用户鼠标移动到 host 上的触发元素之后 初始化
             // dropdown

@@ -1,7 +1,7 @@
 <li class="shop-page-product-list-item-box">
 <div class="shop-page-product-list-item" data-attr="{{product_id}}">
     <div class="product-list-item-toolbar">
-        <span class="edit-btn fa fa-wrench"></span>
+        {{^lock}}<span class="edit-btn fa fa-wrench"></span>{{/lock}}
     </div>
     <div class="shop-page-product-list-item-pic-box">
         <img class="shop-page-product-list-item-pic" src="{{product_image_url}}">
