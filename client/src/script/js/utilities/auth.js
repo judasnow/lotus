@@ -59,6 +59,7 @@ define([
     var doLogout = function( success ) {
     //{{{
         $.fn.cookie( 'session_id', '0', { expires: 0 } );
+        $.fn.cookie( 'PHPSESSID', '0', { expires: 0 } );
 
         if( typeof success === 'function' ) {
             window.e.trigger( 'logout_ok' );
