@@ -532,7 +532,11 @@ define([
 
                 function( cb ) {
                     //目前只能有一个 cover image
-                    that._model.set( 'image', that._imageName[0] );
+                    if ( _.isArray( that._imageName ) ) {
+                         that._imageName = that._imageName[0];
+                    }
+
+                    that._model.set( 'image', that._imageName );
                     that._model.set( 'detail_image', that._detailNames.join( ',' ) );
 
                     if( that._edit === false ) {
