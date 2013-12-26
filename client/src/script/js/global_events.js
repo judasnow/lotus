@@ -51,7 +51,9 @@ define([
                     isLogin: true
                 });
 
-                cb();
+                if( _.isFunction( cb ) ) {
+                    cb();
+                }
             });
         });//}}}
 

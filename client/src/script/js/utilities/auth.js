@@ -58,7 +58,7 @@ define([
     // 先不考虑
     var doLogout = function( success ) {
     //{{{
-        $.fn.cookie( 'session_id', '' );
+        $.fn.cookie( 'session_id', '0', { expires: 0 } );
 
         if( typeof success === 'function' ) {
             window.e.trigger( 'logout_ok' );
