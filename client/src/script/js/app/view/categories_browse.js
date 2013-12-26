@@ -79,7 +79,6 @@ define([
         _setCategoriesBrowseWidth: function( event ) {
             var $currEl = $( event.currentTarget );
             $currEl.css( 'width' , $currEl.css( 'width' ) );
-            console.dir( $currEl.css( 'width' ) )
         },
 
         //class_a
@@ -150,7 +149,7 @@ define([
         },
 
         _hideCategoriesDetail: function() {
-            this._$categoriesDetail.hide();
+            this._$categoriesBrowse.hide();
         },
         //}}}
 

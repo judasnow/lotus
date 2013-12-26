@@ -121,7 +121,7 @@ define([
             this._imageName = [];
             this._detailNames = [];
 
-            this._Edit = false;
+            this._edit = false;
             if ( typeof args !== 'undefined'
                 && typeof args.productId !== 'undefined'
                 && ! isNaN( args.productId ) )
@@ -130,7 +130,7 @@ define([
                 //
                 // 这里不能先 new 一个 product 再设置 id 因为需要向 initialize 方法传入 id 来
                 // 设置不同的 url , 这是前期设计的一个失误
-                this._Edit = true;
+                this._edit = true;
                 this._model = new Product({ id: args.productId });
                 this._model.on( 'fetch_ok', this.render );
 
@@ -531,10 +531,15 @@ define([
                 },
 
                 function( cb ) {
+                    //目前只能有一个 cover image
+                    if ( _.isArray( that._imageName ) ) {
+                         that._imageName = that._imageName[0];
+                    }
+
                     that._model.set( 'image', that._imageName );
                     that._model.set( 'detail_image', that._detailNames.join( ',' ) );
 
-                    if( that._isEdit === false ) {
+                    if( that._edit === false ) {
                         // add new
                         that._model.save( null , {
                             success: function() {

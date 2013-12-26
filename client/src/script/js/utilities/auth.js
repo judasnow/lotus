@@ -20,7 +20,7 @@ define([
                 password: password
             };
 
-            var session_id = window.sessionStorage.getItem( 'session_id' );
+            var session_id = $.fn.cookie( 'session_id' );
             if( session_id !== null ) {
                 data.session_id = session_id;
             }
@@ -36,7 +36,7 @@ define([
                     //login ok
                     //返回当前 session_id
                     var session_id = res.session_id;
-                    window.sessionStorage.setItem( 'session_id', session_id );
+                    $.fn.cookie( 'session_id', session_id );
 
                     success();
                 },
@@ -58,7 +58,7 @@ define([
     // 先不考虑
     var doLogout = function( success ) {
     //{{{
-        window.sessionStorage.clear();
+        $.fn.cookie( 'session_id', '' );
 
         if( typeof success === 'function' ) {
             window.e.trigger( 'logout_ok' );

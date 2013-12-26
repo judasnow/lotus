@@ -4,10 +4,14 @@
     </a>
 </div>
 
-<div id="categories-browse-box"></div>
+<div id="categories-browse-placeholder-box">
 
-<div class="nav-item categories-browse-btn">
-    浏览全部分类商品
+    <div class="nav-item categories-browse-btn">
+        浏览全部分类商品
+    </div>
+
+    <div id="categories-browse-box"></div>
+
 </div>
 
 <div class="nav-user">
@@ -15,10 +19,11 @@
     <div class="nav-item userinfo">
         <span class="username">
             {{objectUserInfo.username}}
-            <span class="role"> <i class="fa fa-asterisk"></i> 卖<span>
+            <span class="role"> ✱ 卖<span>
         </span>
     </div>
 {{/objectUserInfo.username}}
 </div>
 
 <i class="fa fa-refresh fa-spin loading"></i>
+

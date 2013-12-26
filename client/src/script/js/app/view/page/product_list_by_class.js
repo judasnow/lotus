@@ -38,6 +38,7 @@ define([
         className: 'box',
 
         template: productListByClassPageTpl,
+
         //@TODO 應該在 url 中提供 class 的名字 而在
         //ajax 請求之中使用相應的 class id 
         //
@@ -47,20 +48,25 @@ define([
         // current_page::number
         //}) => void
         initialize: function( args ) {
+        //{{{
             this._classA = args.class_a;
             this._classB = args.class_b;
             this._currentPage = 1;
 
-            if( _.isNumber( args.current_page ) ) {
-                this._currentPage = args.current_page;
+            if( typeof args.currentPage === 'undefined' || args.currentPage === null || isNaN( args.currentPage ) ) {
+                // 页码设置的不合法 默认为 1
+                this._currentPage = 1;
+            } else {
+                this._currentPage = parseInt( args.currentPage );
             }
 
             _.bindAll( this , 'render' , '_renderProductList' );
 
             this.render();
-        },
+        },//}}}
 
         _renderProductList: function() {
+        //{{{
             this._productColl = new ProductColl({
                 url: config.serverAddress + 'home_api/category_products/'
             });
@@ -87,17 +93,17 @@ define([
                 class_a: this._classA,
                 class_b: this._classB
             });
-        },
+        },//}}}
 
         render: function() {
+        //{{{
             this.$el.html( Mustache.to_html( this.template ) );
             page.loadPage( this.$el );
 
             this._renderProductList();
-        }
+        }//}}}
     });
 
     return ProductListByClass;
-
 });
 

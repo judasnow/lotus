@@ -22,6 +22,7 @@
 
     .product-list-item {
         margin: 4px;
+        position: relative;
     }
 
     .product-list-item-toolbar {
@@ -31,10 +32,11 @@
         .product-list-item-toolbar-vars;
 
         .product-list-item-toolbar-btn {
-            border:1px solid #ddd;
+            margin-left: 8px;
             padding: 4px;
             border-radius: 2px;
             &:hover {
+                background: rgba(64,64,64,0.6);
                 color: @link-color4;
             }
         }
@@ -42,22 +44,22 @@
             .product-list-item-toolbar-btn;
         }
 
+        display: none;
         height: @height;
         line-height: @height;
-        width: 132px;
+        width: 100%;
 
         background: rgba(64,64,64,0.6);
 
-        display: none;
-        padding: 0 8px;
         color: #fff;
         position: absolute;
 
     }
 
     .product-list-item-pic-box {
-        max-height: @product-list-item-pic-box-height;
-        //background: rgba(200, 200, 200, 0.2);
+        height: @product-list-item-pic-box-height;
+        background: rgba(240, 240, 240, 0.8);
+        box-shadow: 0 0 2px #999;
         text-align: center;
         border-radius: 2px;
 

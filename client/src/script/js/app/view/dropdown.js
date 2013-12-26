@@ -23,6 +23,7 @@ define([
         // }) => void
         initialize: function( args ) {
         //{{{
+            var that = this;
             this._template = args.tpl;
             this._$host = args.$host;
 
@@ -35,10 +36,22 @@ define([
             );
 
             this.render();
+
+            console.log( 'dropdown init ok' );
+
+            this._$host.one( 'click', function( event ) {
+                event.stopPropagation();
+                that.show();
+            });
         },//}}}
 
-        _onMouseleave: function( event ) {
-            $( 'body' ).on( 'click', function( event ) {
+        show: function() {
+            console.dir( 'show it' );
+
+            var that = this;
+            this.$el.show();
+
+            $( 'body' ).one( 'click', function( event ) {
                 var $target = $( event.target );
 
                 if ( $target.parents( '.dropdown' ).length === 0
@@ -48,20 +61,24 @@ define([
                     that.close();
                 }
             });
-        },
 
-        show: function() {
-            console.dir( 'show it' );
-            var that = this;
-
-            this.$el.show();
-
+            this.$el.one( 'click', '.menuitem', function( event ) {
+                event.stopPropagation();
+                that.close();
+            });
         },
 
         close: function() {
         //{{{
             console.dir( 'close it' );
+
+            var that = this;
             this.$el.hide();
+
+            this._$host.one( 'click', function() {
+                event.stopPropagation();
+                that.show();
+            });
         },//}}}
 
         render: function() {

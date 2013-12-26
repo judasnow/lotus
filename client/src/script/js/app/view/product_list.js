@@ -5,6 +5,8 @@ define([
     'backbone',
     'mustache',
 
+    'utilities/common',
+
     'text!tpl/page/shop_page_product_list_item.mustache'
 
 ] , function (
@@ -12,6 +14,8 @@ define([
     _ ,
     Backbone,
     Mustache,
+
+    common,
 
     shopPageProductListItemTpl
 ) {
@@ -74,7 +78,6 @@ define([
             $item.find( '.product-list-item-toolbar' ).hide();
         },//}}}
 
-
         _editProduct: function( event ) {
         //{{{
             var $item = $( event.currentTarget ).parents( '.shop-page-product-list-item' ),
@@ -87,13 +90,13 @@ define([
         //其中 option hash 中保存的是 fetch 所需的额外参数
         getListByPage: function( page, options ) {
         //{{{
-            if( typeof page !== 'number' ) {
+            if( isNaN( page ) ) {
                 throw new Error( 'param invalid' );
             }
 
             var fetchOptions = {};
             if( typeof options === 'object' ) {
-                fetchOptions = _.extend( options , {page: page} );
+                fetchOptions = _.extend( options , {page: page, session_id: common.getSessionId() } );
             }
 
             this._coll.fetch({

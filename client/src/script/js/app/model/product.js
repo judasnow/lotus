@@ -15,7 +15,7 @@ define([
         initialize: function( args ) {
             var MAX_LENGTH = 35;
 
-            if( typeof args !== 'undefined' && typeof args.id !== 'undefined' && ! isNaN ( args.id ) ) {
+            if( typeof args !== 'undefined' && typeof args.id !== 'undefined' && ! isNaN( args.id ) ) {
                 this.set( 'id', args.id );
                 this.url = config.serverAddress + 'product_api/product/?product_id=' + this.get( 'id' );
             } else {
