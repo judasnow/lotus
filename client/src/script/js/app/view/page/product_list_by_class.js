@@ -51,7 +51,6 @@ define([
         //{{{
             this._classA = args.class_a;
             this._classB = args.class_b;
-            this._currentPage = 1;
 
             if( typeof args.currentPage === 'undefined' || args.currentPage === null || isNaN( args.currentPage ) ) {
                 // 页码设置的不合法 默认为 1
@@ -89,7 +88,7 @@ define([
             });
 
             //获取第一页信息 如果存在的话
-            this._productListView.getListByPage( 1 , {
+            this._productListView.getListByPage( this._currentPage, {
                 class_a: this._classA,
                 class_b: this._classB
             });
