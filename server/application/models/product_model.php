@@ -71,7 +71,7 @@ class Product_model extends Base_model {
         if ($this->affected_rows() == 1) {
             return TRUE;
         } else {
-            return FALSE;
+            return TRUE;//都返回修改成功
         }
     }
 

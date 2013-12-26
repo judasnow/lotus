@@ -78,18 +78,18 @@ class Qiniuyun_lib {
         if ($searchList = $this->redis->lrem('cloud_worker_waiting_upload_image', 0, $image_name)) {
             //在上传队列中，从本地获取资源，从新加入队列
             $this->redis->rpush('cloud_worker_waiting_upload_image', $image_name);
-            return $this->thumbnail_image_url_form_local($image_name, $size, $type);
+            return $this->thumbnail_image_url_from_local($image_name, $size, $type);
         } elseif ($indexOf = $this->redis->zrank('cloud_worker_retry_upload_image', $image_name)) {
             //在重试队列中，从本地获取资源，重新加入队列
             $this->redis->zadd('cloud_worker_retry_upload_image', 1, $image_name);
-            return $this->thumbnail_image_url_form_local($image_name, $size, $type);
+            return $this->thumbnail_image_url_from_local($image_name, $size, $type);
         } elseif ($searchListOf = $this->redis->lrem('cloud_worker_uploaded_failed', 0, $image_name)) {
             //在失败队列中，从本地获取，重新加入失败队列
             $this->redis->rpush('cloud_worker_uploaded_failed', $image_name);
-            return $this->thumbnail_image_url_form_local($image_name, $size, $type);
+            return $this->thumbnail_image_url_from_local($image_name, $size, $type);
         } elseif ($indexOf = $this->redis->sismember('cloud_worker_uploading_image', $image_name)) {
             //在正在上传队列中
-            return $this->thumbnail_image_url_form_local($image_name, $size, $type);
+            return $this->thumbnail_image_url_from_local($image_name, $size, $type);
         }
         if (strlen($image_full_name) <= 24) {
             $image_node = 'nodea';
@@ -169,7 +169,7 @@ class Qiniuyun_lib {
         return $imgViewPrivateUrl;
     }
 
-    public function thumbnail_image_url_form_local($image_name, $size, $type) {
+    public function thumbnail_image_url_from_local($image_name, $size, $type) {
         if ($type == 'product') {
             $prefix = 'p';
         } elseif ($type == 'shop') {

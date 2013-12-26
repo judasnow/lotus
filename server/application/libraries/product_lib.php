@@ -327,7 +327,7 @@ class Product_lib {
                 return true;
             } elseif ($indexOf = $this->redis->sismember('cloud_worker_uploading_image', $image_name)) {
                 //在正在上传队列中
-                return $this->thumbnail_image_url_form_local($image_name, $size, $type);
+                return $this->_CI->qiniuyun_lib->thumbnail_image_url_from_local($image_name, $size, $type);
                 return true;
             }
         }
