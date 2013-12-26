@@ -50,6 +50,7 @@ require([
     'routes',
 
     'utilities/common',
+    'utilities/auth',
 
     'global_events'
 ], function (
@@ -64,6 +65,7 @@ require([
     Routes,
 
     common,
+    auth,
 
     GlobalEvents
 ) {
@@ -77,6 +79,11 @@ require([
         navView: navView,
         footerView: footerView
     }).e;
+
+    //没有考虑断电等情况
+    //$( window ).on( 'beforeunload', function() {
+    //     auth.doLogout();
+    //});
 
     async.series([
         function( cb ) {

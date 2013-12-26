@@ -53,7 +53,12 @@ define([
             this._classB = args.class_b;
             this._currentPage = 1;
 
-            this._currentPage = args.currentPage;
+            if( typeof args.currentPage === 'undefined' || args.currentPage === null || isNaN( args.currentPage ) ) {
+                // 页码设置的不合法 默认为 1
+                this._currentPage = 1;
+            } else {
+                this._currentPage = parseInt( args.currentPage );
+            }
 
             _.bindAll( this , 'render' , '_renderProductList' );
 

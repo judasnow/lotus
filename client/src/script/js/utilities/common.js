@@ -21,14 +21,14 @@ define([
 
     //( void ) => boolean
     var isLogin = function() {
-        return ! ( common.getSessionId() === null );
+        return ! ( _.isEmpty( common.getSessionId() ) );
     };
 
     //独立出来是为了方便之后的处理
     //(void) => number | null
     var getSessionId = function() {
     //{{{
-        var sessionId = window.sessionStorage.getItem( 'session_id' );
+        var sessionId = $.fn.cookie( 'session_id' );
 
         return sessionId;
     };//}}}
