@@ -41,15 +41,22 @@ define([
             this._getUrl = args.getUrl;
             this._fetchOptions = args.options;
             this.$el = args.$el;
-            this._currentPage = parseInt( args.currentPage );
 
+            if( typeof args.currentPage === 'undefined' || args.currentPage === null || isNaN( args.currentPage ) ) {
+                // 页码设置的不合法 默认为 1
+                this._currentPage = 1;
+            } else {
+                this._currentPage = parseInt( args.currentPage );
+            }
+
+            // 指定页码出现在 url 中的位置
             if( _.isNumber( args.pageNoIndex ) ) {
                 this._pageNoIndex = args.pageNoIndex;
             } else {
-                 this._pageNoIndex = 2;
+                throw new Error( 'pageNoIndex no set' );
             }
 
-            this._MAX_PAGE_ITEM_COUNT = 11;
+            this._MAX_PAGE_ITEM_COUNT = 9;
 
             _.bindAll(
                 this ,
@@ -77,18 +84,21 @@ define([
             }, 'json' );
         },//}}}
 
-        _changeCurrentPage: function( e ) {
+        // 依据指定页码构造 url
+        // 约定 url 最后一部分就是 pageNo
+        _changeCurrentPage: function( event ) {
         //{{{
-            var pageNo = $( e.currentTarget ).attr( 'data-attr' );
-
-            var hash = window.location.hash;
+            var pageNo = $( event.currentTarget ).attr( 'data-attr' );
+            var hash = window.location.hash.replace( /[\\\/]*$/, '' );
             var hashArray = hash.split( '/' );
 
             this._currentPage = parseInt( pageNo );
 
-            if( hashArray[ this._pageNoIndex ] === "" ) {
+            if ( hashArray[ this._pageNoIndex ] === "" ) {
+                // 当前 url 还没有添加 page 信息的情况 直接添加
                 window.location.hash = hash + '/' + pageNo;
             } else {
+                // 当前 url 已经添加了 page 信息的情况 替换最后一个 solt
                 hashArray[ this._pageNoIndex ] = pageNo;
                 window.location.hash = hashArray.join( '/' );
             }
@@ -99,15 +109,16 @@ define([
         _buildPageObj: function() {
         //{{{
             var page = this._page;
-            if( page <= 0 ) {
-                //不应该为一个异常
+            if ( page <= 0 ) {
+                // 不应该为一个异常
                 return;
             }
 
             var i = 1;
             this._pageObj = [];
 
-            if( page <= this._MAX_PAGE_ITEM_COUNT ) {
+            if ( page <= this._MAX_PAGE_ITEM_COUNT ) {
+                //总页码数小于最多可以显示的页数 直接显示
                 for( var i = 1; i<= page; i++ ) {
                     this._pageObj.push({ page: i });
                 }
@@ -170,6 +181,7 @@ define([
         render: function() {
         //{{{
             this._buildPageObj();
+
             this.$el.html(
                 Mustache.to_html(
                     productListPagerTpl ,

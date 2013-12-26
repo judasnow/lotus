@@ -59,10 +59,10 @@ define([
             'add_new_product': '_addNewProduct',
             'edit_product/(:productId)': '_editProduct',
 
-            'shop/:shopId(/:currentPage)': '_showShop',
-            'my_shop(/:current_page)': '_myShop',
+            'shop/:shopId(/:currentPage)(/)': '_showShop',
+            'my_shop(/:current_page)(/)': '_myShop',
 
-            'search_result(/:q/:p)(/)': '_showSearchResult',
+            'search_result(/:q/:p)(/:currentPage)(/)': '_showSearchResult',
 
             'product_list_by_class/:classA/:classB(/:p)(/)': '_showProductListByClass',
             'page_not_found': '_showNotFoundPage',
@@ -122,9 +122,10 @@ define([
         _showShop: function( shopId , currentPage ) {
         //{{{
             var isSelfShop = false;
-            if( window.objectUser.get( 'shop_id' ) === shopId ) {
+            if ( window.objectUser.get( 'shop_id' ) === shopId ) {
                 isSelfShop = true;
             }
+
             new ShopPageView({
                 shopId: shopId,
                 currentPage: currentPage,
@@ -133,7 +134,8 @@ define([
         },//}}}
 
         _myShop: function( currentPage ) {
-            if( ! common.isLogin() ) {
+        //{{{
+            if ( ! common.isLogin() ) {
                 window.routes.navigate('seller_login', {trigger: true});
             } else {
                 new ShopPageView({
@@ -142,11 +144,11 @@ define([
                     isSelfShop: true
                 });
             }
-        },
+        },//}}}
 
-        _showSearchResult: function( q ) {
+        _showSearchResult: function( q, currentPage ) {
         //{{{
-            new SearchResultPageView({q: q});
+            new SearchResultPageView({q: q, currentPage: currentPage});
         },//}}}
 
         _showProductDetailPage: function( productId ) {
@@ -159,7 +161,7 @@ define([
             new ProductListByClassView({
                 class_a: classA,
                 class_b: classB,
-                current_pagep: currentPage
+                currentPage: currentPage
             });
         },//}}}
 

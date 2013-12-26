@@ -15,6 +15,7 @@ define([
     'text!tpl/page/search_result.mustache'
 
 ] , function(
+
     $ ,
     _ ,
     Backbone ,
@@ -43,21 +44,20 @@ define([
         //})
         //@XXX 注意注入问题
         initialize: function( args ) {
+        //{{{
             this._q = '';
-            this._currentPage = 1;
+            this._currentPage = args.currentPage;
             if( typeof args.q !== 'undefined' && _.isString( args.q ) ) {
                 this._q = encodeURI( args.q );
-            }
-            if( typeof args.current_page !== 'undefined' && _.isNumber( args.current_page ) ) {
-                this._currentPage = args.current_page;
             }
 
             _.bindAll( this , '_renderProductList' , 'render' );
 
             this.render();
-        },
+        },//}}}
 
         _renderProductList: function() {
+        //{{{
             this._productColl = new ProductColl({
                 url: config.serverAddress + 'home_api/search/'
             });
@@ -71,6 +71,7 @@ define([
                 $el: this.$el.find( '.product-list-pager-list' ),
                 getUrl: 'home_api/search_result_page/',
                 currentPage: this._currentPage,
+                pageNoIndex: 2,
                 options: {
                     q: this._q
                 }
@@ -80,17 +81,17 @@ define([
             this._productListView.getListByPage( this._currentPage , {
                 q: this._q
             });
-
-        },
+        },//}}}
 
         render: function() {
+        //{{{
             this.$el.html( Mustache.to_html( this.template ) );
             page.loadPage( this.$el );
 
             this._renderProductList();
 
             return this;
-        }
+        }//}}}
     });
 
     return SearchResultPage;

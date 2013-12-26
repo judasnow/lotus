@@ -55,22 +55,18 @@ define([
         //{{{
             this.events = {};
 
-            if( isNaN( args.shopId ) ) {
+            if ( isNaN( args.shopId ) ) {
                 throw new Error( 'param invalid, shopId`s type must be number' );
             }
 
-            if( isNaN( args.currentPage ) ) {
-                this._currentPage = 1;
-            } else {
-                this._currentPage = parseInt( args.current_page );
-            }
+            this._currentPage = args.currentPage;
 
             var that = this;
             var shopId = args.shopId;
 
             // 表明是当前用户自己的店铺 允许用户修改商品信息
             this._isSelfShop = false;
-            if( typeof args.isSelfShop === 'boolean' && args.isSelfShop === true ) {
+            if ( typeof args.isSelfShop === 'boolean' && args.isSelfShop === true ) {
                 this._isSelfShop = true;
             }
 
@@ -114,18 +110,24 @@ define([
                 coll: this._productColl
             });
 
+            var pageNoIndex = 2;
+            if ( this._isSelfShop === true ) {
+                pageNoIndex = 1;
+            }
+
             //获取并显示分页信息
             this._pageView = new ProductListPageView({
                 $el: this.$el.find( '.product-list-pager-list' ),
                 getUrl: 'shop_api/product_page_count/',
                 currentPage: this._currentPage,
+                pageNoIndex: pageNoIndex,
                 options: {
                     shop_id: this._model.get( 'shop_id' )
                 }
             });
 
-            //获取第一页信息 如果存在的话
-            this._productListView.getListByPage( 1 , {
+            //获取指定页码的信息
+            this._productListView.getListByPage( this._currentPage, {
                 shop_id: this._model.get( 'shop_id' )
             });
 

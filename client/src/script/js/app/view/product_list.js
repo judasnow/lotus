@@ -90,7 +90,7 @@ define([
         //其中 option hash 中保存的是 fetch 所需的额外参数
         getListByPage: function( page, options ) {
         //{{{
-            if( typeof page !== 'number' ) {
+            if( isNaN( page ) ) {
                 throw new Error( 'param invalid' );
             }
 
