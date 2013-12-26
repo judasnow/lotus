@@ -373,7 +373,7 @@ define([
 
             if( files.length > 0 ) {
 
-                window.sysNotice.setMsg( '上传图片中...' );
+                window.sysNotice.setMsg( '上传图片中...', 99999 );
 
                 async.eachSeries(
 
@@ -517,7 +517,7 @@ define([
 
             if ( ! this._checkAttr() ) {
                 window.sysNotice.setMsg( '填写信息无效，请修改表单的内容' );
-                //return;
+                return;
             }
 
             window.e.trigger( 'show_loading' );
