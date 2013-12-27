@@ -52,8 +52,8 @@ define([
     };//}}}
 
     //上传文件
-    //(file , string , success) => callback()
-    var uploadFile = function( file , targetUrl , success ) {
+    //(file , string , success, fail) => callback()
+    var uploadFile = function( file, targetUrl, success, fail ) {
     //{{{
         if( typeof file === 'object' && typeof targetUrl === 'string' ) {
             var xhr = new XMLHttpRequest();
@@ -63,8 +63,16 @@ define([
             formData.append( 'image_type' , 'product' );
             formData.append( 'session_id' , getSessionId() );
 
-            xhr.onload = function( xhr ) {
-                success( this.responseText );
+            xhr.onload = function( event ) {
+                if( xhr.status === 200 ) {
+                    if ( _.isFunction( success ) ) {
+                        success( xhr.responseText );
+                    }
+                } else {
+                    if ( _.isFunction( fail ) ) {
+                        fail( xhr );
+                    }
+                }
             };
 
             xhr.open( 'POST' , config.serverAddress + targetUrl );

@@ -350,9 +350,6 @@ define([
             var targetUrl = "upload_api/do_upload_image/";
             var files = [];
 
-            console.dir( this._imageFiles )
-            console.dir( this._detailImageFiles )
-
             _.each( this._imageFiles, function( file, index ) {
                 if ( file instanceof File ) {
                     files.push({
@@ -375,7 +372,7 @@ define([
 
                 window.sysNotice.setMsg( '上传图片中...', 99999 );
 
-                async.eachSeries(
+                async.each(
 
                     files,
 
@@ -395,8 +392,11 @@ define([
                             }
 
                             cb( null );
+                        }, function() {
+                            //上传失败 跳过本图片
+                            window.sysNotice.setMsg( '上传图片时发生错误' );
+                            cb( null );
                         });
-
                     },
 
                     function( err ) {
@@ -517,7 +517,7 @@ define([
 
             if ( ! this._checkAttr() ) {
                 window.sysNotice.setMsg( '填写信息无效，请修改表单的内容' );
-                return;
+                //return;
             }
 
             window.e.trigger( 'show_loading' );

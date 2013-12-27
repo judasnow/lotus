@@ -37,8 +37,6 @@ define([
 
             this.render();
 
-            console.log( 'dropdown init ok' );
-
             this._$host.one( 'click', function( event ) {
                 event.stopPropagation();
                 that.show();
@@ -46,8 +44,6 @@ define([
         },//}}}
 
         show: function() {
-            console.dir( 'show it' );
-
             var that = this;
             this.$el.show();
 
@@ -70,8 +66,6 @@ define([
 
         close: function() {
         //{{{
-            console.dir( 'close it' );
-
             var that = this;
             this.$el.hide();
 
