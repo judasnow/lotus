@@ -37,13 +37,14 @@ define([
 
             this.render();
 
+            //初次点击
             this._$host.one( 'click', function( event ) {
                 event.stopPropagation();
                 that.show();
             });
         },//}}}
 
-        show: function() {
+        show: function( event ) {
             var that = this;
             this.$el.show();
 
@@ -54,24 +55,25 @@ define([
                     && ! $target.is( '.dropdown' )
                 ) {
                     //点击区域在 dropdown 之外
-                    that.close();
+                    that.close( event );
                 }
             });
 
             this.$el.one( 'click', '.menuitem', function( event ) {
                 event.stopPropagation();
-                that.close();
+                that.close( event );
             });
         },
 
-        close: function() {
+        close: function( event ) {
         //{{{
             var that = this;
             this.$el.hide();
 
-            this._$host.one( 'click', function() {
+            this._$host.one( 'click', function( event ) {
+                console.dir( event )
                 event.stopPropagation();
-                that.show();
+                that.show( event );
             });
         },//}}}
 
