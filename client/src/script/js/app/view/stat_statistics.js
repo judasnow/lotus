@@ -21,9 +21,15 @@ define([
             this._$shopCount = this.$el.find( '.shop-count' );
 
             that._model.fetch();
-            setInterval( function() {
+
+            var statInterId = setInterval( function() {
                 that._model.fetch();
             }, 60000 );
+
+            $( window ).one( 'hashchange', function() {
+                clearInterval( statInterId );
+            });
+
         },
 
         render: function() {
