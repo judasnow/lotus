@@ -75,11 +75,14 @@ class Qiniuyun_lib {
         //查询该文件是否在传输队列、重试队列、手动队列中
         $image_name = substr($image_full_name, 0, 25);
         //'cloud_worker_waiting_upload_image','cloud_worker_retry_upload_image',' cloud_worker_uploaded_failed';
+        $inRetryList = $this->redis->zrank('cloud_worker_retry_upload_image', $image_name);
+        
         if ($searchList = $this->redis->lrem('cloud_worker_waiting_upload_image', 0, $image_name)) {
             //在上传队列中，从本地获取资源，从新加入队列
             $this->redis->rpush('cloud_worker_waiting_upload_image', $image_name);
             return $this->thumbnail_image_url_from_local($image_name, $size, $type);
-        } elseif ($indexOf = $this->redis->zrank('cloud_worker_retry_upload_image', $image_name)) {
+        } elseif (isset($inRetryList)) {
+            //注意索引是 0 的时候
             //在重试队列中，从本地获取资源，重新加入队列
             $this->redis->zadd('cloud_worker_retry_upload_image', 1, $image_name);
             return $this->thumbnail_image_url_from_local($image_name, $size, $type);
