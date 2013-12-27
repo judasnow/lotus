@@ -23,7 +23,7 @@ define([
             that._model.fetch();
             setInterval( function() {
                 that._model.fetch();
-            }, 5000 );
+            }, 60000 );
         },
 
         render: function() {
