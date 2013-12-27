@@ -338,6 +338,9 @@ define([
                     if( _.isString( imageName ) ) {
                         return imageName.replace( '.jpg', '' );
                     }
+                } else {
+                    // 对于默认图片 修改的时候应该予以删除
+
                 }
             }
 
@@ -537,7 +540,13 @@ define([
                     }
 
                     that._model.set( 'image', that._imageName );
-                    that._model.set( 'detail_image', that._detailNames.join( ',' ) );
+                    //删除空白
+                    that._detailNames.filter( function( item ) {
+                        return item !== '';
+                    })
+                    that._model.set( 'detail_image', that._detailNames.filter( function( item ) {
+                        return item !== '';
+                    }).join( ',' ) );
 
                     if( that._edit === false ) {
                         // add new
