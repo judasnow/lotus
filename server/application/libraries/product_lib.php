@@ -313,11 +313,13 @@ class Product_lib {
         }
         foreach ($image_info as $key => $image_name) {
             //判断该图片是否还在上传中
+            $inRetryList = $this->redis->zrank('cloud_worker_retry_upload_image', $image_name);
+
             if ($searchList = $this->redis->lrem('cloud_worker_waiting_upload_image', 0, $image_name)) {
                 //在上传队列中，从本地获取资源，从新加入队列
                 $this->redis->rpush('cloud_worker_waiting_upload_image', $image_name);
                 return true;
-            } elseif ($indexOf = $this->redis->zrank('cloud_worker_retry_upload_image', $image_name)) {
+            } elseif (isset($inRetryList)) {
                 //在重试队列中，从本地获取资源，重新加入队列
                 $this->redis->zadd('cloud_worker_retry_upload_image', 1, $image_name);
                 return true;
