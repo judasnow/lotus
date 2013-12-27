@@ -9,6 +9,7 @@ define([
     'v/search',
     'v/hot_shop_list',
     'v/hot_product_list',
+    'v/stat_statistics',
 
     'utilities/page',
     'text!tpl/page/home.mustache'
@@ -24,6 +25,7 @@ define([
     SearchView,
     HotShopListView,
     HotProductListView,
+    statStatisticsView,
 
     page,
 
@@ -55,6 +57,7 @@ define([
                     new SearchView({ $el: that.$el.find( '#search-box' ) });
                     new HotShopListView();
                     new HotProductListView();
+                    new statStatisticsView();
 
                     cb();
                 }
