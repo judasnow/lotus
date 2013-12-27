@@ -7,7 +7,8 @@ define([
 
     'utilities/common',
 
-    'text!tpl/page/shop_page_product_list_item.mustache'
+    'text!tpl/page/shop_page_product_list_item.mustache',
+    'text!tpl/product_list_empty.mustache'
 
 ] , function (
     $ ,
@@ -17,7 +18,8 @@ define([
 
     common,
 
-    shopPageProductListItemTpl
+    shopPageProductListItemTpl,
+    productListEmptyTpl
 ) {
     'use strict';
 
@@ -90,6 +92,8 @@ define([
         //其中 option hash 中保存的是 fetch 所需的额外参数
         getListByPage: function( page, options ) {
         //{{{
+            var that = this;
+
             if( isNaN( page ) ) {
                 throw new Error( 'param invalid' );
             }
@@ -105,11 +109,18 @@ define([
                     if( coll.length > 0 ) {
                         coll.trigger( 'fetch_ok' );
                     } else {
-                        window.sysNotice.setMsg( '没有商品了' );
+                        if( page !== 1 ) {
+                            window.sysNotice.setMsg( '没有商品可以显示了' );
+                        } else {
+                            window.sysNotice.setMsg( '没有商品可以显示' );
+                        }
                     }
                 },
-                error: function( coll, rep ) {
-                    console.dir( rep );
+                error: function( coll, xhr ) {
+                    //返回结果为空
+                    if ( xhr.status === 404 ) {
+                        that.$el.append( productListEmptyTpl );
+                    }
                 }
             });
         },//}}}

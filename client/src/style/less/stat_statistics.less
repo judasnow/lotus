@@ -1,0 +1,25 @@
+#stat-statistics {
+    .statistics-item-vars {
+        @item-count: 2;
+    };
+    .statistics-item-vars;
+
+    .stat-statistics-item {
+        width: percentage( (100 / @item-count) / 100 );
+        float: left;
+        text-align: center;
+
+        font-size: 45px;
+        color: @link-color-darken;
+    }
+
+    .stat-statistics-item-title {
+        width: 100%;
+        display: inline-block;
+    }
+
+    .stat-statistics-item-number {
+        width: 100%;
+        display: inline-block;
+    }
+}
