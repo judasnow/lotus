@@ -79,7 +79,7 @@ class Qiniuyun_lib {
             //在上传队列中，从本地获取资源，从新加入队列
             $this->redis->rpush('cloud_worker_waiting_upload_image', $image_name);
             return $this->thumbnail_image_url_from_local($image_name, $size, $type);
-        } elseif (!is_null($indexOf = $this->redis->zrank('cloud_worker_retry_upload_image', $image_name))) {
+        } elseif (is_set($indexOf = $this->redis->zrank('cloud_worker_retry_upload_image', $image_name))) {
             //注意索引是 0 的时候
             //在重试队列中，从本地获取资源，重新加入队列
             $this->redis->zadd('cloud_worker_retry_upload_image', 1, $image_name);
