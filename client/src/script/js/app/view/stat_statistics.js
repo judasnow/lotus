@@ -20,6 +20,7 @@ define([
             this._$productCount = this.$el.find( '.product-count' );
             this._$shopCount = this.$el.find( '.shop-count' );
 
+            that._model.fetch();
             setInterval( function() {
                 that._model.fetch();
             }, 5000 );
