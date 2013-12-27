@@ -85,5 +85,12 @@ class Home_api extends REST_Controller {
         $class_b = $this->input->get('class_b', TRUE);
         $this->response_api->api_response($this->home_lib->category_products_page($class_a, $class_b));
     }
+
+    /**
+     * 获取首页商品店数量和商品数量
+     */
+    public function pands_count_get() {
+        $this->response_api->api_response($this->home_lib->pands_count());
+    }
   
 }

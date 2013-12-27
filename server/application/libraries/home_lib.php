@@ -10,6 +10,7 @@ class Home_lib {
     private $_popular_product_page_num;
     private $_search_reuslt_product_page_num;
     public  $err_msg = array();
+    public  $redis;
 
     public function __construct() {
         $this->_CI =& get_instance();
@@ -25,6 +26,11 @@ class Home_lib {
         $this->_popular_shop_num = $this->_CI->config->item('popular_shop_num');
         $this->_popular_product_num = $this->_CI->config->item('popular_product_num');
         $this->_search_result_product_page_num = $this->_CI->config->item('search_result_product_page_num');
+        $this->redis = $this->redis = new \Predis\Client([
+            'scheme' => $this->_CI->config->item('scheme'),
+            'host'   => $this->_CI->config->item('host'),
+            'port'   => $this->_CI->config->item('port')
+        ]);
     }
 
     //根据指定搜索条件返回页数
@@ -377,6 +383,19 @@ class Home_lib {
             'code' => 200,
             'msg'  => [],
             'data' => $products_info
+        );
+    }
+
+    public function pands_count() {
+        $shop_num = $this->redis->get('cloud_worker_shop_num_fake');
+        $product_num = $this->redis->get('cloud_worker_product_num_fake');
+        return array(
+            'code' => 200,
+            'msg'  => [],
+            'data' => array(
+                'shop_num' => $shop_num,
+                'product'  => $product_num
+            )
         );
     }
 

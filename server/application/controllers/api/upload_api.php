@@ -17,7 +17,7 @@ class Upload_api extends REST_Controller {
 
     public function do_upload_image_post() {
         if (! $this->auth_lib->user_is_login()) {
-            $this->response('User did not login', 500);
+            $this->response('User did not login', 401);
         } else {
 
             //image_type : [show|product]
@@ -31,7 +31,7 @@ class Upload_api extends REST_Controller {
                 if (count($res['msg']) > 0) {
                     $msg = implode('; ', $res['msg']);
                 }
-                $this->response($msg, 500);
+                $this->response($msg, 400);
             }
         }
     }
