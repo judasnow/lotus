@@ -122,7 +122,7 @@ define([
         _showShop: function( shopId , currentPage ) {
         //{{{
             var isSelfShop = false;
-            if ( window.objectUser.get( 'shop_id' ) === shopId ) {
+            if ( common.isLogin() === true && window.objectUser.get( 'shop_id' ) === shopId ) {
                 isSelfShop = true;
             }
 
