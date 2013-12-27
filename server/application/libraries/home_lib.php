@@ -394,7 +394,7 @@ class Home_lib {
             'msg'  => [],
             'data' => array(
                 'shop_num' => $shop_num,
-                'product'  => $product_num
+                'product_num'  => $product_num
             )
         );
     }
