@@ -47,6 +47,10 @@ define([
                 window.objectUser = objectUser;
 
                 success( objectUser );
+            },
+            error: function() {
+                // 获取用户信息失败 需要重新登录
+                auth.doLogout();
             }
         });
     };//}}}
