@@ -11,3 +11,4 @@
 .idea/**/*
 /server/file/image/product/**/*
 
+/client/webkitbuilds/**/*
