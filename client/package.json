@@ -6,7 +6,7 @@
   "nodejs": false,
   "single-instance": true,
   "window": {
-    "toolbar": true,
+    "toolbar": false,
     "frame": true,
     "icon": "./picture/common/icon.png",
     "position": "centre",
