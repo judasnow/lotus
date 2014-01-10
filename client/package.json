@@ -5,8 +5,11 @@
   "main": "app://localhost/index.html",
   "window": {
     "toolbar": false,
+    "frame": false,
+    "icon": "./picture/common/ico.jpg",
     "width": 1024,
-    "height": 768
+    "height": 768,
+    "position": "mouse"
   },
 
   "dependencies": {
