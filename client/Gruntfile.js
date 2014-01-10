@@ -132,7 +132,7 @@ module.exports = function( grunt ) {
                 version: "0.8.4",
                 build_dir: './webkitbuilds',
                 mac: true,
-                win: true,
+                win: false,
                 linux32: false,
                 linux64: false
             },
