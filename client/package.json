@@ -1,15 +1,18 @@
 {
-  "name": "maoejie.com",
+  "name": "maoejie",
   "version": "0.1",
-  "description": "",
-  "main": "app://localhost/index.html",
+  "description": "0.1",
+  "main": "app://maoejie/index.html",
+  "nodejs": false,
+  "single-instance": true,
   "window": {
     "toolbar": false,
-    "frame": false,
-    "icon": "./picture/common/ico.jpg",
-    "width": 1024,
-    "height": 768,
-    "position": "mouse"
+    "frame": true,
+    "icon": "./picture/common/icon.png",
+    "position": "centre",
+    "resizable": true,
+    "width": 1280,
+    "height": 800
   },
 
   "dependencies": {

@@ -588,7 +588,7 @@
   text-align: center;
   clear: both;
   display: inline-block;
-  background: #f7f7f7 url(picture/common/bg_texture_dark.jpg) repeat scroll 0px 0px;
+  background: #f7f7f7 url(/picture/common/bg_texture_dark.jpg) repeat scroll 0px 0px;
 }
 #footer .footer-row {
   width: 960px;
@@ -1033,7 +1033,7 @@ li {
 body {
   padding: 0;
   margin: 0;
-  background: #f7f7f7 url(picture/common/bg_texture.jpg) repeat scroll 0px 0px;
+  background: #f7f7f7 url(/picture/common/bg_texture.jpg) repeat scroll 0px 0px;
   font-size: 13px;
   font-family: Helvetica, Tahoma, Arial, STXihei, "华文细黑", "Microsoft YaHei", "微软雅黑", SimSun, "宋体", Heiti, "黑体", sans-serif;
   -webkit-font-feature-settings: "frac";

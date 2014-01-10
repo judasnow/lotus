@@ -131,14 +131,15 @@ module.exports = function( grunt ) {
             options: {
                 version: "0.8.4",
                 build_dir: './webkitbuilds',
-                mac: false,
+                mac: true,
                 win: true,
                 linux32: false,
                 linux64: false
             },
             src: [
-                './build/**/*',
-                './picture/**/*',
+                'build/**/*',
+                'picture/**/*',
+                'picture/common/icon.png',
                 'index.html',
                 'package.json',
             ]
