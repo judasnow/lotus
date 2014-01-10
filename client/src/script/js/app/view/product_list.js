@@ -119,6 +119,7 @@ define([
                 error: function( coll, xhr ) {
                     //返回结果为空
                     if ( xhr.status === 404 ) {
+                        that.$el.parent().find('.shop-page-product-list-title').remove();
                         that.$el.append( productListEmptyTpl );
                     }
                 }

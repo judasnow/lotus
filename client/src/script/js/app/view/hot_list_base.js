@@ -17,6 +17,8 @@ define([
 ) {
     'use strict';
 
+    var ROW_COUNT = 4;
+
     var HotListBasView = Backbone.View.extend({
 
         className:  'items_list',

@@ -71,8 +71,8 @@
             width: (@box_width - (@margin_right * 3)) / 4;
             height: 280px;
 
-            margin: 0 @margin_right 0 0;
-            &:last-child {
+            margin: 0 @margin_right @margin_right 0;
+            &:nth-child(4n) {
                 margin-right: 0;
             }
 
@@ -80,6 +80,7 @@
             box-shadow: 0 0 1px rgba(0,0,0,0.2);
 
             display: inline-block;
+            overflow: hidden;
             float: left;
 
             &:hover {

@@ -126,6 +126,23 @@ module.exports = function( grunt ) {
                 }
             }
         },//}}}
+
+        nodewebkit: {
+            options: {
+                version: "0.8.4",
+                build_dir: './webkitbuilds',
+                mac: false,
+                win: true,
+                linux32: false,
+                linux64: false
+            },
+            src: [
+                './build/**/*',
+                './picture/**/*',
+                'index.html',
+                'package.json',
+            ]
+        },
     });
 
     grunt.loadNpmTasks( 'grunt-env' );
@@ -139,6 +156,7 @@ module.exports = function( grunt ) {
     grunt.loadNpmTasks( 'grunt-contrib-cssmin' );
     grunt.loadNpmTasks( 'grunt-contrib-htmlmin' );
     grunt.loadNpmTasks( 'grunt-contrib-watch' );
+    grunt.loadNpmTasks('grunt-node-webkit-builder');
 
     grunt.registerTask(
         'dev',

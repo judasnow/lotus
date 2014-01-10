@@ -1,4 +1,4 @@
-require.config({
+requirejs.config({
 
     baseUrl: './src/script/' ,
 
@@ -38,7 +38,7 @@ require.config({
 });
 
 //main
-require([
+requirejs([
     'zepto',
     'underscore',
     'async',

@@ -4,10 +4,10 @@
  */
 
 //首页热门商品数量
-$config['popular_product_num'] = 4;
+$config['popular_product_num'] = 8;
 
 //首页热门店铺数量
-$config['popular_shop_num']    = 4;
+$config['popular_shop_num']    = 8;
 
 //按关键词、按分类搜索结果每页商品数量
 $config['search_result_product_page_num'] = 12;

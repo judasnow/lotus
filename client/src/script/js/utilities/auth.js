@@ -119,6 +119,9 @@ define([
 
             xhr.done( function( data ) {
                 window.sysNotice.setMsg( '申请提交成功,请耐心等待审核' );
+                setTimeout(function() {
+                    window.routes.navigate( "/", {trigger: true} );
+                }, 1500);
             });
 
             xhr.fail( function( xhr ) {
