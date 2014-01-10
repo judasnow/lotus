@@ -8,7 +8,6 @@
 /client/build/**/*
 /client/node_modules/**/*
 
+.idea/**/*
 /server/file/image/product/**/*
-
-/client/webkitbuilds/**/*
 
