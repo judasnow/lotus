@@ -1,0 +1,147 @@
+@import 'normalize.css';
+ul,
+ol {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+li {
+  padding: 0;
+  margin: 0;
+}
+body {
+  padding: 0;
+  margin: 0;
+  font: 16px/22px "ff-tisa-web-pro-1", "ff-tisa-web-pro-2", "Lucida Grande", "Hiragino Sans GB", "Hiragino Sans GB W3", serif;
+  color: #747474;
+}
+#header {
+  height: 54px;
+  line-height: 54px;
+  width: 100%;
+  background: #389367;
+  color: #fff;
+  position: fixed;
+  top: 0;
+  z-index: 10;
+}
+#header .fa {
+  font-size: 44px;
+  height: 54px;
+  line-height: 54px;
+}
+.page-box {
+  padding-top: 54px;
+  padding-bottom: 36px;
+}
+#main-box {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+}
+#main-box .main {
+  padding-top: 54px;
+  padding-bottom: 36px;
+  height: 100%;
+  width: 100%;
+  background: #F7F7F7;
+}
+.stream-box .stream-item {
+  padding-bottom: 36px;
+}
+.stream-box .stream-item .img-box {
+  text-align: center;
+  height: 96%;
+  width: 100%;
+  background: #efefef;
+}
+.stream-box .stream-item .img {
+  max-width: 96%;
+}
+.get-more {
+  width: 100%;
+  height: 64px;
+  line-height: 64px;
+  text-align: center;
+  font-size: 24px;
+  background: #cf8a39;
+  color: #f4e0c7;
+}
+.slider {
+  padding-top: 54px;
+  padding-bottom: 36px;
+  width: 231px;
+  height: 100%;
+  overflow-y: auto;
+  padding: 54px 0 36px 0;
+  position: fixed;
+  left: -255px;
+  -webkit-transition: left 0.1s linear;
+  background: #fff;
+  color: #cbcbcb;
+  border-right: 1px solid #ddd;
+  box-shadow: 1px 0 48px #333;
+}
+.slider .slider-item {
+  height: 48px;
+  line-height: 48px;
+  border-bottom: 1px solid #eee;
+  font-weight: 100;
+  text-indent: 18px;
+}
+.slider .title-item {
+  color: #747474;
+  text-indent: 0;
+}
+.slider-show {
+  left: 0;
+  -webkit-transition: left 0.1s linear;
+}
+#detail-box {
+  height: 100%;
+}
+#detail-box .item {
+  padding: 24px 0;
+}
+#detail-box .cover-img-box {
+  padding: 24px 0;
+  text-align: center;
+  width: 100%;
+  height: auto;
+  background: #eee;
+  overflow: hidden;
+}
+#detail-box .cover-img {
+  max-width: 96%;
+}
+#detail-box .detail-img-box {
+  padding: 24px 0;
+  text-align: center;
+  width: 100%;
+  height: 96%;
+  background: #eee;
+  overflow: hidden;
+}
+#detail-box .detail-img-box .hint {
+  clear: both;
+  width: 100%;
+  display: inline-block;
+}
+#detail-box .detail-img {
+  max-width: 96%;
+}
+#detail-box .text-area {
+  padding: 24px 0;
+}
+#footer {
+  height: 36px;
+  line-height: 36px;
+  width: 100%;
+  background: #c63032;
+  font-size: 13px;
+  color: #cbcbcb;
+  text-align: center;
+  position: fixed;
+  bottom: -32px;
+  z-index: 10;
+}

@@ -1,0 +1,244 @@
+@import "color";
+@import 'normalize.css';
+
+ul , ol {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+li {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    padding: 0;
+    margin: 0;
+
+    font: 16px/22px "ff-tisa-web-pro-1","ff-tisa-web-pro-2","Lucida Grande","Hiragino Sans GB","Hiragino Sans GB W3",serif;
+    color: @link-color4-darken;
+}
+
+#header {
+    .header-vars {
+        @height: 54px;
+        @icon-size: @height - 10;
+    };
+    .header-vars;
+
+    height: @height;
+    line-height: @height;
+    width: 100%;
+
+    background: @link-color6-darken;
+    color: #fff;
+
+    position: fixed;
+    top: 0;
+
+    z-index: 10;
+
+    .fa {
+        font-size: @icon-size;
+        height: @height;
+        line-height: @height;
+    }
+}
+
+.page-box {
+    .page-box-vars {
+        #header > .header-vars;
+        @padding-top: @height;
+    };
+    .page-box-vars2 {
+        #footer > .footer-vars;
+        @padding-bottom: @height;
+    }
+    .page-box-vars;
+    .page-box-vars2;
+    padding-top: @padding-top;
+    padding-bottom: @padding-bottom;
+}
+
+#main-box {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+
+    .main {
+        .page-box;
+
+        height: 100%;
+        width: 100%;
+        background: #F7F7F7;
+    }
+}
+
+// product stream
+.stream-box {
+    .stream {
+    }
+    .stream-item {
+        .stream-item-vars {
+            @max-img-size: 96%;
+        };
+        .stream-item-vars;
+
+        padding-bottom: 36px;
+
+        .img-box {
+            text-align: center;
+            height: @max-img-size;
+            width: 100%;
+            background: #efefef;
+        }
+        .img {
+            max-width: @max-img-size;
+        }
+    }
+}
+
+.get-more {
+    width: 100%;
+    height: 64px;
+    line-height: 64px;
+    text-align: center;
+    font-size: 24px;
+    background: @link-color2-darken;
+    color: lighten(@link-color2, 20);
+}
+
+
+.slider {
+    .page-box;
+    .slider-vars {
+        @padding: 12px;
+        @width-ori: 255px;
+        @width: @width-ori - (@padding * 2);
+    };
+    .slider-vars;
+
+    width: @width;
+    height: 100%;
+    overflow-y: auto;
+
+    padding: @padding-top 0 @padding-bottom 0;
+
+    position: fixed;
+    left: -255px;
+    -webkit-transition: left 0.1s linear;
+    background: #fff;
+    color: @link-color4;
+    border-right: 1px solid #ddd;
+    box-shadow: 1px 0 48px #333;
+
+    .slider-items {
+        
+    }
+
+    .slider-item {
+        .slider-item-vars {
+            @height: 48px;
+        };
+        .slider-item-vars;
+        height: @height;
+        line-height: @height;
+
+        border-bottom: 1px solid #eee;
+        font-weight: 100;
+        text-indent: 18px;
+    }
+
+    .title-item {
+        color: @link-color4-darken;
+        text-indent: 0;
+    }
+}
+
+.slider-show {
+    left: 0;
+    -webkit-transition: left 0.1s linear;
+}
+
+#detail-box {
+    .detail-box-vars {
+        .stream-box > .stream-item > .stream-item-vars;
+    };
+    .detail-box-vars;
+    height: 100%;
+
+    .detail {
+        
+    }
+
+    .item {
+        padding: 24px 0;
+    }
+
+    .cover-img-box {
+        .item;
+        text-align: center;
+        width: 100%;
+        height: auto;
+        //height: @max-img-size;
+        background: #eee;
+        overflow: hidden;
+    }
+
+    .cover-img {
+        max-width: @max-img-size;
+        //max-height: @max-img-size;
+    }
+
+    .detail-img-list {
+        
+    }
+
+    .detail-img-box {
+        .item;
+        text-align: center;
+        width: 100%;
+        height: @max-img-size;
+        background: #eee;
+        overflow: hidden;
+
+        .hint {
+            clear: both;
+            width: 100%;
+            display: inline-block;
+        }
+    }
+
+    .detail-img {
+        max-width: @max-img-size;
+        //max-height: @max-img-size;
+    }
+
+    .text-area {
+        .item;
+    }
+}
+
+#footer {
+    .footer-vars {
+        @height: 36px;
+    };
+    .footer-vars;
+
+    height: @height;
+    line-height: @height;
+    width: 100%;
+
+    //background: #F7F7F7 url(/picture/common/bg_texture_dark.jpg) repeat scroll 0px 0px;
+    background: @link-color-darken;
+    font-size: 13px;
+    color: @link-color4;
+    text-align: center;
+
+    position: fixed;
+    bottom: -32px;
+
+    z-index: 10;
+}
+

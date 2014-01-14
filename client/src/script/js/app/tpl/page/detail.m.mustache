@@ -1,0 +1,27 @@
+<div id="detail-box">
+    <div class="detail">
+        <span>{{product_name}}</span>
+        <div class="cover-img-box">
+            <img class="cover-img" src="{{product_image_url}}"/>
+        </div>
+
+        <div class="text-area">
+            <span>{{product_describe}}</span>
+            <span>现价￥{{product_now_price}}</span>
+            <span>原价￥{{product_original_price}}</span>
+            <span>数量{{product_quantity}}</span>
+        </div>
+
+        <ul class="detail-img-list">
+            {{#detail_imgs}}
+            <li>
+                <div class="detail-img-box">
+                    <span class="hint"></span>
+                    <img class="detail-img" src="{{url}}" alt="">
+                </div>
+            </li>
+            {{/detail_imgs}}
+        </ul>
+    </div>
+</div>
+

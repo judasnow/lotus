@@ -3,7 +3,6 @@ define([
     'backbone',
 
     'm/product',
-
 ] , function( $ , Backbone , Product ) {
     'use strict';
 

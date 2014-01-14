@@ -22,12 +22,14 @@ module.exports = function( grunt ) {
             dev : {
                 files: {
                     './index.html': './src/preprocess_tpl/index.html',
+                    './index.m.html': './src/preprocess_tpl/index.m.html',
                     './src/script/js/config.js': './src/preprocess_tpl/config.js'
                 }
-            } ,
+            },
             prod : {
                 files: {
-                    './index.html': './src/preprocess_tpl/index.html',
+                    './index.raw.html': './src/preprocess_tpl/index.html',
+                    './index.m.raw.html': './src/preprocess_tpl/index.m.html',
                     './src/script/js/config.js': './src/preprocess_tpl/config.js'
                 }
             }
@@ -36,7 +38,7 @@ module.exports = function( grunt ) {
         clean: {
         //{{{
             build: [ './build/*', './build/*.*' , './index.raw.html' ],
-            raw_html: [ './index.raw.html' ]
+            raw_html: [ './index.raw.html', './index.m.raw.html' ]
         },//}}}
 
         uglify: {
@@ -57,31 +59,45 @@ module.exports = function( grunt ) {
                 files: [{
                     src: './build/script/js/main-build.js',
                     dest: './build/script/js/main-build.min.js',
+                },{
+                    src: './build/script/js/main-m-build.js',
+                    dest: './build/script/js/main-m-build.min.js',
                 }]
             }
         } ,//}}}
 
         less: {
         //{{{
-            options: {
-                compress: false
-            } ,
             main: {
-                src: './src/style/less/main.less' ,
-                dest: './src/style/css/main.css'
+                options: {
+                    compress: false
+                } ,
+                files: [{
+                    src: './src/style/less/main.less',
+                    dest: './src/style/css/main.css'
+                },{
+                    src: './src/style/less/main.m.less',
+                    dest: './src/style/css/main.m.css'
+                }]
             }
         },//}}}
 
         cssmin: {
         //{{{
             combine: {
-                files: {
+                files: [{
                     './build/style/css/all.min.css': 
                     [
                         './src/style/css/main.css',
                         './src/style/third_party/fontawesome/css/font-awesome.css'
                     ]
-                }
+                },{
+                    './build/style/css/all.m.min.css': 
+                    [
+                        './src/style/css/main.m.css',
+                        './src/style/third_party/fontawesome/css/font-awesome.css'
+                    ]
+                }]
             }
         },//}}}
 
@@ -97,7 +113,7 @@ module.exports = function( grunt ) {
             }
         },//}}}
 
-        requirejs: {
+        requirejs_: {
         //{{{
             compile: {
                 options: {
@@ -114,6 +130,23 @@ module.exports = function( grunt ) {
             }
         },//}}}
 
+        requirejs: {
+        //{{{
+            compile: {
+                options: {
+                    optimize: "uglify",
+                    uglify: {
+                        comments: false
+                    },
+                    baseUrl: './src/script/',
+                    mainConfigFile: './src/script/js/main.m.js',
+                    name: 'js/main.m',
+                    optimize: "uglify",
+                    out: './build/script/js/main-m-build.js'
+                }
+            }
+        },//}}}
+
         htmlmin: {
         //{{{
             dist: {
@@ -121,13 +154,15 @@ module.exports = function( grunt ) {
                     removeComments: false ,
                     collapseWhitespace: true
                 },
-                files: {
-                    './index.html': './index.raw.html'
-                }
+                files: [{
+                    './index.html': './index.raw.html',
+                    './index.m.html': './index.m.raw.html'
+                }]
             }
         },//}}}
 
         nodewebkit: {
+        //{{{
             options: {
                 version: "0.8.4",
                 build_dir: './webkitbuilds',
@@ -143,7 +178,7 @@ module.exports = function( grunt ) {
                 'index.html',
                 'package.json',
             ]
-        },
+        }//}}}
     });
 
     grunt.loadNpmTasks( 'grunt-env' );
@@ -157,7 +192,7 @@ module.exports = function( grunt ) {
     grunt.loadNpmTasks( 'grunt-contrib-cssmin' );
     grunt.loadNpmTasks( 'grunt-contrib-htmlmin' );
     grunt.loadNpmTasks( 'grunt-contrib-watch' );
-    grunt.loadNpmTasks('grunt-node-webkit-builder');
+    grunt.loadNpmTasks( 'grunt-node-webkit-builder' );
 
     grunt.registerTask(
         'dev',
@@ -167,6 +202,13 @@ module.exports = function( grunt ) {
     grunt.registerTask( 
         'prod',
         ['env:prod', 'clean', 'preprocess:prod', 'less', 'cssmin', 'copy', 'uglify:main', 'requirejs', 'uglify:main_build', 'htmlmin', 'clean:raw_html' ]
+    );
+
+    grunt.registerTask(
+        'm_prod',
+        [
+            'requirejs', 'uglify:main_build'
+        ]
     );
 };
 

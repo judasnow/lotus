@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<!--{{{
+    __           __                          
+   / /   ____   / /_ __  __ _____   ____ ___ 
+  / /   / __ \ / __// / / // ___/  / __ `__ \
+ / /___/ /_/ // /_ / /_/ /(__  )  / / / / / /
+/_____/\____/ \__/ \__,_//____/  /_/ /_/ /_/ 
+}}}-->
+<html lang="zh-CN">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="shortcut icon" href="" type="image/x-icon" />
+<link rel="icon" href="" type="image/x-icon" />
+
+<!-- @if ENV='dev' -->
+<link rel="stylesheet" href="src/style/third_party/fontawesome/css/font-awesome.css" />
+<link rel="stylesheet/less" type="text/css" href="src/style/less/main.m.less" />
+<script src="src/script/third_party/less.js"></script>
+<!-- @endif -->
+
+<!-- @if ENV='prod' -->
+<link rel="stylesheet" href="build/style/css/all.m.min.css" />
+<!-- @endif -->
+
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="white">
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<link rel="apple-touch-icon" href="">
+<link rel="apple-touch-startup-image" href="">
+
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="format-detection" content="telephone=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+</head>
+
+<body>
+<div id="header">
+    <i class="fa fa-bars"></i>
+</div>
+
+<div id="main-box">
+    <div class="slider">
+    </div>
+
+    <div id="wrapper" class="main"></div>
+</div>
+
+<div id="footer">
+    <span>maoejie.com © 2013</span>
+</div>
+</body>
+
+<!-- @if ENV='dev' -->
+<script data-main="src/script/js/main.m" src="src/script/third_party/require.js"></script>
+<!-- @endif -->
+
+<!-- @if ENV='prod' -->
+<script data-main="build/script/js/main-m-build.min" src="build/script/third_party/require.min.js"></script>
+<!-- @endif -->
+
+</html>
+
