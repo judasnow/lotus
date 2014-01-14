@@ -1,5 +1,5 @@
 <?php
-if ($_GET['signatur'] && $_GET['time_stamp'] && $_GET['nonce']) {
+if ($_GET['signature'] && $_GET['time_stamp'] && $_GET['nonce']) {
     
 } else {
     return false;
@@ -16,7 +16,7 @@ $tmpStr = implode( $tmpArr );
 $tmpStr = sha1( $tmpStr );
 
 if( $tmpStr == $signature ){
-    return true;
+    return $nonce;
 }else{
     return false;
 }
