@@ -1,4 +1,10 @@
 <?php
+if ($_GET['signatur'] && $_GET['time_stamp'] && $_GET['nonce']) {
+    
+} else {
+    return false;
+}
+
 $signature = $_GET["signature"];
 $timestamp = $_GET["timestamp"];
 $nonce = $_GET["nonce"];	
