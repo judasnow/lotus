@@ -31,7 +31,7 @@ define([
     var Slider = Backbone.View.extend({
         el: '#main-box .slider',
         events: {
-            'tap .class-b': '_goStream'
+            'click .class-b': '_goStream'
         },
         initialize: function() {
             _.bindAll(this, '_renderClassA');

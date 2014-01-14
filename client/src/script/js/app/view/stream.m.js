@@ -29,8 +29,8 @@ define([
     var Stream_m = Backbone.View.extend({
         template: streamTpl,
         events: {
-            'tap .get-more': '_fetchMore',
-            'tap .stream-item': '_goToDetail'
+            'click .get-more': '_fetchMore',
+            'click .stream-item': '_goToDetail'
         },
         initialize: function() {
             _.bindAll(this, '_fetch', '_addOne', 'render');
