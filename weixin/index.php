@@ -1,5 +1,5 @@
 <?php
-if ($_GET['signature'] && $_GET['time_stamp'] && $_GET['nonce']) {
+if (isset($_GET['signature']) && isset($_GET['time_stamp']) && isset($_GET['nonce'])) {
     
 } else {
     return false;
