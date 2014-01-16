@@ -33,8 +33,8 @@ if (false && PHP_OS == 'Darwin' || $hostname == 'x200' ) {
     //Qiniuyun已经存在的帐号
     $config['qiniuyun_config'] = array(
         'maoejie' => array(
-            '_accessKey' => 'ylMDiB_RbB1C1JRaEWHg8fqLmCXxf7RuBbOLKCZu',
-            '_secretKey' => 'bHcsEs2YvYKZDjimcHzQDQEwOaeVKPgPmYENztAT'
+            '_accessKey' => '',
+            '_secretKey' => ''
         )
     );
     
@@ -51,12 +51,12 @@ if (false && PHP_OS == 'Darwin' || $hostname == 'x200' ) {
     //Qiniuyun已经存在的帐号
     $config['qiniuyun_config'] = array(
         'maoejienodea' => array(
-            '_accessKey' => 'SP7ObxUeG0O4XyPAbDw5iNNkcMutSANU24cy-mSc',
-            '_secretKey' => 'B6EQmnfHfTTCv76tbmayw-58sfnPxeOFHpQoZu7e'
+            '_accessKey' => '',
+            '_secretKey' => ''
         ),
         'maoejienodeb' => array(
-            '_accessKey' => 'IBcu5uUfTOhRyjizn28arwPkXbgffLmrkl5OSI_7',
-            '_secretKey' => 'ppk8yRVfWqHW3iPikUB57GeLROcYTnkY4EEE7oat'
+            '_accessKey' => '',
+            '_secretKey' => ''
         )
     );
     
@@ -66,5 +66,6 @@ if (false && PHP_OS == 'Darwin' || $hostname == 'x200' ) {
     $config['qiniuyun_reflection_config'] = ['nodea' => 'maoejienodea', 'nodeb' => 'maoejienodeb'];
 
 }
+
 
 

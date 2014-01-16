@@ -88,8 +88,9 @@ if( PHP_OS == 'Darwin' || $hostname == 'x200' )
 if( $hostname == 'maoejie' ) {
     $db['odirus']['hostname'] = '127.0.0.1';
     $db['odirus']['username'] = 'root';
-    $db['odirus']['password'] = 'maoejie';
+    $db['odirus']['password'] = '';
 }
 
 /* End of file database.php */
 /* Location: ./application/config/database.php */
+
